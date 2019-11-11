@@ -42,20 +42,20 @@ export const constantRoutes = [
         path: 'table',
         name: 'Table',
         component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
+        meta: { title: '事务提取', icon: 'table' }
       },
       {
         path: 'details',
         name: 'details',
         component: () => import('@/views/table/detail')
         // meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
       }
+      // {
+      //   path: 'tree',
+      //   name: 'Tree',
+      //   component: () => import('@/views/tree/index'),
+      //   meta: { title: 'Tree', icon: 'tree' }
+      // }
     ]
   },
 
@@ -89,6 +89,12 @@ export const constantRoutes = [
         meta: { title: '训练模型' }
       },
       {
+        path: 'creates',
+        name: 'creates',
+        component: () => import('@/views/nested/menu1/create')
+        // meta: { title: 'Table', icon: 'table' }
+      },
+      {
         path: 'menu2',
         component: () => import('@/views/nested/menu2/index'),
         meta: { title: '事件预测' }
@@ -96,16 +102,16 @@ export const constantRoutes = [
     ]
   },
 
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' }
-      }
-    ]
-  },
+  // {
+  //   path: 'external-link',
+  //   component: Layout,
+  //   children: [
+  //     {
+  //       path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
+  //       meta: { title: 'External Link', icon: 'link' }
+  //     }
+  //   ]
+  // },
 
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
