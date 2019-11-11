@@ -26,7 +26,7 @@ export const constantRoutes = [
         path: 'dashboard',
         name: 'Dashboard',
         component: () => import('@/views/dashboard/index'),
-        meta: { title: '事务提取', icon: 'dashboard' }
+        meta: { title: '首页', icon: 'dashboard' }
       }
     ]
   },
@@ -36,13 +36,14 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/example/table',
     name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
+    meta: { title: '事务提取', icon: 'example' },
     children: [
       {
         path: 'table',
         name: 'Table',
         component: () => import('@/views/table/index'),
-        meta: { title: '事务提取', icon: 'table' }
+        // meta: { title: '事务提取', icon: 'table' }
+        meta: { title: '事务提取' }
       },
       {
         path: 'details',
@@ -102,8 +103,8 @@ export const constantRoutes = [
       {
         path: 'newEvent',
         name: 'NewEvent',
-        component: () => import('@/views/nested/menu2/newEvent'),
-      },
+        component: () => import('@/views/nested/menu2/newEvent')
+      }
     ]
   },
 
