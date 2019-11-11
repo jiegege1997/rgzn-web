@@ -98,7 +98,12 @@ export const constantRoutes = [
         path: 'menu2',
         component: () => import('@/views/nested/menu2/index'),
         meta: { title: '事件预测' }
-      }
+      },
+      {
+        path: 'newEvent',
+        name: 'NewEvent',
+        component: () => import('@/views/nested/menu2/newEvent'),
+      },
     ]
   },
 
