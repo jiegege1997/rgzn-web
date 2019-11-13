@@ -98,7 +98,7 @@ export default {
     }
   },
   created () {
-    this.find()
+    // this.find()
   },
   methods: {
     handleEdit (item) {

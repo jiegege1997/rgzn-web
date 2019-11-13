@@ -59,6 +59,11 @@
               <el-input v-model="form.name"></el-input>
             </el-col>
           </el-form-item>
+          <el-form-item label="训练天数">
+            <el-col :span="10">
+              <el-input v-model="form.name"></el-input>
+            </el-col>
+          </el-form-item>
           <el-form-item label="epoch">
             <el-col :span="10">
               <el-input v-model="form.epoch"></el-input>
@@ -72,7 +77,7 @@
         </el-form>
       </div>
     </div>
-    <div class="right">
+    <div class="rightnow">
       <el-button type="success"
                  @click="onSubmit">立即创建</el-button>
       <el-button @click="cancel">取消</el-button>
@@ -127,7 +132,7 @@ export default {
 </script>
 
 <style scoped>
-.right {
+.rightnow {
   float: right;
 }
 .line {

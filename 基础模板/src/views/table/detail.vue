@@ -7,40 +7,44 @@
       </el-col>
     </el-row>
     <el-row :gutter="40">
-      <el-col
-:span="14"
-              offset="1"
->
+      <el-col :span="14"
+              offset="1">
         <!-- 文章内容 -->
-        <div
-v-for="(item,index) in resultsList"
+        <div v-for="(item,index) in resultsList"
              :key="index"
              class="content-left"
-             v-html="item.name"
->
+             v-html="item.name">
           {{ item.name }}
         </div>
       </el-col>
-      <el-col
-:span="8"
-              offset="1"
->
+      <el-col :span="8"
+              offset="1">
+        <div class="title">相关事件</div>
         <div class="right">
           <table>
-            <tr
-v-for=" (item,index) in tableData"
+            <tr v-for=" (item,index) in tableData"
                 :key="index"
                 class="tr-top"
                 @click="handleClick(index,item)"
->
+                :class="isActive == index ? 'active':''">
               <td>{{ item.event }}</td>
-              <td class="td-right">{{ item.score }}</td>
+              <td class="td-right">{{ Number(item.score).toFixed(3) }}</td>
+            </tr>
+          </table>
+          <div class="title">相关文章</div>
+          <table>
+            <tr v-for=" (item,index) in textData"
+                :key="index"
+                class="tr-top"
+                @click="textClick(index,item)">
+              <!-- :class="isActive == index ? 'active':''" -->
+              <td>{{ item.translated_title }}</td>
+              <!-- <td class="td-right">{{ Number(item.score).toFixed(3) }}</td> -->
             </tr>
           </table>
         </div>
       </el-col>
     </el-row>
-
   </div>
 </template>
 
@@ -49,17 +53,15 @@ import qs from 'qs'
 
 export default {
   name: 'Syspara',
-  data() {
+  data () {
     return {
       keyWords: '',
       results: [],
       tableData: [
-        // { event: '天气之子', score: '89分' },
-        // { event: '你的名字', score: '89分' },
-        // { event: '读者', score: '89分' },
-        // { event: '影迷', score: '89分' },
-        // { event: '日本知名动画导演新海诚', score: '89分' }
+
       ],
+      textData: [],
+      isActive: -1,
       resultsList: [
         {
           name: ''
@@ -68,39 +70,64 @@ export default {
       title: ''
     }
   },
-  created() {
+  created () {
     this.find()
+    this.findtext()
   },
 
   methods: {
-    handleClick(index, item) {
-      console.log(item.event)
-      const id = this.$route.query.id
+    textClick (index, item) {
+      console.log(item.article_id)
+      // console.log(this.$route.query.id)
+      const id = item.article_id
+      let type = this.$route.query.type
       this.axios.defaults.headers = {
-        'Content-type': 'application/x-www-form-urlencoded' }
+        'Content-type': 'application/x-www-form-urlencoded'      }
       this.axios.post(
-        'http://192.168.3.81:8080/jdqd/action/JDQD/biz/event/getArticleHighLight',
+        'http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleDetail',
         qs.stringify({
-          event: item.event,
-          articleId: id,
-          type: '1'
+          type: type,
+          articleId: id
         })
       )
         .then((res) => {
           console.log(res.data.data)
           const data = res.data.data
-          // this.title = data.title
+          this.title = data.title
           this.resultsList[0].name = data.content
-          // this.tableData = data.eventList
+          this.tableData = data.eventList.slice(0, 5)
+          console.log(this.tableData)
+        })
+        .catch((err) => {
+          this.$message.error(error);
+        })
+    },
+    handleClick (index, item) {
+      console.log(this.$route.query.type)
+      console.log(index)
+      this.isActive = index;
+      let id = this.$route.query.id
+      let type = this.$route.query.type
+      this.axios.defaults.headers = {
+        'Content-type': 'application/x-www-form-urlencoded'      }
+      this.axios.post(
+        'http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleHighLight',
+        qs.stringify({
+          eventId: item.solr_event_id,
+          articleId: id,
+          type: type
+        })
+      )
+        .then((res) => {
+          console.log(res.data.data)
+          const data = res.data.data
+          this.resultsList[0].name = data.content
         })
         .catch((err) => {
           console.log(err)
         })
-      // this.keyWords = item.event
-      // let arr = this.resultsList
-      // this.changeColor(arr);
     },
-    changeColor(resultsList) {
+    changeColor (resultsList) {
       resultsList.map((item, index) => {
         // console.log('item', item)
         if (this.keyWords && this.keyWords.length > 0) {
@@ -121,15 +148,16 @@ export default {
       this.results = resultsList
     },
     // 查看所有数据
-    find() {
+    find () {
       console.log(this.$route.query.id)
       const id = this.$route.query.id
+      let type = this.$route.query.type
       this.axios.defaults.headers = {
-        'Content-type': 'application/x-www-form-urlencoded' }
+        'Content-type': 'application/x-www-form-urlencoded'      }
       this.axios.post(
-        'http://192.168.3.81:8080/jdqd/action/JDQD/biz/event/getArticleDetail',
+        'http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleDetail',
         qs.stringify({
-          type: '1',
+          type: type,
           articleId: id
         })
       )
@@ -138,13 +166,39 @@ export default {
           const data = res.data.data
           this.title = data.title
           this.resultsList[0].name = data.content
-          this.tableData = data.eventList
+          this.tableData = data.eventList.slice(0, 5)
+          console.log(this.tableData)
         })
         .catch((err) => {
-          console.log(err)
+          this.$message.error(error);
+        })
+    },
+    findtext () {
+      console.log(this.$route.query.id)
+      const id = this.$route.query.id
+      let type = this.$route.query.type
+      this.axios.defaults.headers = {
+        'Content-type': 'application/x-www-form-urlencoded'      }
+      this.axios.post(
+        'http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getSimilarArticleTitle',
+        qs.stringify({
+          articleId: id
+        })
+      )
+        .then((res) => {
+          console.log(res.data.data)
+          const data = res.data.data
+          // this.title = data.title
+          // this.resultsList[0].name = data.content
+          // this.tableData = data.eventList.slice(0, 5)
+          this.textData = data
+          console.log(this.textData)
+          // console.log(this.tableData)
+        })
+        .catch((err) => {
+          this.$message.error(error);
         })
     }
-
   }
 }
 </script>
@@ -153,13 +207,27 @@ export default {
 .el-row {
   margin-bottom: 20px;
 }
+.active {
+  background-color: antiquewhite;
+
+  /* background-color: #1e82d2; */
+  /* font-weight: bolder; */
+}
+.title {
+  color: #333;
+  margin-left: 20px;
+  font-size: 16px;
+  line-height: 1.29;
+  font-weight: 700;
+}
+
 .header {
   font-size: 30px;
   text-align: center;
 }
 .right {
   border-left: 1px solid #e1e1e1;
-  height: 480px;
+  height: 600px;
 }
 .content-left {
   text-indent: 2em;

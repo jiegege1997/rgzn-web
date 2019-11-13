@@ -1,17 +1,18 @@
 <template>
   <div class="app-container">
     <el-col :span="6"
-    style="margin-bottom:20px;">
-      <el-button type="primary" @click="created()">
+            style="margin-bottom:20px;">
+      <el-button type="primary"
+                 @click="created()">
         新建事件预测
       </el-button>
     </el-col>
     <el-table :data="tableData.slice((currpage - 1) * pagesize, currpage * pagesize)"
-    style="width: 100%"
-    :header-cell-style="{background:'#eef1f6',color:'#606266'}"
-    height="500px"
-    :default-sort="{prop: 'para_id', order: 'ascending'}"
-    border>
+              style="width: 100%"
+              :header-cell-style="{background:'#eef1f6',color:'#606266'}"
+              height="500px"
+              :default-sort="{prop: 'para_id', order: 'ascending'}"
+              border>
       <el-table-column label="序号"
                        prop="no">
         <template slot-scope="{row}">
@@ -44,13 +45,13 @@
       </el-table-column>
     </el-table>
     <el-pagination background
-    style="float:right"
-    layout="prev, pager, next, sizes, total, jumper"
-    :page-sizes="[5, 10, 15, 20]"
-    :page-size="pagesize"
-    :total="tableData.length"
-    @current-change="handleCurrentChange"
-    @size-change="handleSizeChange" />
+                   style="float:right"
+                   layout="prev, pager, next, sizes, total, jumper"
+                   :page-sizes="[5, 10, 15, 20]"
+                   :page-size="pagesize"
+                   :total="tableData.length"
+                   @current-change="handleCurrentChange"
+                   @size-change="handleSizeChange" />
   </div>
 </template>
 
@@ -63,11 +64,11 @@ export default {
       currpage: 1
     }
   },
-  mounted() {
+  mounted () {
     this.getData();
   },
   methods: {
-    created() {
+    created () {
       this.$router.push({
         name: 'NewEvent',
       });
@@ -78,8 +79,8 @@ export default {
     handleSizeChange (psize) {
       this.pagesize = psize
     },
-    getData(){
-      
+    getData () {
+
     }
   },
 }
