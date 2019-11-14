@@ -1,10 +1,11 @@
 <template>
   <div class="navbar">
-    <hamburger
+    <!-- <hamburger
       :is-active="sidebar.opened"
       class="hamburger-container"
       @toggleClick="toggleSideBar"
-    />
+    /> -->
+    <!-- <el-button @click="back" type="text"> 返回</el-button> -->
 
     <breadcrumb class="breadcrumb-container" />
 
@@ -42,8 +43,8 @@ import Hamburger from "@/components/Hamburger";
 
 export default {
   components: {
-    Breadcrumb,
-    Hamburger
+    Breadcrumb
+    // Hamburger
   },
   computed: {
     ...mapGetters(["sidebar", "avatar"])
@@ -52,6 +53,9 @@ export default {
     toggleSideBar() {
       this.$store.dispatch("app/toggleSideBar");
     },
+    // back() {
+    //   this.router.go(-1);
+    // },
     async logout() {
       await this.$store.dispatch("user/logout");
       this.$router.push(`/login?redirect=${this.$route.fullPath}`);

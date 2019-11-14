@@ -35,27 +35,15 @@ export const constantRoutes = [
     path: "/example",
     component: Layout,
     redirect: "/example/table",
-    name: "Example",
-    meta: { title: "事件识别", icon: "example" },
+    // name: "Example",
+    // meta: { title: "事件识别", icon: "example" },
     children: [
       {
         path: "table",
         name: "Table",
         component: () => import("@/views/table/index"),
-        // meta: { title: '事务提取', icon: 'table' }
-        meta: { title: "事件识别" }
-      },
-      {
-        path: "details",
-        name: "details",
-        component: () => import("@/views/table/detail")
-        // meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: "suanfa",
-        name: "suanfa",
-        component: () => import("@/views/table/suanfa")
-        // meta: { title: 'Table', icon: 'table' }
+        meta: { title: "事件识别", icon: "table" }
+        // meta: { title: "事件识别" }
       }
       // {
       //   path: 'tree',
@@ -65,7 +53,35 @@ export const constantRoutes = [
       // }
     ]
   },
-
+  {
+    path: "details",
+    component: Layout,
+    hidden: true,
+    redirect: "/example/table",
+    children: [
+      {
+        path: "details",
+        name: "details",
+        component: () => import("@/views/table/detail"),
+        meta: { title: "详情" }
+      }
+    ]
+  },
+  {
+    path: "suanfa",
+    component: Layout,
+    hidden: true,
+    redirect: "/example/table",
+    children: [
+      {
+        path: "suanfa",
+        name: "suanfa",
+        component: () => import("@/views/table/suanfa"),
+        meta: { title: "详情" }
+        // meta: { title: 'Table', icon: 'table' }
+      }
+    ]
+  },
   // {
   //   path: '/form',
   //   component: Layout,

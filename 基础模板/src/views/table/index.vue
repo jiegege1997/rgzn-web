@@ -14,10 +14,19 @@
       :span="4"
       style="margin-top: 20px;margin-bottom:20px; margin-left:20px;"
     >
-      <el-button autofocus size="mini" @click="find1">
+      <el-button
+        size="mini"
+        @click="find1"
+        type="value"
+        :class="isActive == 1 ? 'active' : ''"
+      >
         方式一
       </el-button>
-      <el-button size="mini" @click="find2">
+      <el-button
+        size="mini"
+        @click="find2"
+        :class="isActive == 2 ? 'active' : ''"
+      >
         方式二
       </el-button>
     </el-col>
@@ -32,7 +41,9 @@
       <el-table-column label="#" type="index" width="40%" />
       <el-table-column label="标题" prop="translated_title">
         <template slot-scope="{ row }">
-          <span>{{ row.translated_title }}</span>
+          <span class="biaoti">{{ row.translated_title }}</span>
+          <br />
+          <span class="zhaiyao">{{ row.contentSummary[0] }}</span>
         </template>
       </el-table-column>
       <el-table-column label="相关事件" prop="event">
@@ -44,8 +55,8 @@
         </template>
       </el-table-column>
       <el-table-column label="网站名称" prop="source" width="100%">
-        <template slot-scope="{ row, $index }">
-          <span v-if="!showEdit[$index]">{{ row.source }}</span>
+        <template slot-scope="{ row }">
+          <span>{{ row.source }}</span>
         </template>
       </el-table-column>
       <!-- <el-table-column label="文本日期"
@@ -56,7 +67,7 @@
           <span>{{ row.pub_time }}</span>
         </template>
       </el-table-column> -->
-      <el-table-column label="爬取日期" prop="remark" width="151%">
+      <el-table-column label="爬取日期" prop="remark" width="100%">
         <template slot-scope="{ row }">
           <span>{{ row.spider_time }}</span>
         </template>
@@ -107,10 +118,12 @@ export default {
       dialogFormVisible: false,
       search: "",
       findData: "",
+      isActive: "1",
       showEdit: [], // 显示编辑框
       showBtn: [],
       pagesize: 10,
       currpage: 1,
+      value: "success",
       type: "1",
       length: ""
     };
@@ -189,6 +202,7 @@ export default {
         });
     },
     find1() {
+      this.isActive = "1";
       this.type = "1";
       this.axios
         .post(
@@ -209,6 +223,7 @@ export default {
         });
     },
     find2() {
+      this.isActive = "2";
       this.type = "2";
       this.axios
         .post(
@@ -239,3 +254,18 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.zhaiyao {
+  color: #666;
+  font-size: 10px;
+}
+.biaoti {
+  font-weight: bold;
+}
+.active {
+  color: #409eff;
+  border-color: #c6e2ff;
+  background-color: #ecf5ff;
+}
+</style>
