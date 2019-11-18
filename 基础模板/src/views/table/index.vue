@@ -27,7 +27,7 @@
     </el-col>
     <!-- 表格 -->
     <el-table
-      :data="tableData.slice((currpage - 1) * pagesize, currpage * pagesize)"
+      :data="tableData"
       style="width: 100%"
       height="530px"
       :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
@@ -107,13 +107,14 @@ export default {
       pagesize: 10,
       currpage: 1,
       value: 'success',
-      type: this.$store.state.table.type || '1',
+      type: this.$store.state.table.type,
       length: ''
     }
   },
   created() {
     this.find()
   },
+  computed: {},
   methods: {
     handleSearch() {
       // console.log(this.findData)
@@ -151,8 +152,8 @@ export default {
           qs.stringify({
             title: this.findData,
             type: type,
-            currPage: '1',
-            pageSize: this.pagesize * this.currpage
+            currPage: this.currpage,
+            pageSize: this.pagesize
           })
         )
         .then(res => {
@@ -175,9 +176,10 @@ export default {
       this.find()
     },
     find3() {
-      this.type = '3'
-      this.$store.dispatch('changeType', this.type)
-      this.find()
+      // this.type = '3'
+      console.log(localStorage)
+      // this.$store.dispatch('changeType', this.type)
+      // this.find()
     },
     handleCurrentChange(cpage) {
       this.currpage = cpage
