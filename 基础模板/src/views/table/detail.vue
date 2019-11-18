@@ -2,13 +2,12 @@
   <div class="app-container">
     <el-row :gutter="20">
       <el-col :span="16">
-        <!-- 文章标题 -->
         <el-button size="small" @click="back">返回</el-button>
         <div class="header">{{ title }}</div>
       </el-col>
     </el-row>
     <el-row :gutter="40">
-      <el-col :span="14" offset="1">
+      <el-col :span="14" :offset="1">
         <!-- 文章内容 -->
         <div
           v-for="(item, index) in resultsList"
@@ -19,12 +18,8 @@
           {{ item.name }}
         </div>
       </el-col>
-      <el-col :span="8" offset="1">
+      <el-col :span="8" :offset="1">
         <div class="right">
-          <!-- <div class="title">摘要</div>
-          <div class="header2" v-for="(item, index) in someList" :key="index">
-            {{ item }}
-          </div> -->
           <div class="title">相关事件</div>
           <table>
             <tr
@@ -57,72 +52,68 @@
 </template>
 
 <script>
-import qs from "qs";
+import qs from 'qs'
 
 export default {
-  name: "Syspara",
+  name: 'Syspara',
   data() {
     return {
-      keyWords: "",
+      keyWords: '',
       results: [],
       tableData: [],
       textData: [],
       isActive: -1,
-      resultsList: [
-        {
-          name: ""
-        }
-      ],
+      resultsList: [{ name: '' }],
       someList: [],
-      title: ""
-    };
+      title: ''
+    }
   },
   created() {
-    this.find();
-    this.findtext();
+    this.find()
+    this.findtext()
   },
 
   methods: {
     textClick(index, item) {
-      console.log(item.article_id);
+      console.log(item.article_id)
       // console.log(this.$route.query.id)
-      const id = item.article_id;
-      let type = this.$route.query.type;
+      const id = item.article_id
+      let type = this.$route.query.type
       this.axios.defaults.headers = {
-        "Content-type": "application/x-www-form-urlencoded"
-      };
+        'Content-type': 'application/x-www-form-urlencoded'
+      }
       this.axios
         .post(
-          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleDetail",
+          'http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleDetail',
           qs.stringify({
             type: type,
             articleId: id
           })
         )
         .then(res => {
-          console.log(res.data.data);
-          const data = res.data.data;
-          this.title = data.title;
-          this.resultsList[0].name = data.content;
-          this.tableData = data.eventList.slice(0, 5);
-          console.log(this.tableData);
+          console.log(res.data.data)
+          const data = res.data.data
+          this.title = data.title
+          this.resultsList[0].name = data.content
+          this.tableData = data.eventList.slice(0, 5)
+          console.log(this.tableData)
         })
         .catch(err => {
-          this.$message.error(error);
-        });
+          this.$message.error(error)
+        })
     },
     handleClick(index, item) {
-      console.log(this.$route.query.type);
-      console.log(index);
-      this.isActive = index;
-      let id = this.$route.query.id;
-      let type = this.$route.query.type;
+      console.log(this.$route.query.type)
+      console.log(index)
+      this.isActive = index
+      let id = this.$route.query.id
+      let type = this.$route.query.type
       this.axios.defaults.headers = {
-        "Content-type": "application/x-www-form-urlencoded"
-      };
+        'Content-type': 'application/x-www-form-urlencoded'
+      }
       this.axios
         .post(
-          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleHighLight",
+          'http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleHighLight',
           qs.stringify({
             eventId: item.solr_event_id,
             articleId: id,
@@ -130,99 +121,96 @@ export default {
           })
         )
         .then(res => {
-          console.log(res.data.data);
-          const data = res.data.data;
-          this.resultsList[0].name = data.content;
+          console.log(res.data.data)
+          const data = res.data.data
+          this.resultsList[0].name = data.content
         })
         .catch(err => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     },
     changeColor(resultsList) {
       resultsList.map((item, index) => {
         // console.log('item', item)
         if (this.keyWords && this.keyWords.length > 0) {
           // 匹配关键字正则
-          const replaceReg = new RegExp(this.keyWords, "g");
-          console.log(replaceReg);
+          const replaceReg = new RegExp(this.keyWords, 'g')
+          console.log(replaceReg)
           // 高亮替换v-html值
           const replaceString =
-            '<span class="search-text">' + this.keyWords + "</span>";
+            '<span class="search-text">' + this.keyWords + '</span>'
           // '<span >' + this.keyWords + '</span>'
-          resultsList[index].name = item.name.replace(
-            replaceReg,
-            replaceString
-          );
+          resultsList[index].name = item.name.replace(replaceReg, replaceString)
         }
-      });
-      this.results = [];
-      this.results = resultsList;
+      })
+      this.results = []
+      this.results = resultsList
     },
     // 查看所有数据
     find() {
-      console.log(this.$route.query.id);
-      const id = this.$route.query.id;
-      let type = this.$route.query.type;
+      console.log(this.$route.query.id)
+      const id = this.$route.query.id
+      let type = this.$route.query.type
       this.axios.defaults.headers = {
-        "Content-type": "application/x-www-form-urlencoded"
-      };
+        'Content-type': 'application/x-www-form-urlencoded'
+      }
       this.axios
         .post(
-          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleDetail",
+          'http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleDetail',
           qs.stringify({
             type: type,
             articleId: id
           })
         )
         .then(res => {
-          console.log(res.data.data);
-          const data = res.data.data;
-          this.title = data.title;
-          this.resultsList[0].name = data.content;
-          this.tableData = data.eventList.slice(0, 5);
-          this.someList = data.contentSummary;
-          console.log(this.tableData);
+          console.log(res.data.data)
+          const data = res.data.data
+          this.title = data.title
+          this.resultsList[0].name = data.content
+          this.tableData = data.eventList.slice(0, 5)
+          this.someList = data.contentSummary
+          console.log(this.tableData)
         })
         .catch(err => {
-          this.$message.error(error);
-        });
+          this.$message.error(error)
+        })
     },
     findtext() {
-      console.log(this.$route.query.id);
-      const id = this.$route.query.id;
-      let type = this.$route.query.type;
+      console.log(this.$route.query.id)
+      const id = this.$route.query.id
+      let type = this.$route.query.type
       this.axios.defaults.headers = {
-        "Content-type": "application/x-www-form-urlencoded"
-      };
+        'Content-type': 'application/x-www-form-urlencoded'
+      }
       this.axios
         .post(
-          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getSimilarArticleTitle",
+          'http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getSimilarArticleTitle',
           qs.stringify({
             articleId: id
           })
         )
         .then(res => {
-          const data = res.data.data;
-          console.log(data);
+          const data = res.data.data
+          console.log(data)
           data.forEach(item => {
-            if (item.translated_title == "") {
-              data.shift(item);
+            if (item.translated_title == '') {
+              data.shift(item)
             }
-          });
-          console.log(data);
-          this.textData = data;
-          console.log(this.textData);
+          })
+          console.log(data)
+          this.textData = data
+          console.log(this.textData)
           // console.log(this.tableData)
         })
         .catch(err => {
-          this.$message.error(error);
-        });
+          this.$message.error(error)
+        })
     },
     back() {
-      this.$router.go(-1);
+      this.$router.go(-1)
     }
   }
-};
+}
 </script>
 
 <style>
@@ -231,8 +219,6 @@ export default {
 }
 .active {
   background-color: antiquewhite;
-  /* background-color: #1e82d2; */
-  /* font-weight: bolder; */
 }
 .title {
   color: #333;
@@ -242,10 +228,17 @@ export default {
   line-height: 1.29;
   font-weight: 700;
 }
-
+/* 标题 */
 .header {
-  font-size: 26px;
+  font-size: 27px;
   text-align: center;
+}
+.content-left {
+  text-indent: 2em;
+  letter-spacing: 1px;
+  font-size: 16px;
+  font-family: 'Microsoft YaHei';
+  line-height: 1.9;
 }
 .header2 {
   margin-top: 10px;
@@ -258,13 +251,7 @@ export default {
   border-left: 1px solid #e1e1e1;
   height: 600px;
 }
-.content-left {
-  text-indent: 2em;
-  letter-spacing: 1px;
-  font-size: 16px;
-  font-family: Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-}
+
 .right td {
   border-bottom: 1px solid #f3f3f3;
 }

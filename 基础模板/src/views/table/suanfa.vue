@@ -20,10 +20,6 @@
       </el-col>
       <el-col :span="8" offset="1">
         <div class="right">
-          <!-- <div class="title">摘要</div>
-          <div class="header2" v-for="(item, index) in someList" :key="index">
-            {{ item }}
-          </div> -->
           <div class="title">相关事件</div>
           <table>
             <tr
@@ -56,69 +52,68 @@
 </template>
 
 <script>
-import qs from "qs";
+import qs from 'qs'
 
 export default {
-  name: "Syspara",
+  name: 'Syspara',
   data() {
     return {
-      keyWords: "首尔",
+      keyWords: '',
       results: [],
       tableData: [],
       textData: [],
       isActive: -1,
-      resultsList: [{ name: "" }],
-      title: "",
+      resultsList: [{ name: '' }],
+      title: '',
       keywordsdetail: [],
-      data1: ""
-    };
+      data1: ''
+    }
   },
   created() {
-    this.find();
-    this.findtext();
+    this.find()
+    this.findtext()
   },
-
   methods: {
     textClick(index, item) {
-      this.isActive = -1;
-      console.log(item.id);
+      this.isActive = -1
+      console.log(item.id)
       // console.log(this.$route.query.id)
-      const id = item.article_id;
-      let type = this.$route.query.type;
+      const id = item.article_id
+      let type = this.$route.query.type
       this.axios.defaults.headers = {
-        "Content-type": "application/x-www-form-urlencoded"
-      };
+        'Content-type': 'application/x-www-form-urlencoded'
+      }
       this.axios
         .post(
-          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleDetail",
+          'http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleDetail',
           qs.stringify({
             type: type,
             articleId: id
           })
         )
         .then(res => {
-          console.log(res.data.data);
-          const data = res.data.data;
-          this.title = data.title;
-          this.resultsList[0].name = data.content;
-          this.tableData = data.eventList.slice(0, 5);
-          console.log(this.tableData);
+          console.log(res.data.data)
+          const data = res.data.data
+          this.title = data.title
+          this.resultsList[0].name = data.content
+          this.tableData = data.eventList.slice(0, 5)
+          console.log(this.tableData)
         })
         .catch(err => {
-          this.$message.error(error);
-        });
+          this.$message.error(error)
+        })
     },
     handleClick(index, item) {
-      this.isActive = index;
+      this.isActive = index
       // console.log(item)
-      let id = this.$route.query.id;
-      let type = this.$route.query.type;
+      let id = this.$route.query.id
+      let type = this.$route.query.type
       this.axios.defaults.headers = {
-        "Content-type": "application/x-www-form-urlencoded"
-      };
+        'Content-type': 'application/x-www-form-urlencoded'
+      }
       this.axios
         .post(
-          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleHighLight",
+          'http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleHighLight',
           qs.stringify({
             eventId: item.algorithm_event_id,
             articleId: id,
@@ -127,104 +122,104 @@ export default {
         )
         .then(res => {
           // console.log(res.data.data)
-          const data = res.data.data;
+          const data = res.data.data
           // console.log(data.keywords)
-          this.keywordsdetail = data.keywords.split(",");
-          console.log(this.keywordsdetail);
-          let arr = this.keywordsdetail;
-          console.log(arr);
-          this.changeColor(this.resultsList);
+          this.keywordsdetail = data.keywords.split(',')
+          console.log(this.keywordsdetail)
+          let arr = this.keywordsdetail
+          console.log(arr)
+          this.changeColor(this.resultsList)
         })
         .catch(err => {
-          console.log(err);
-        });
+          console.log(err)
+        })
       // this.changeColor(arr);
     },
     changeColor(resultsList) {
-      this.resultsList[0].name = this.data1.content;
+      this.resultsList[0].name = this.data1.content
       this.keywordsdetail.map((item, index) => {
-        this.keyWords = item;
+        this.keyWords = item
         resultsList.map((item, index) => {
           // console.log('item', item)
           if (this.keyWords && this.keyWords.length > 0) {
             // 匹配关键字正则
-            let replaceReg = new RegExp(this.keyWords, "g");
+            let replaceReg = new RegExp(this.keyWords, 'g')
             // 高亮替换v-html值
             let replaceString =
-              '<span class="search-text">' + this.keyWords + "</span>";
+              '<span class="search-text">' + this.keyWords + '</span>'
             resultsList[index].name = item.name.replace(
               replaceReg,
               replaceString
-            );
+            )
           }
-        });
-      });
-      this.results = [];
-      this.results = resultsList;
+        })
+      })
+      this.results = []
+      this.results = resultsList
     },
     back() {
-      this.$router.go(-1);
+      this.$router.go(-1)
     },
     // 查看所有数据
     find() {
-      console.log(this.$route.query.id);
-      const id = this.$route.query.id;
-      let type = this.$route.query.type;
+      console.log(this.$route.query.id)
+      const id = this.$route.query.id
+      let type = this.$route.query.type
       this.axios.defaults.headers = {
-        "Content-type": "application/x-www-form-urlencoded"
-      };
+        'Content-type': 'application/x-www-form-urlencoded'
+      }
       this.axios
         .post(
-          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleDetail",
+          'http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleDetail',
           qs.stringify({
             type: type,
             articleId: id
           })
         )
         .then(res => {
-          console.log(res.data.data);
-          const data = res.data.data;
-          this.title = data.title;
-          this.data1 = data;
-          this.resultsList[0].name = data.content;
-          this.tableData = data.eventList.slice(0, 5);
+          console.log(res.data.data)
+          const data = res.data.data
+          this.title = data.title
+          this.data1 = data
+          this.resultsList[0].name = data.content
+          this.tableData = data.eventList.slice(0, 5)
         })
         .catch(err => {
-          this.$message.error(error);
-        });
+          this.$message.error(error)
+        })
     },
     findtext() {
-      console.log(this.$route.query.id);
-      const id = this.$route.query.id;
-      let type = this.$route.query.type;
+      console.log(this.$route.query.id)
+      const id = this.$route.query.id
+      let type = this.$route.query.type
       this.axios.defaults.headers = {
-        "Content-type": "application/x-www-form-urlencoded"
-      };
+        'Content-type': 'application/x-www-form-urlencoded'
+      }
       this.axios
         .post(
-          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getSimilarArticleTitle",
+          'http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getSimilarArticleTitle',
           qs.stringify({
             articleId: id
           })
         )
         .then(res => {
-          console.log(res.data.data);
-          const data = res.data.data;
+          console.log(res.data.data)
+          const data = res.data.data
           data.forEach(item => {
-            if (item.translated_title == "") {
-              data.shift(item);
+            if (item.translated_title == '') {
+              data.shift(item)
             }
-          });
-          this.textData = data;
-          console.log(this.textData);
+          })
+          this.textData = data
+          console.log(this.textData)
           // console.log(this.tableData)
         })
         .catch(err => {
-          this.$message.error(error);
-        });
+          this.$message.error(error)
+        })
     }
   }
-};
+}
 </script>
 
 <style>

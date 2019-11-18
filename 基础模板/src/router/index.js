@@ -1,48 +1,48 @@
-import Vue from "vue";
-import Router from "vue-router";
+import Vue from 'vue'
+import Router from 'vue-router'
 
-Vue.use(Router);
+Vue.use(Router)
 
 /* Layout */
-import Layout from "@/layout";
+import Layout from '@/layout'
 
 export const constantRoutes = [
   {
-    path: "/login",
-    component: () => import("@/views/login/index"),
+    path: '/login',
+    component: () => import('@/views/login/index'),
     hidden: true
   },
   {
-    path: "/404",
-    component: () => import("@/views/404"),
+    path: '/404',
+    component: () => import('@/views/404'),
     hidden: true
   },
   {
-    path: "/",
+    path: '/',
     component: Layout,
-    redirect: "/dashboard",
+    redirect: '/dashboard',
     children: [
       {
-        path: "dashboard",
-        name: "Dashboard",
-        component: () => import("@/views/dashboard/index"),
-        meta: { title: "首页", icon: "dashboard" }
+        path: 'dashboard',
+        name: 'Dashboard',
+        component: () => import('@/views/dashboard/index'),
+        meta: { title: '首页', icon: 'dashboard' }
       }
     ]
   },
 
   {
-    path: "/example",
+    path: '/example',
     component: Layout,
-    redirect: "/example/table",
+    redirect: '/example/table',
     // name: "Example",
     // meta: { title: "事件识别", icon: "example" },
     children: [
       {
-        path: "table",
-        name: "Table",
-        component: () => import("@/views/table/index"),
-        meta: { title: "事件识别", icon: "table" }
+        path: 'table',
+        name: 'Table',
+        component: () => import('@/views/table/index'),
+        meta: { title: '事件识别', icon: 'table' }
         // meta: { title: "事件识别" }
       }
       // {
@@ -54,30 +54,30 @@ export const constantRoutes = [
     ]
   },
   {
-    path: "details",
+    path: '/details',
     component: Layout,
     hidden: true,
-    redirect: "/example/table",
+    redirect: '/example/table',
     children: [
       {
-        path: "details",
-        name: "details",
-        component: () => import("@/views/table/detail"),
-        meta: { title: "详情" }
+        path: 'details',
+        name: 'details',
+        component: () => import('@/views/table/detail'),
+        meta: { title: '详情' }
       }
     ]
   },
   {
-    path: "suanfa",
+    path: '/suanfa',
     component: Layout,
     hidden: true,
-    redirect: "/example/table",
+    redirect: '/example/table',
     children: [
       {
-        path: "suanfa",
-        name: "suanfa",
-        component: () => import("@/views/table/suanfa"),
-        meta: { title: "详情" }
+        path: 'suanfa',
+        name: 'suanfa',
+        component: () => import('@/views/table/suanfa'),
+        meta: { title: '详情' }
         // meta: { title: 'Table', icon: 'table' }
       }
     ]
@@ -96,36 +96,36 @@ export const constantRoutes = [
   // },
 
   {
-    path: "/nested",
+    path: '/nested',
     component: Layout,
-    redirect: "/nested/menu1",
-    name: "Nested",
+    redirect: '/nested/menu1',
+    name: 'Nested',
     meta: {
-      title: "事件预测",
-      icon: "nested"
+      title: '事件预测',
+      icon: 'nested'
     },
     children: [
       {
-        path: "menu1",
-        component: () => import("@/views/nested/menu1/index"), // Parent router-view
-        name: "Menu1",
-        meta: { title: "训练模型" }
+        path: 'menu1',
+        component: () => import('@/views/nested/menu1/index'), // Parent router-view
+        name: 'Menu1',
+        meta: { title: '训练模型' }
       },
       {
-        path: "creates",
-        name: "creates",
-        component: () => import("@/views/nested/menu1/create")
+        path: 'creates',
+        name: 'creates',
+        component: () => import('@/views/nested/menu1/create')
         // meta: { title: 'Table', icon: 'table' }
       },
       {
-        path: "menu2",
-        component: () => import("@/views/nested/menu2/index"),
-        meta: { title: "事件预测" }
+        path: 'menu2',
+        component: () => import('@/views/nested/menu2/index'),
+        meta: { title: '事件预测' }
       },
       {
-        path: "newEvent",
-        name: "NewEvent",
-        component: () => import("@/views/nested/menu2/newEvent")
+        path: 'newEvent',
+        name: 'NewEvent',
+        component: () => import('@/views/nested/menu2/newEvent')
       }
     ]
   },
@@ -142,22 +142,22 @@ export const constantRoutes = [
   // },
 
   // 404 page must be placed at the end !!!
-  { path: "*", redirect: "/404", hidden: true }
-];
+  { path: '*', redirect: '/404', hidden: true }
+]
 
 const createRouter = () =>
   new Router({
     // mode: 'history', // require service support
     scrollBehavior: () => ({ y: 0 }),
     routes: constantRoutes
-  });
+  })
 
-const router = createRouter();
+const router = createRouter()
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
-  const newRouter = createRouter();
-  router.matcher = newRouter.matcher; // reset router
+  const newRouter = createRouter()
+  router.matcher = newRouter.matcher // reset router
 }
 
-export default router;
+export default router

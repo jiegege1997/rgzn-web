@@ -4,32 +4,28 @@
     <el-col :span="6" style="margin-top: 20px;margin-bottom:20px;">
       <el-input v-model="findData" placeholder="请输入表单标题" size="mini">
         <template slot="append">
-          <el-button @click="search1">
+          <el-button @click="handleSearch">
             搜索
           </el-button>
         </template>
       </el-input>
     </el-col>
+    <!-- 按钮组 -->
     <el-col
-      :span="4"
+      :span="6"
       style="margin-top: 20px;margin-bottom:20px; margin-left:20px;"
     >
-      <el-button
-        size="mini"
-        @click="find1"
-        type="value"
-        :class="isActive == 1 ? 'active' : ''"
-      >
+      <el-button size="mini" @click="find1" :class="type == 1 ? 'active' : ''">
         方式一
       </el-button>
-      <el-button
-        size="mini"
-        @click="find2"
-        :class="isActive == 2 ? 'active' : ''"
-      >
+      <el-button size="mini" @click="find2" :class="type == 2 ? 'active' : ''">
         方式二
       </el-button>
+      <el-button size="mini" @click="find3" :class="type == 3 ? 'active' : ''">
+        方式三
+      </el-button>
     </el-col>
+    <!-- 表格 -->
     <el-table
       :data="tableData.slice((currpage - 1) * pagesize, currpage * pagesize)"
       style="width: 100%"
@@ -59,31 +55,20 @@
           <span>{{ row.source }}</span>
         </template>
       </el-table-column>
-      <!-- <el-table-column label="文本日期"
-                       prop="remark"
-                       width="160%"
-                       sortable>
-        <template slot-scope="{row, }">
-          <span>{{ row.pub_time }}</span>
-        </template>
-      </el-table-column> -->
       <el-table-column label="爬取日期" prop="remark" width="100%">
         <template slot-scope="{ row }">
           <span>{{ row.spider_time }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" text-align="center" width="86%">
-        <template slot-scope="{ row, $index }">
-          <el-button
-            v-if="!showBtn[$index]"
-            size="mini"
-            type="primary"
-            @click="handleEdit(row)"
+        <template slot-scope="{ row }">
+          <el-button size="mini" type="primary" @click="handleEdit(row)"
             >详情</el-button
           >
         </template>
       </el-table-column>
     </el-table>
+    <!-- 分页 -->
     <el-pagination
       background
       style="float:right"
@@ -98,161 +83,112 @@
 </template>
 
 <script>
-// import { getList } from '@/api/table'
-import qs from "qs";
+import qs from 'qs'
 
 export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: "success",
-        draft: "gray",
-        deleted: "danger"
-      };
-      return statusMap[status];
+        published: 'success',
+        draft: 'gray',
+        deleted: 'danger'
+      }
+      return statusMap[status]
     }
   },
   data() {
     return {
       tableData: [],
       dialogFormVisible: false,
-      search: "",
-      findData: "",
-      isActive: "1",
+      search: '',
+      findData: '',
       showEdit: [], // 显示编辑框
       showBtn: [],
       pagesize: 10,
       currpage: 1,
-      value: "success",
-      type: "1",
-      length: ""
-    };
+      value: 'success',
+      type: this.$store.state.table.type || '1',
+      length: ''
+    }
   },
   created() {
-    this.find();
+    this.find()
   },
   methods: {
-    search1() {
-      console.log(this.findData);
-      this.axios.defaults.headers = {
-        "Content-type": "application/x-www-form-urlencoded"
-      };
-      this.axios
-        .post(
-          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleList",
-          qs.stringify({
-            title: this.findData,
-            type: "1",
-            currPage: "1",
-            pageSize: this.currpage * this.pagesize
-          })
-        )
-        .then(res => {
-          console.log(res.data.data.count);
-          // console.log(res.data.data)
-          // this.length = res.data.data.count
-          this.tableData = res.data.data.articleList;
-        })
-        .catch(err => {
-          console.log(err);
-        });
+    handleSearch() {
+      // console.log(this.findData)
+      this.find()
     },
     handleEdit(item) {
       // console.log(item)
-      if (this.type == "1") {
+      if (this.type == '1') {
         this.$router.push({
-          name: "details",
+          name: 'details',
           query: {
             id: item.article_id,
             type: this.type
           }
-        });
+        })
       } else {
         this.$router.push({
-          name: "suanfa",
+          name: 'suanfa',
           query: {
             id: item.article_id,
             type: this.type
           }
-        });
+        })
       }
     },
     // 查看所有数据
     find() {
+      const type = this.$store.state.table.type
       this.axios.defaults.headers = {
-        "Content-type": "application/x-www-form-urlencoded"
-      };
+        'Content-type': 'application/x-www-form-urlencoded'
+      }
       this.axios
         .post(
-          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleList",
+          'http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleList',
           qs.stringify({
-            title: "",
-            type: "1",
-            currPage: "1",
+            title: this.findData,
+            type: type,
+            currPage: '1',
             pageSize: this.pagesize * this.currpage
           })
         )
         .then(res => {
-          console.log(res.data.data);
-          this.length = res.data.data.count;
-          this.tableData = res.data.data.articleList;
+          console.log(res.data.data)
+          this.length = res.data.data.count
+          this.tableData = res.data.data.articleList
         })
         .catch(err => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     },
     find1() {
-      this.isActive = "1";
-      this.type = "1";
-      this.axios
-        .post(
-          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleList",
-          qs.stringify({
-            title: "",
-            type: "1",
-            currPage: 1,
-            pageSize: 10
-          })
-        )
-        .then(res => {
-          console.log(res.data.data);
-          this.tableData = res.data.data.articleList;
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      this.type = '1'
+      this.$store.dispatch('changeType', this.type)
+      this.find()
     },
     find2() {
-      this.isActive = "2";
-      this.type = "2";
-      this.axios
-        .post(
-          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleList",
-          qs.stringify({
-            title: "",
-            type: "2",
-            currPage: 1,
-            pageSize: 10
-          })
-        )
-        .then(res => {
-          console.log(res.data.data);
-          this.tableData = res.data.data.articleList;
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      this.type = '2'
+      this.$store.dispatch('changeType', this.type)
+      this.find()
+    },
+    find3() {
+      this.type = '3'
+      this.$store.dispatch('changeType', this.type)
+      this.find()
     },
     handleCurrentChange(cpage) {
-      this.currpage = cpage;
-      this.find();
+      this.currpage = cpage
+      this.find()
     },
     handleSizeChange(psize) {
-      this.pagesize = psize;
-      this.find();
+      this.pagesize = psize
+      this.find()
     }
   }
-};
+}
 </script>
 
 <style scoped>
