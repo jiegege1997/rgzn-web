@@ -1,78 +1,42 @@
 <template>
-  <div class="app-container">
-    <el-input v-model="filterText" placeholder="Filter keyword" style="margin-bottom:30px;" />
-
-    <el-tree
-      ref="tree2"
-      :data="data2"
-      :props="defaultProps"
-      :filter-node-method="filterNode"
-      class="filter-tree"
-      default-expand-all
-    />
-
+  <div>
+    <headerTop @increase="handleChange" style="margin-left:10px;" />
+    <tableTop v-if="value == '1'" />
+    <contentLeft v-if="value == '2'" />
+    <echartsTop v-if="value == '2'" style="margin-left:20px;" ref="child" />
   </div>
 </template>
 
 <script>
+import headerTop from "@/views/tree/headerTop";
+import tableTop from "@/views/tree/tableTop";
+import contentLeft from "@/views/tree/contentLeft";
+import echartsTop from "@/views/tree/echarts";
 export default {
-
+  components: {
+    headerTop,
+    tableTop,
+    contentLeft,
+    echartsTop
+  },
   data() {
     return {
-      filterText: '',
-      data2: [{
-        id: 1,
-        label: 'Level one 1',
-        children: [{
-          id: 4,
-          label: 'Level two 1-1',
-          children: [{
-            id: 9,
-            label: 'Level three 1-1-1'
-          }, {
-            id: 10,
-            label: 'Level three 1-1-2'
-          }]
-        }]
-      }, {
-        id: 2,
-        label: 'Level one 2',
-        children: [{
-          id: 5,
-          label: 'Level two 2-1'
-        }, {
-          id: 6,
-          label: 'Level two 2-2'
-        }]
-      }, {
-        id: 3,
-        label: 'Level one 3',
-        children: [{
-          id: 7,
-          label: 'Level two 3-1'
-        }, {
-          id: 8,
-          label: 'Level two 3-2'
-        }]
-      }],
-      defaultProps: {
-        children: 'children',
-        label: 'label'
+      value: "1"
+    };
+  },
+  methods: {
+    handleChange: function(value) {
+      this.value = value;
+      if ((value = "2")) {
+        this.$nextTick(function() {
+          console.log(this.$refs.child);
+          this.$refs.child.getEchartData1();
+        });
       }
     }
   },
-  watch: {
-    filterText(val) {
-      this.$refs.tree2.filter(val)
-    }
-  },
-
-  methods: {
-    filterNode(value, data) {
-      if (!value) return true
-      return data.label.indexOf(value) !== -1
-    }
-  }
-}
+  mounted() {}
+};
 </script>
 
+<style lang="scss" scoped></style>
