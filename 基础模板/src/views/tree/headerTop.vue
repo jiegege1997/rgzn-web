@@ -127,7 +127,7 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="7">
+        <el-col :span="6">
           事件状态:
           <el-checkbox label="正在发生"></el-checkbox>
           <el-checkbox label="已发生"></el-checkbox>
