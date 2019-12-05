@@ -4,37 +4,6 @@
       <h4 class="handletitle">新增事件</h4>
       <div style="margin-top:30px">
         <el-form ref="form" :model="form" :label-position="labelPosition">
-          <!-- <el-form-item label="数据表名">
-            <el-col :span="20">
-              <el-input v-model="form.name"></el-input>
-            </el-col>
-          </el-form-item> -->
-          <!-- <el-form-item label="同一天的事件列表">
-            <el-row>
-              <el-col :span="11">
-                <el-checkbox-group v-model="form.type">
-                  <el-checkbox label="21297"
-                               name="type"></el-checkbox>
-                  <el-checkbox label="21682"
-                               name="type"></el-checkbox>
-                  <el-checkbox label="21253"
-                               name="type"></el-checkbox>
-                  <el-checkbox label="21319"
-                               name="type"></el-checkbox>
-                  <el-checkbox label="21451"
-                               name="type"></el-checkbox>
-                  <el-checkbox label="21132"
-                               name="type"></el-checkbox>
-                </el-checkbox-group>
-              </el-col>
-              <el-tooltip class="item"
-                          effect="dark"
-                          content="同一天出现多个事件 选择需要的事件即可"
-                          placement="bottom-end">
-                <i class="el-icon-question"></i>
-              </el-tooltip>
-            </el-row>
-          </el-form-item> -->
           <h4 class="handletitle"></h4>
           <div style="margin-top:30px">
             <el-form-item label="主语:">
@@ -101,15 +70,7 @@ export default {
         Zys: "",
         Wys: "",
         Bys: "",
-        date2: "",
-        delivery: false,
         type: [],
-        resource: "",
-        desc: "",
-        mintime: "",
-        maxtime: "",
-        mindimension: "",
-        maxdimension: "",
         neuron: "",
         epoch: ""
       }

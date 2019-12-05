@@ -16,7 +16,8 @@ import { mount } from "@vue/test-utils";
 export default {
   name: "AppMain",
   created() {
-    // console.log("33", this.$route.meta.keepAlive);
+    // this.axios.defaults.headers.post["Content-Type"] =
+    //   "application/x-www-form-urlencoded";
   },
   computed: {
     key() {

@@ -60,9 +60,10 @@
             <el-button
               type="warning"
               @click="forecastBtn()"
+              :loading="loadingbut"
               style="margin-top:20px;margin-left:25px"
             >
-              事件预测
+              {{ loadingtext }}
             </el-button>
           </el-col>
         </el-row>
@@ -99,6 +100,8 @@ import qs from "qs";
 export default {
   data() {
     return {
+      loadingbut: false,
+      loadingtext: "事件预测",
       radio: "",
       currentRow: "",
       newDay: "",
@@ -111,23 +114,7 @@ export default {
         day: [{ required: true, message: "请输入预测天数", trigger: "blur" }]
       },
       dialogTableVisible: false,
-      tableData: [
-        {
-          name: "模型一",
-          day: "5",
-          dates: "2019-11-8"
-        },
-        {
-          name: "模型二",
-          day: "3",
-          dates: "2019-11-11"
-        },
-        {
-          name: "模型三",
-          day: "7",
-          dates: "2019-7-10"
-        }
-      ],
+      tableData: [],
       tableData2: [
         {
           index: "1",
@@ -155,7 +142,14 @@ export default {
       this.dialogTableVisible = true;
     },
     forecastBtn() {
-      console.log(this.currentRow);
+      this.loadingbut = true;
+      this.loadingtext = "预测中";
+      this.$message({
+        showClose: true,
+        message: "预测时间较久,请耐心等待",
+        type: "warning",
+        duration: "0"
+      });
       let arr = this.currentRow;
       this.axios.defaults.headers = {
         "Content-type": "application/x-www-form-urlencoded"

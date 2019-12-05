@@ -151,9 +151,6 @@ export default {
     // 查看所有数据
     find() {
       const type = this.$store.state.table.type;
-      this.axios.defaults.headers = {
-        "Content-type": "application/x-www-form-urlencoded"
-      };
       this.axios
         .post(
           "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleList",

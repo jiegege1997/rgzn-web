@@ -79,9 +79,9 @@ export default {
   },
   methods: {
     getData() {
-      this.axios.defaults.headers = {
-        "Content-type": "application/x-www-form-urlencoded"
-      };
+      // this.axios.defaults.headers = {
+      //   "Content-type": "application/x-www-form-urlencoded"
+      // };
       this.axios
         .post(
           "http://192.168.3.63:8080/jdqd/action/JDQD/biz/eventcurd/queryTableTeventalls"

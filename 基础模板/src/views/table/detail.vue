@@ -78,9 +78,6 @@ export default {
       // console.log(this.$route.query.id)
       const id = item.article_id;
       let type = this.$route.query.type;
-      this.axios.defaults.headers = {
-        "Content-type": "application/x-www-form-urlencoded"
-      };
       this.axios
         .post(
           "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleDetail",
@@ -107,9 +104,6 @@ export default {
       this.isActive = index;
       let id = this.$route.query.id;
       let type = this.$route.query.type;
-      this.axios.defaults.headers = {
-        "Content-type": "application/x-www-form-urlencoded"
-      };
       this.axios
         .post(
           "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleHighLight",
@@ -153,9 +147,6 @@ export default {
       console.log(this.$route.query.id);
       const id = this.$route.query.id;
       let type = this.$route.query.type;
-      this.axios.defaults.headers = {
-        "Content-type": "application/x-www-form-urlencoded"
-      };
       this.axios
         .post(
           "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleDetail",
@@ -181,9 +172,6 @@ export default {
       console.log(this.$route.query.id);
       const id = this.$route.query.id;
       let type = this.$route.query.type;
-      this.axios.defaults.headers = {
-        "Content-type": "application/x-www-form-urlencoded"
-      };
       this.axios
         .post(
           "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getSimilarArticleTitle",

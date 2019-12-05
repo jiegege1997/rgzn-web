@@ -99,8 +99,13 @@
       </div>
     </div>
     <div class="btns">
-      <el-button type="success" @click="onSubmit" size="small">
-        立即创建
+      <el-button
+        type="success"
+        @click="onSubmit"
+        size="small"
+        :loading="loadingbut"
+      >
+        {{ loadingtext }}
       </el-button>
       <el-button @click="cancel" class="btns-cancel" size="small">
         取消
@@ -115,44 +120,39 @@ import qs from "qs";
 export default {
   data() {
     return {
+      loadingbut: false,
+      loadingtext: "立即创建",
       labelPosition: "left",
       form: {
         name: "",
-        region: "",
         delivery: false,
         type: [],
-        resource: "",
-        desc: "",
-        neuron: "",
-        epoch: "",
-        dr_min: "",
-        dr_max: "",
-        delay_min_day: "",
-        delay_max_day: "",
-        neure_num: "",
-        days: "",
-        train_batch_no: ""
+        model_id: "", //模型id
+        tables_name: "", //训练表名
+        model_name: "", //模型名称
+        dr_min: "", //降维最小维度
+        dr_max: "", //降维最大维度
+        delay_min_day: "", //滞后最小天数
+        delay_max_day: "", //滞后最大天数
+        neure_num: "", //神经元个数
+        train_batch_no: "", //网络数据个数
+        days: "", //预测天数
+        epoch: "" //训练次数
       }
     };
   },
   methods: {
     onSubmit() {
-      // let obj = {
-      //   tables_name: this.form.tables_name,
-      //   model_name: 10,
-      //   dr_min: this.form.dr_min,
-      //   dr_max: this.form.dr_max,
-      //   delay_min_day: this.form.delay_min_day,
-      //   delay_max_day: this.form.delay_max_day,
-      //   neure_num: this.form.neure_num, //神经元个数
-      //   train_batch_no: this.form.train_batch_no, //网络数据个数        //
-      //   epoch: this.form.epoch, //训练次数
-      //   days: this.form.days //预测天数
+      this.loadingbut = true;
+      this.loadingtext = "创建中";
+      this.$message({
+        showClose: true,
+        message: "创建时间较久,请耐心等待",
+        type: "warning"
+      });
+      // this.axios.defaults.headers = {
+      //   "Content-type": "application/x-www-form-urlencoded"
       // };
-      // console.log(obj);
-      this.axios.defaults.headers = {
-        "Content-type": "application/x-www-form-urlencoded"
-      };
       this.axios
         .post(
           "http://192.168.3.139:8080/jdqd/action/JDQD/biz/modeltrain/addModelInfo",
@@ -163,15 +163,15 @@ export default {
             dr_max: this.form.dr_max,
             delay_min_day: this.form.delay_min_day,
             delay_max_day: this.form.delay_max_day,
-            neure_num: this.form.neure_num, //神经元个数
-            train_batch_no: this.form.train_batch_no, //网络数据个数        //
-            epoch: this.form.epoch, //训练次数
-            days: this.form.days //预测天数
+            neure_num: this.form.neure_num,
+            train_batch_no: this.form.train_batch_no,
+            epoch: this.form.epoch,
+            days: this.form.days
           })
         )
         .then(res => {
           console.log(res.data.data);
-          this.tableData = res.data.data.articleList;
+          this.$router.go(-1);
         })
         .catch(err => {
           console.log(err);
@@ -208,7 +208,7 @@ export default {
 }
 .btns {
   position: absolute;
-  margin-top: -30px;
+  margin-top: 30px;
   margin-left: 35%;
   width: 15%;
 }
