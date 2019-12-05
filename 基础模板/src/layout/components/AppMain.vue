@@ -1,20 +1,29 @@
 <template>
   <section class="app-main">
-    <transition name="fade-transform" mode="out-in">
-      <router-view :key="key" />
-    </transition>
+    <!-- <transition name="fade-transform" mode="out-in"> -->
+    <!-- <div> -->
+    <keep-alive>
+      <router-view :key="key" v-if="this.$route.meta.keepAlive" />
+    </keep-alive>
+    <router-view :key="key" v-if="!this.$route.meta.keepAlive" />
+
+    <!-- </transition> -->
   </section>
 </template>
 
 <script>
+import { mount } from "@vue/test-utils";
 export default {
-  name: 'AppMain',
+  name: "AppMain",
+  created() {
+    // console.log("33", this.$route.meta.keepAlive);
+  },
   computed: {
     key() {
-      return this.$route.path
+      return this.$route.path;
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -25,7 +34,7 @@ export default {
   position: relative;
   overflow: hidden;
 }
-.fixed-header+.app-main {
+.fixed-header + .app-main {
   padding-top: 50px;
 }
 </style>

@@ -40,7 +40,12 @@ export const constantRoutes = [
         path: "table",
         name: "Table",
         component: () => import("@/views/table/index"),
-        meta: { title: "事件识别", icon: "table" }
+        meta: {
+          title: "事件识别",
+          icon: "table",
+          keepAlive: true,
+          ifDoFresh: false
+        }
       }
     ]
   },
@@ -70,6 +75,48 @@ export const constantRoutes = [
         name: "suanfa",
         component: () => import("@/views/table/suanfa"),
         meta: { title: "详情" }
+      }
+    ]
+  },
+  // 事件管理
+  {
+    path: "/manage",
+    component: Layout,
+    redirect: "/example/manage",
+    children: [
+      {
+        path: "manage",
+        name: "Manage",
+        component: () => import("@/views/manage/index"),
+        meta: { title: "事件管理", icon: "form" }
+      }
+    ]
+  },
+  {
+    path: "/addevent",
+    component: Layout,
+    hidden: true,
+    redirect: "/example/manage",
+    children: [
+      {
+        path: "addevent",
+        name: "addevent",
+        component: () => import("@/views/manage/create"),
+        meta: { title: "新增事件" }
+      }
+    ]
+  },
+  {
+    path: "/detailevent",
+    component: Layout,
+    hidden: true,
+    redirect: "/example/manage",
+    children: [
+      {
+        path: "detailevent",
+        name: "detailevent",
+        component: () => import("@/views/manage/edit"),
+        meta: { title: "事件详情" }
       }
     ]
   },

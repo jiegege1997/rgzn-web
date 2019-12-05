@@ -59,9 +59,9 @@
       </el-table-column>
       <el-table-column label="操作" text-align="center" width="86%">
         <template slot-scope="{ row }">
-          <el-button size="mini" type="primary" @click="handleEdit(row)"
-            >详情</el-button
-          >
+          <el-button size="mini" type="primary" @click="handleEdit(row)">
+            详情
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -81,18 +81,16 @@
 
 <script>
 import qs from "qs";
-// import { getTable } from '@/api/getTable'
 
 export default {
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: "success",
-        draft: "gray",
-        deleted: "danger"
-      };
-      return statusMap[status];
+  beforeRouteEnter(to, from, next) {
+    if (from.name != "details" && from.name != "suanfa") {
+      {
+        to.meta.ifDoFresh = true;
+      }
     }
+    console.log(from);
+    next();
   },
   data() {
     return {
@@ -111,9 +109,18 @@ export default {
   },
   created() {
     this.find();
-    console.log(document.documentElement.offsetWidth);
-    console.log(document.body.offsetWidth);
-    console.log(document.documentElement.clientWidth);
+  },
+  activated() {
+    if (this.$route.meta.ifDoFresh) {
+      this.$route.meta.ifDoFresh = false;
+      // this.$router.go(0);
+      this.$route.meta.keepAlive = false;
+      this.$nextTick(function() {
+        this.$route.meta.keepAlive = true;
+      });
+      this.find();
+    } else {
+    }
   },
   computed: {},
   methods: {
@@ -160,7 +167,7 @@ export default {
         .then(res => {
           console.log(res.data.data);
           this.length = res.data.data.count;
-          this.tableData = res.data.data.articleList;
+          this.tableData = [...res.data.data.articleList];
         })
         .catch(err => {
           console.log(err);

@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-    <!-- 搜索框 -->
     <el-col :span="6" style="margin-top: 20px;margin-bottom:20px;">
       <el-button @click="handleCreate()" type="primary">
         创建模型
@@ -15,30 +14,33 @@
       border
     >
       <el-table-column label="#" type="index" />
-      <el-table-column label="模型名称" prop="translated_title" width="90%">
+      <el-table-column label="模型名称" prop="translated_title">
         <template slot-scope="{ row }">
-          <span>{{ row.translated_title }}</span>
+          <span>{{ row.model_name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="预测天数" prop="event">
         <template slot-scope="{ row }">
-          <span>{{ row.event }}</span>
+          <span>{{ row.days }}</span>
         </template>
       </el-table-column>
       <el-table-column label="状态" prop="url">
-        <template slot-scope="{ row, $index }">
-          <span v-if="!showEdit[$index]">{{ row.url }}</span>
+        <template slot-scope="{ row }">
+          <span>{{ row.status }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="80%" text-align="center">
+      <el-table-column label="操作" width="160%" text-align="center">
         <template slot-scope="{ row, $index }">
           <el-button
             v-if="!showBtn[$index]"
             size="mini"
             type="primary"
             @click="handleEdit(row)"
-            >详情</el-button
-          >
+            >详情
+          </el-button>
+          <el-button size="mini" type="danger" @click="handleDelete(row)">
+            删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -85,17 +87,34 @@ export default {
     };
   },
   created() {
-    // this.find()
+    this.getData();
   },
   methods: {
+    //根据模型编号获取模型训练的信息
     handleEdit(item) {
-      // console.log(item)
-      this.$router.push({
-        name: "details",
-        query: {
-          id: item.article_id
-        }
-      });
+      console.log(item);
+      // this.$router.push({
+      //   name: "details",
+      //   query: {
+      //     id: item.article_id
+      //   }
+      // });
+      this.axios.defaults.headers = {
+        "Content-type": "application/x-www-form-urlencoded"
+      };
+      this.axios
+        .post(
+          "http://192.168.3.139:8080/jdqd/action/JDQD/biz/modeltrain/getModelTrainInfoById",
+          qs.stringify({
+            modelId: item.model_id
+          })
+        )
+        .then(res => {
+          console.log(res.data.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     handleCreate() {
       this.$router.push({
@@ -103,23 +122,21 @@ export default {
       });
     },
     // 查看所有数据
-    find() {
+    getData() {
       this.axios.defaults.headers = {
         "Content-type": "application/x-www-form-urlencoded"
       };
       this.axios
         .post(
-          "http://192.168.3.81:8080/jdqd/action/JDQD/biz/event/getArticleList",
+          "http://192.168.3.139:8080/jdqd/action/JDQD/biz/modeltrain/getModelTrainInfo",
           qs.stringify({
-            title: "",
-            type: "",
             currPage: 1,
             pageSize: 10
           })
         )
         .then(res => {
           console.log(res.data.data);
-          this.tableData = res.data.data.articleList;
+          this.tableData = [...res.data.data];
         })
         .catch(err => {
           console.log(err);
@@ -130,6 +147,44 @@ export default {
     },
     handleSizeChange(psize) {
       this.pagesize = psize;
+    },
+    handleDelete(data) {
+      console.log(data);
+      this.$confirm("此操作将永久删除该事件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          const id = data.model_id;
+          this.axios.defaults.headers = {
+            "Content-type": "application/x-www-form-urlencoded"
+          };
+          this.axios
+            .post(
+              "http://192.168.3.139:8080/jdqd/action/JDQD/biz/modeltrain/deleteModelInfoById",
+              qs.stringify({
+                modelId: id
+              })
+            )
+            .then(res => {
+              console.log(res);
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+              this.getData();
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
     }
   }
 };

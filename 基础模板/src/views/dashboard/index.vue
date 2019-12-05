@@ -5,7 +5,6 @@
       <el-button @click="bbb" class="dashboard-aaa-aaa"> 事件预测 </el-button>
       <el-button @click="ccc" class="dashboard-aaa-aaa"> 事理图谱 </el-button>
       <el-button @click="ddd" class="dashboard-aaa-aaa"> 人员共现 </el-button>
-      <!-- <div class="dashboard-text">特色应用-人物与事件处理系统</div> -->
     </div>
   </div>
 </template>

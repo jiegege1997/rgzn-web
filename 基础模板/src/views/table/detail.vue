@@ -1,34 +1,33 @@
 <template>
   <div class="app-container">
-    <el-button size="small"
-               type="primary"
-               @click="back">返回</el-button>
+    <el-button size="small" type="primary" @click="back">返回</el-button>
     <div class="header">{{ title }}</div>
     <el-row :gutter="20">
-      <el-col :span="16">
-      </el-col>
+      <el-col :span="16"> </el-col>
     </el-row>
     <el-row :gutter="40">
-      <el-col :span="14"
-              :offset="1">
+      <el-col :span="14" :offset="1">
         <!-- 文章内容 -->
-        <div v-for="(item, index) in resultsList"
-             :key="index"
-             class="content-left"
-             v-html="item.name">
+        <div
+          v-for="(item, index) in resultsList"
+          :key="index"
+          class="content-left"
+          v-html="item.name"
+        >
           {{ item.name }}
         </div>
       </el-col>
-      <el-col :span="8"
-              :offset="1">
+      <el-col :span="8" :offset="1">
         <div class="right">
           <div class="title">相关事件</div>
           <table>
-            <tr v-for="(item, index) in tableData"
-                :key="index"
-                class="tr-top"
-                @click="handleClick(index, item)"
-                :class="isActive == index ? 'active' : ''">
+            <tr
+              v-for="(item, index) in tableData"
+              :key="index"
+              class="tr-top"
+              @click="handleClick(index, item)"
+              :class="isActive == index ? 'active' : ''"
+            >
               <td class="td-left">{{ item.event }}</td>
               <td class="td-right">{{ Number(item.score).toFixed(3) }}</td>
             </tr>
@@ -36,10 +35,12 @@
 
           <div class="title">相关文章</div>
           <table>
-            <tr v-for="(item, index) in textData"
-                :key="index"
-                class="tr-top"
-                @click="textClick(index, item)">
+            <tr
+              v-for="(item, index) in textData"
+              :key="index"
+              class="tr-top"
+              @click="textClick(index, item)"
+            >
               <td>{{ item.translated_title }}</td>
             </tr>
           </table>
@@ -54,7 +55,7 @@ import qs from "qs";
 
 export default {
   name: "Syspara",
-  data () {
+  data() {
     return {
       keyWords: "",
       results: [],
@@ -66,13 +67,13 @@ export default {
       title: ""
     };
   },
-  created () {
+  created() {
     this.find();
     this.findtext();
   },
 
   methods: {
-    textClick (index, item) {
+    textClick(index, item) {
       console.log(item.article_id);
       // console.log(this.$route.query.id)
       const id = item.article_id;
@@ -100,7 +101,7 @@ export default {
           this.$message.error(error);
         });
     },
-    handleClick (index, item) {
+    handleClick(index, item) {
       console.log(this.$route.query.type);
       console.log(index);
       this.isActive = index;
@@ -127,7 +128,7 @@ export default {
           console.log(err);
         });
     },
-    changeColor (resultsList) {
+    changeColor(resultsList) {
       resultsList.map((item, index) => {
         // console.log('item', item)
         if (this.keyWords && this.keyWords.length > 0) {
@@ -148,7 +149,7 @@ export default {
       this.results = resultsList;
     },
     // 查看所有数据
-    find () {
+    find() {
       console.log(this.$route.query.id);
       const id = this.$route.query.id;
       let type = this.$route.query.type;
@@ -176,7 +177,7 @@ export default {
           this.$message.error(error);
         });
     },
-    findtext () {
+    findtext() {
       console.log(this.$route.query.id);
       const id = this.$route.query.id;
       let type = this.$route.query.type;
@@ -204,10 +205,10 @@ export default {
           // console.log(this.tableData)
         })
         .catch(err => {
-          this.$message.error(error);
+          // this.$message.error(err);
         });
     },
-    back () {
+    back() {
       this.$router.go(-1);
     }
   }

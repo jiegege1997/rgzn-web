@@ -1,123 +1,108 @@
 <template>
   <div class="app-container">
-    <div>
-      <div class="left">
-        <h4 class="handletitle">构建数据源</h4>
-        <div style="margin-top:30px">
-          <el-form ref="form"
-                   :model="form"
-                   :label-position="labelPosition">
-            <el-form-item label="数据表名">
-              <el-col :span="20">
-                <el-input v-model="form.name"></el-input>
+    <div class="left">
+      <h4 class="handletitle">构建数据源</h4>
+      <div style="margin-top:30px">
+        <el-form ref="form" :model="form" :label-position="labelPosition">
+          <el-form-item label="数据表名">
+            <el-col :span="20">
+              <el-input v-model="form.tables_name"></el-input>
+            </el-col>
+          </el-form-item>
+          <el-form-item label="同一天的事件列表">
+            <el-row>
+              <el-col :span="11">
+                <el-checkbox-group v-model="form.type">
+                  <el-checkbox label="21297" name="type"></el-checkbox>
+                  <el-checkbox label="21682" name="type"></el-checkbox>
+                  <el-checkbox label="21253" name="type"></el-checkbox>
+                  <el-checkbox label="21319" name="type"></el-checkbox>
+                  <el-checkbox label="21451" name="type"></el-checkbox>
+                  <el-checkbox label="21132" name="type"></el-checkbox>
+                </el-checkbox-group>
+              </el-col>
+              <el-tooltip
+                class="item"
+                effect="dark"
+                content="同一天出现多个事件 选择需要的事件即可"
+                placement="bottom-end"
+              >
+                <i class="el-icon-question"></i>
+              </el-tooltip>
+            </el-row>
+          </el-form-item>
+          <h4 class="handletitle">模型基础信息</h4>
+          <div style="margin-top:30px">
+            <el-form-item label="模型名称:">
+              <el-col :span="9" style="margin-left:12px;">
+                <el-input v-model="form.model_name"></el-input>
               </el-col>
             </el-form-item>
-            <el-form-item label="同一天的事件列表">
-              <el-row>
-                <el-col :span="11">
-                  <el-checkbox-group v-model="form.type">
-                    <el-checkbox label="21297"
-                                 name="type"></el-checkbox>
-                    <el-checkbox label="21682"
-                                 name="type"></el-checkbox>
-                    <el-checkbox label="21253"
-                                 name="type"></el-checkbox>
-                    <el-checkbox label="21319"
-                                 name="type"></el-checkbox>
-                    <el-checkbox label="21451"
-                                 name="type"></el-checkbox>
-                    <el-checkbox label="21132"
-                                 name="type"></el-checkbox>
-                  </el-checkbox-group>
-                </el-col>
-                <el-tooltip class="item"
-                            effect="dark"
-                            content="同一天出现多个事件 选择需要的事件即可"
-                            placement="bottom-end">
-                  <i class="el-icon-question"></i>
-                </el-tooltip>
-              </el-row>
+            <el-form-item label="降维维度:">
+              <el-col :span="4" style="margin-left:13px;">
+                <el-input
+                  v-model="form.dr_min"
+                  placeholder="最小维度"
+                ></el-input>
+              </el-col>
+              <el-col class="line" :span="1">-</el-col>
+              <el-col :span="4">
+                <el-input
+                  v-model="form.dr_max"
+                  placeholder="最大维度"
+                ></el-input>
+              </el-col>
+              <el-col :span="12" style="margin-left:56px;">
+                <el-form-item label="滞后时间:">
+                  <el-col :span="8">
+                    <el-input
+                      v-model="form.delay_min_day"
+                      placeholder="最小天数"
+                    ></el-input>
+                  </el-col>
+                  <el-col class="line" :span="2">-</el-col>
+                  <el-col :span="8">
+                    <el-input
+                      v-model="form.delay_max_day"
+                      placeholder="最大天数"
+                    ></el-input>
+                  </el-col>
+                </el-form-item>
+              </el-col>
             </el-form-item>
-
-            <h4 class="handletitle">模型基础信息</h4>
-            <div style="margin-top:30px">
-              <el-form-item label="模型名称:">
-                <el-col :span="9"
-                        style="margin-left:10px;">
-                  <el-input v-model="form.name"></el-input>
-                </el-col>
-              </el-form-item>
-              <el-form-item label="降维维度:">
-                <el-col :span="4"
-                        style="margin-left:10px;">
-                  <el-input v-model="form.mindimension"
-                            placeholder="最小维度"></el-input>
-                </el-col>
-                <el-col class="line"
-                        :span="1">-</el-col>
-                <el-col :span="4">
-                  <el-input v-model="form.maxdimension"
-                            placeholder="最大维度"></el-input>
-                </el-col>
-                <el-col :span="12"
-                        :offset="1">
-                  <el-form-item label="滞后时间">
-                    <el-col :span="8"
-                            style="margin-left:10px;">
-                      <el-input v-model="form.mintime"
-                                placeholder="最小天数"></el-input>
-                    </el-col>
-                    <el-col class="line"
-                            :span="2">-</el-col>
-                    <el-col :span="8">
-                      <el-input v-model="form.maxtime"
-                                placeholder="最大天数"></el-input>
-                    </el-col>
-                  </el-form-item>
-                </el-col>
-              </el-form-item>
-              <el-form-item label="神经元个数:">
-                <el-col :span="9">
-                  <el-input v-model="form.neuron"></el-input>
-                </el-col>
-                <el-col :span="12"
-                        :offset="1">
-                  <el-form-item label="网络数据个数:">
-                    <el-col :span="17">
-                      <el-input v-model="form.name"></el-input>
-                    </el-col>
-                  </el-form-item>
-                </el-col>
-              </el-form-item>
-              <el-form-item label="预测天数:">
-                <el-col :span="9"
-                        style="margin-left:10px">
-                  <el-input v-model="form.name"></el-input>
-                </el-col>
-                <el-col :span="12"
-                        :offset="1">
-                  <el-form-item label="训练次数">
-                    <el-col :span="18"
-                            style="margin-left:10px">
-                      <el-input v-model="form.epoch"></el-input>
-                    </el-col>
-                  </el-form-item>
-                </el-col>
-              </el-form-item>
-            </div>
-          </el-form>
-        </div>
+            <el-form-item label="神经元个数:">
+              <el-col :span="9">
+                <el-input v-model="form.neure_num"></el-input>
+              </el-col>
+              <el-col :span="12" style="margin-left:25px;">
+                <el-form-item label="网络数据个数:">
+                  <el-col :span="18">
+                    <el-input v-model="form.train_batch_no"></el-input>
+                  </el-col>
+                </el-form-item>
+              </el-col>
+            </el-form-item>
+            <el-form-item label="预测天数:">
+              <el-col :span="9" style="margin-left:13px">
+                <el-input v-model="form.days"></el-input>
+              </el-col>
+              <el-col :span="12" style="margin-left:56px">
+                <el-form-item label="训练次数:">
+                  <el-col :span="18">
+                    <el-input v-model="form.epoch"></el-input>
+                  </el-col>
+                </el-form-item>
+              </el-col>
+            </el-form-item>
+          </div>
+        </el-form>
       </div>
     </div>
     <div class="btns">
-      <el-button type="success"
-                 @click="onSubmit"
-                 size="small">
+      <el-button type="success" @click="onSubmit" size="small">
         立即创建
       </el-button>
-      <el-button @click="cancel"
-                 class="btns-cancel"
-                 size="small">
+      <el-button @click="cancel" class="btns-cancel" size="small">
         取消
       </el-button>
     </div>
@@ -125,33 +110,74 @@
 </template>
 
 <script>
+import qs from "qs";
+
 export default {
-  data () {
+  data() {
     return {
-      labelPosition: "right",
+      labelPosition: "left",
       form: {
         name: "",
         region: "",
-        date1: "",
-        date2: "",
         delivery: false,
         type: [],
         resource: "",
         desc: "",
-        mintime: "",
-        maxtime: "",
-        mindimension: "",
-        maxdimension: "",
         neuron: "",
-        epoch: ""
+        epoch: "",
+        dr_min: "",
+        dr_max: "",
+        delay_min_day: "",
+        delay_max_day: "",
+        neure_num: "",
+        days: "",
+        train_batch_no: ""
       }
     };
   },
   methods: {
-    onSubmit () {
-      console.log("submit!");
+    onSubmit() {
+      // let obj = {
+      //   tables_name: this.form.tables_name,
+      //   model_name: 10,
+      //   dr_min: this.form.dr_min,
+      //   dr_max: this.form.dr_max,
+      //   delay_min_day: this.form.delay_min_day,
+      //   delay_max_day: this.form.delay_max_day,
+      //   neure_num: this.form.neure_num, //神经元个数
+      //   train_batch_no: this.form.train_batch_no, //网络数据个数        //
+      //   epoch: this.form.epoch, //训练次数
+      //   days: this.form.days //预测天数
+      // };
+      // console.log(obj);
+      this.axios.defaults.headers = {
+        "Content-type": "application/x-www-form-urlencoded"
+      };
+      this.axios
+        .post(
+          "http://192.168.3.139:8080/jdqd/action/JDQD/biz/modeltrain/addModelInfo",
+          qs.stringify({
+            tables_name: this.form.tables_name,
+            model_name: 10,
+            dr_min: this.form.dr_min,
+            dr_max: this.form.dr_max,
+            delay_min_day: this.form.delay_min_day,
+            delay_max_day: this.form.delay_max_day,
+            neure_num: this.form.neure_num, //神经元个数
+            train_batch_no: this.form.train_batch_no, //网络数据个数        //
+            epoch: this.form.epoch, //训练次数
+            days: this.form.days //预测天数
+          })
+        )
+        .then(res => {
+          console.log(res.data.data);
+          this.tableData = res.data.data.articleList;
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
-    cancel () {
+    cancel() {
       this.$router.go(-1);
     }
   }
@@ -161,7 +187,7 @@ export default {
 <style scoped>
 .left {
   width: 95%;
-  position: absolute;
+  position: relative;
   margin-top: 20px;
   height: 80%;
 }
@@ -182,7 +208,7 @@ export default {
 }
 .btns {
   position: absolute;
-  margin-top: 40%;
+  margin-top: -30px;
   margin-left: 35%;
   width: 15%;
 }
