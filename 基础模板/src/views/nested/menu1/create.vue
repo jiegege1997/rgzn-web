@@ -87,7 +87,7 @@
                 <el-input v-model="form.days"></el-input>
               </el-col>
               <el-col :span="12" style="margin-left:56px">
-                <el-form-item label="训练次数:">
+                <el-form-item label="训练次数:" class="ruzhu-mess">
                   <el-col :span="18">
                     <el-input v-model="form.epoch"></el-input>
                   </el-col>
@@ -150,9 +150,6 @@ export default {
         message: "创建时间较久,请耐心等待",
         type: "warning"
       });
-      // this.axios.defaults.headers = {
-      //   "Content-type": "application/x-www-form-urlencoded"
-      // };
       this.axios
         .post(
           "http://192.168.3.139:8080/jdqd/action/JDQD/biz/modeltrain/addModelInfo",
@@ -183,6 +180,12 @@ export default {
   }
 };
 </script>
+<style>
+.ruzhu-mess .el-form-item__label {
+  /* font-size: 30px !important; */
+  font-family: Microsoft YaHei !important;
+}
+</style>
 
 <style scoped>
 .left {
@@ -226,5 +229,6 @@ export default {
   border-left: 8px solid #3080fe;
   font-weight: 400;
   font-size: 16;
+  font-family: Microsoft YaHei;
 }
 </style>
