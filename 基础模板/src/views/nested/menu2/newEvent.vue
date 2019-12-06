@@ -35,14 +35,19 @@
         class="demo-form-inline"
       >
         <el-row>
-          <el-col :span="8">
+          <el-col :span="6">
             <el-form-item label="模型名称" prop="name">
               <el-input v-model="ruleForm.name" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="8" :offset="4">
+          <el-col :span="6" :offset="2">
             <el-form-item label="预测天数" prop="day">
               <el-input v-model="ruleForm.day"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6" :offset="2">
+            <el-form-item label="预测说明" prop="remark">
+              <el-input v-model="ruleForm.remark"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -69,29 +74,32 @@
         </el-row>
       </el-form>
     </div>
-    <h4 class="handletitle" id="title">预测结果</h4>
+    <!-- <h4 class="handletitle"
+        id="title">预测结果</h4>
     <el-row id="table">
-      <el-col :span="18" :offset="2">
-        <el-table
-          :data="tableData2"
-          border
-          :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
-          style="width: 100%"
-        >
-          <el-table-column type="index" align="center" label="序号" width="70">
+      <el-col :span="18"
+              :offset="2">
+        <el-table :data="tableData2"
+                  border
+                  :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
+                  style="width: 100%">
+          <el-table-column type="index"
+                           align="center"
+                           label="序号"
+                           width="70">
           </el-table-column>
-          <el-table-column
-            prop="data"
-            label="预计日期"
-            align="center"
-            width="200"
-          >
+          <el-table-column prop="data"
+                           label="预计日期"
+                           align="center"
+                           width="200">
           </el-table-column>
-          <el-table-column prop="address" label="事件表名" align="center">
+          <el-table-column prop="address"
+                           label="事件表名"
+                           align="center">
           </el-table-column>
         </el-table>
-      </el-col>
-    </el-row>
+      </el-col> -->
+    <!-- </el-row> -->
   </div>
 </template>
 
@@ -144,19 +152,13 @@ export default {
     forecastBtn() {
       this.loadingbut = true;
       this.loadingtext = "预测中";
-      this.$message({
-        showClose: true,
-        message: "预测时间较久,请耐心等待",
-        type: "warning",
-        duration: "0"
-      });
       let arr = this.currentRow;
       this.axios.defaults.headers = {
         "Content-type": "application/x-www-form-urlencoded"
       };
       this.axios
         .post(
-          "http://192.168.3.139:8080/jdqd/action/JDQD/biz/eventpredict/addEventPredictInfo",
+          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/eventpredict/addEventPredictInfo",
           qs.stringify({
             t_event_model_model_id: arr.model_id, //任务id
             model_name: arr.model_name, //任务名称
@@ -171,7 +173,7 @@ export default {
         )
         .then(res => {
           console.log(res.data.data);
-          this.tableData = [...res.data.data];
+          this.$router.go(-1);
         })
         .catch(err => {
           console.log(err);
@@ -185,20 +187,20 @@ export default {
       this.newDay = this.currentRow.day;
     },
     getData() {
-      this.axios.defaults.headers = {
-        "Content-type": "application/x-www-form-urlencoded"
-      };
       this.axios
         .post(
-          "http://192.168.3.139:8080/jdqd/action/JDQD/biz/modeltrain/getModelTrainInfo",
+          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/modeltrain/getModelTrainInfo",
           qs.stringify({
             currPage: 1,
-            pageSize: 10
+            pageSize: 1000
           })
         )
         .then(res => {
           console.log(res.data.data);
-          this.tableData = [...res.data.data];
+          let data = res.data.data.data;
+          let data1 = data.filter(item => item.status == "2 ");
+          console.log(data1);
+          this.tableData = [...data1];
         })
         .catch(err => {
           console.log(err);

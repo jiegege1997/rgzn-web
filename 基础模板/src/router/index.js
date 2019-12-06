@@ -41,7 +41,7 @@ export const constantRoutes = [
         name: "Table",
         component: () => import("@/views/table/index"),
         meta: {
-          title: "事件识别",
+          title: "事件提取",
           icon: "table",
           keepAlive: true,
           ifDoFresh: false
@@ -141,6 +141,12 @@ export const constantRoutes = [
         path: "creates",
         name: "creates",
         component: () => import("@/views/nested/menu1/create")
+        // meta: { title: 'Table', icon: 'table' }
+      },
+      {
+        path: "nestdetail",
+        name: "nestdetail",
+        component: () => import("@/views/nested/menu1/detail")
         // meta: { title: 'Table', icon: 'table' }
       },
       {

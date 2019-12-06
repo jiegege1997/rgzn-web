@@ -7,13 +7,12 @@
     </el-col>
     <el-table
       :data="tableData.slice((currpage - 1) * pagesize, currpage * pagesize)"
-      style="width: 100%"
+      style=" width: 100%; min-height:70vh;"
       :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
-      height="500px"
       :default-sort="{ prop: 'para_id', order: 'ascending' }"
       border
     >
-      <el-table-column label="#" type="index" />
+      <el-table-column label="序号" type="index" width="60" align="center" />
       <el-table-column label="模型名称" prop="translated_title">
         <template slot-scope="{ row }">
           <span>{{ row.model_name }}</span>
@@ -26,7 +25,13 @@
       </el-table-column>
       <el-table-column label="状态" prop="url">
         <template slot-scope="{ row }">
-          <span>{{ row.status }}</span>
+          <span>{{
+            row.status == "1 "
+              ? "训练中"
+              : row.status == "2 "
+              ? "已完成"
+              : "已失败"
+          }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" width="160%" text-align="center">
@@ -93,28 +98,13 @@ export default {
     //根据模型编号获取模型训练的信息
     handleEdit(item) {
       console.log(item);
-      // this.$router.push({
-      //   name: "details",
-      //   query: {
-      //     id: item.article_id
-      //   }
-      // });
-      this.axios.defaults.headers = {
-        "Content-type": "application/x-www-form-urlencoded"
-      };
-      this.axios
-        .post(
-          "http://192.168.3.139:8080/jdqd/action/JDQD/biz/modeltrain/getModelTrainInfoById",
-          qs.stringify({
-            modelId: item.model_id
-          })
-        )
-        .then(res => {
-          console.log(res.data.data);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      this.$router.push({
+        name: "nestdetail",
+        query: {
+          id: item.model_id
+          // type: this.type
+        }
+      });
     },
     handleCreate() {
       this.$router.push({
@@ -123,12 +113,9 @@ export default {
     },
     // 查看所有数据
     getData() {
-      this.axios.defaults.headers = {
-        "Content-type": "application/x-www-form-urlencoded"
-      };
       this.axios
         .post(
-          "http://192.168.3.139:8080/jdqd/action/JDQD/biz/modeltrain/getModelTrainInfo",
+          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/modeltrain/getModelTrainInfo",
           qs.stringify({
             currPage: 1,
             pageSize: 10
@@ -136,7 +123,7 @@ export default {
         )
         .then(res => {
           console.log(res.data.data);
-          this.tableData = [...res.data.data];
+          this.tableData = [...res.data.data.data];
         })
         .catch(err => {
           console.log(err);
@@ -150,19 +137,16 @@ export default {
     },
     handleDelete(data) {
       console.log(data);
-      this.$confirm("此操作将永久删除该事件, 是否继续?", "提示", {
+      this.$confirm("此操作将永久删除该模型, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(() => {
           const id = data.model_id;
-          this.axios.defaults.headers = {
-            "Content-type": "application/x-www-form-urlencoded"
-          };
           this.axios
             .post(
-              "http://192.168.3.139:8080/jdqd/action/JDQD/biz/modeltrain/deleteModelInfoById",
+              "http://139.9.126.19:8081/jdqd/action/JDQD/biz/modeltrain/deleteModelInfoById",
               qs.stringify({
                 modelId: id
               })

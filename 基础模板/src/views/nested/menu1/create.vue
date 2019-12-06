@@ -8,8 +8,17 @@
             <el-col :span="20">
               <el-input v-model="form.tables_name"></el-input>
             </el-col>
+            <el-tooltip
+              class="item"
+              effect="dark"
+              content="多个表名 用逗号分隔"
+              placement="bottom-end"
+              style="margin-left:20px;"
+            >
+              <i class="el-icon-question"></i>
+            </el-tooltip>
           </el-form-item>
-          <el-form-item label="同一天的事件列表">
+          <!-- <el-form-item label="同一天的事件列表">
             <el-row>
               <el-col :span="11">
                 <el-checkbox-group v-model="form.type">
@@ -21,14 +30,16 @@
                   <el-checkbox label="21132" name="type"></el-checkbox>
                 </el-checkbox-group>
               </el-col>
-              <el-tooltip
-                class="item"
-                effect="dark"
-                content="同一天出现多个事件 选择需要的事件即可"
-                placement="bottom-end"
-              >
-                <i class="el-icon-question"></i>
-              </el-tooltip>
+            </el-row>
+          </el-form-item> -->
+          <el-form-item label="事件类别">
+            <el-row>
+              <el-col :span="11" style="margin-left:20px">
+                <el-radio-group v-model="form.event_type">
+                  <el-radio label="2">按大类生成</el-radio>
+                  <el-radio label="1">按小类生成</el-radio>
+                </el-radio-group>
+              </el-col>
             </el-row>
           </el-form-item>
           <h4 class="handletitle">模型基础信息</h4>
@@ -124,6 +135,7 @@ export default {
       loadingtext: "立即创建",
       labelPosition: "left",
       form: {
+        event_type: "",
         name: "",
         delivery: false,
         type: [],
@@ -145,17 +157,17 @@ export default {
     onSubmit() {
       this.loadingbut = true;
       this.loadingtext = "创建中";
-      this.$message({
-        showClose: true,
-        message: "创建时间较久,请耐心等待",
-        type: "warning"
-      });
+      // this.$message({
+      //   showClose: true,
+      //   message: "创建时间较久,请耐心等待",
+      //   type: "warning"
+      // });
       this.axios
         .post(
-          "http://192.168.3.139:8080/jdqd/action/JDQD/biz/modeltrain/addModelInfo",
+          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/modeltrain/addModelInfo",
           qs.stringify({
             tables_name: this.form.tables_name,
-            model_name: 10,
+            model_name: this.form.model_name,
             dr_min: this.form.dr_min,
             dr_max: this.form.dr_max,
             delay_min_day: this.form.delay_min_day,
@@ -163,7 +175,8 @@ export default {
             neure_num: this.form.neure_num,
             train_batch_no: this.form.train_batch_no,
             epoch: this.form.epoch,
-            days: this.form.days
+            days: this.form.days,
+            event_type: this.form.event_type
           })
         )
         .then(res => {

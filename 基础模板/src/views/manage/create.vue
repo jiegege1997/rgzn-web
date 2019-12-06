@@ -3,14 +3,17 @@
     <div class="left">
       <h4 class="handletitle">新增事件</h4>
       <div style="margin-top:30px">
-        <el-form ref="form" :model="form" :label-position="labelPosition">
+        <el-form ref="form"
+                 :model="form"
+                 :label-position="labelPosition">
           <h4 class="handletitle"></h4>
           <div style="margin-top:30px">
             <el-form-item label="主语:">
               <el-col :span="9">
                 <el-input v-model="form.zy"></el-input>
               </el-col>
-              <el-col :span="12" style="margin-left:50px">
+              <el-col :span="12"
+                      style="margin-left:50px">
                 <el-form-item label="主语同义词:">
                   <el-col :span="18">
                     <el-input v-model="form.Zys"></el-input>
@@ -22,7 +25,8 @@
               <el-col :span="9">
                 <el-input v-model="form.wy"></el-input>
               </el-col>
-              <el-col :span="12" style="margin-left:50px">
+              <el-col :span="12"
+                      style="margin-left:50px">
                 <el-form-item label="谓语同义词:">
                   <el-col :span="18">
                     <el-input v-model="form.Wys"></el-input>
@@ -34,7 +38,8 @@
               <el-col :span="9">
                 <el-input v-model="form.by"></el-input>
               </el-col>
-              <el-col :span="12" style="margin-left:50px">
+              <el-col :span="12"
+                      style="margin-left:50px">
                 <el-form-item label="宾语同义词:">
                   <el-col :span="18">
                     <el-input v-model="form.Bys"></el-input>
@@ -47,10 +52,14 @@
       </div>
     </div>
     <div class="btns">
-      <el-button type="success" @click="onSubmit" size="small">
+      <el-button type="success"
+                 @click="onSubmit"
+                 size="small">
         保存
       </el-button>
-      <el-button @click="cancel" class="btns-cancel" size="small">
+      <el-button @click="cancel"
+                 class="btns-cancel"
+                 size="small">
         取消
       </el-button>
     </div>
@@ -60,7 +69,7 @@
 <script>
 import qs from "qs";
 export default {
-  data() {
+  data () {
     return {
       labelPosition: "left",
       form: {
@@ -77,13 +86,13 @@ export default {
     };
   },
   methods: {
-    onSubmit() {
+    onSubmit () {
       this.axios.defaults.headers = {
         "Content-type": "application/x-www-form-urlencoded"
       };
       this.axios
         .post(
-          "http://192.168.3.63:8080/jdqd/action/JDQD/biz/eventcurd/addToTableTeventall",
+          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/eventcurd/addToTableTeventall",
           qs.stringify({
             eventZy: this.form.zy,
             eventWy: this.form.wy,
@@ -103,7 +112,7 @@ export default {
           console.log(err);
         });
     },
-    cancel() {
+    cancel () {
       this.$router.go(-1);
     }
   }

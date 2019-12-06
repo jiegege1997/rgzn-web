@@ -2,9 +2,14 @@
   <div class="app-container">
     <!-- 搜索框 -->
     <el-col :span="6" style="margin-top: 20px;margin-bottom:20px;">
-      <el-input v-model="findData" placeholder="请输入表单标题" size="mini">
+      <el-input
+        v-model="findData"
+        placeholder="请输入表单标题"
+        size="mini"
+        prefix-icon="el-icon-search"
+      >
         <template slot="append">
-          <el-button @click="handleSearch">
+          <el-button type="primary" @click="handleSearch">
             搜索
           </el-button>
         </template>
@@ -15,23 +20,25 @@
       :span="6"
       style="margin-top: 20px;margin-bottom:20px; margin-left:20px;"
     >
-      <el-button size="mini" @click="find1" :class="type == 1 ? 'active' : ''">
+      <!-- <el-button size="mini" @click="find1" :class="type == 1 ? 'active' : ''">
         方式一
       </el-button>
       <el-button size="mini" @click="find2" :class="type == 2 ? 'active' : ''">
         方式二
+      </el-button> -->
+      <el-button type="primary" size="mini" @click="handleClone">
+        数据备份
       </el-button>
     </el-col>
     <!-- 表格 -->
     <el-table
       :data="tableData"
-      style="width: 100%"
-      height="570px"
+      style=" width: 100%; min-height:70vh;"
       :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
       :default-sort="{ prop: 'para_id', order: 'ascending' }"
       border
     >
-      <el-table-column label="#" type="index" width="40%" />
+      <el-table-column label="序号" type="index" width="60" align="center" />
       <el-table-column label="标题" prop="translated_title">
         <template slot-scope="{ row }">
           <span class="biaoti">{{ row.translated_title }}</span>
@@ -124,29 +131,49 @@ export default {
   },
   computed: {},
   methods: {
+    //数据备份
+    handleClone() {
+      this.axios
+        .post(
+          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/eventcurd/generateInsertSqlDemo"
+        )
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     handleSearch() {
       // console.log(this.findData)
       this.find();
     },
     handleEdit(item) {
       // console.log(item)
-      if (this.type == "1") {
-        this.$router.push({
-          name: "details",
-          query: {
-            id: item.article_id,
-            type: this.type
-          }
-        });
-      } else {
-        this.$router.push({
-          name: "suanfa",
-          query: {
-            id: item.article_id,
-            type: this.type
-          }
-        });
-      }
+      // if (this.type == "1") {
+      //   this.$router.push({
+      //     name: "details",
+      //     query: {
+      //       id: item.article_id,
+      //       type: this.type
+      //     }
+      //   });
+      // } else {
+      //   this.$router.push({
+      //     name: "suanfa",
+      //     query: {
+      //       id: item.article_id,
+      //       type: this.type
+      //     }
+      //   });
+      // }
+      this.$router.push({
+        name: "suanfa",
+        query: {
+          id: item.article_id
+          // type: this.type
+        }
+      });
     },
     // 查看所有数据
     find() {
@@ -156,7 +183,7 @@ export default {
           "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleList",
           qs.stringify({
             title: this.findData,
-            type: type,
+            // type: type,
             currPage: this.currpage,
             pageSize: this.pagesize
           })

@@ -114,7 +114,7 @@ export default {
       };
       this.axios
         .post(
-          "http://192.168.3.63:8080/jdqd/action/JDQD/biz/eventcurd/queryTableTeventall",
+          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/eventcurd/queryTableTeventall",
           qs.stringify({
             solrEventId: id
           })

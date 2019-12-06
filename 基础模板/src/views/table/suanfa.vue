@@ -33,8 +33,8 @@
             </tr>
           </table>
 
-          <div class="title">相关文章</div>
-          <table>
+          <!-- <div class="title">相关文章</div> -->
+          <!-- <table>
             <tr
               v-for="(item, index) in textData"
               :key="index"
@@ -43,7 +43,7 @@
             >
               <td>{{ item.translated_title }}</td>
             </tr>
-          </table>
+          </table> -->
         </div>
       </el-col>
     </el-row>
@@ -70,7 +70,7 @@ export default {
   },
   created() {
     this.find();
-    this.findtext();
+    // this.findtext();
   },
   methods: {
     textClick(index, item) {
@@ -78,12 +78,12 @@ export default {
       console.log(item.id);
       // console.log(this.$route.query.id)
       const id = item.article_id;
-      let type = this.$route.query.type;
+      // let type = this.$route.query.type;
       this.axios
         .post(
           "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleDetail",
           qs.stringify({
-            type: type,
+            // type: type,
             articleId: id
           })
         )
@@ -103,14 +103,15 @@ export default {
       this.isActive = index;
       // console.log(item)
       let id = this.$route.query.id;
-      let type = this.$route.query.type;
+      // let type = this.$route.query.type;
       this.axios
         .post(
           "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleHighLight",
           qs.stringify({
-            eventId: item.algorithm_event_id,
-            articleId: id,
-            type: type
+            // eventId: item.algorithm_event_id,
+            eventId: item.solr_event_id,
+            articleId: id
+            // type: type
           })
         )
         .then(res => {
@@ -157,12 +158,12 @@ export default {
     find() {
       console.log(this.$route.query.id);
       const id = this.$route.query.id;
-      let type = this.$route.query.type;
+      // let type = this.$route.query.type;
       this.axios
         .post(
           "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleDetail",
           qs.stringify({
-            type: type,
+            // type: type,
             articleId: id
           })
         )

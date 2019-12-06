@@ -7,7 +7,7 @@
           this.currpage * this.pagesize
         )
       "
-      style="width: 100%;"
+      style="width: 100%; min-height:70vh;"
       :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
       :default-sort="{ prop: 'para_id', order: 'ascending' }"
       border
@@ -84,7 +84,7 @@ export default {
       // };
       this.axios
         .post(
-          "http://192.168.3.63:8080/jdqd/action/JDQD/biz/eventcurd/queryTableTeventalls"
+          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/eventcurd/queryTableTeventalls"
         )
         .then(res => {
           console.log(res.data.data);
@@ -115,7 +115,7 @@ export default {
           };
           this.axios
             .post(
-              "http://192.168.3.63:8080/jdqd/action/JDQD/biz/eventcurd/deleteTableTeventall",
+              "http://139.9.126.19:8081/jdqd/action/JDQD/biz/eventcurd/deleteTableTeventall",
               qs.stringify({
                 solrEventId: id
               })
