@@ -30,8 +30,6 @@ export default {
 
 <style lang="scss" scoped>
 .handletable {
-  position: relative;
   margin-top: 60px;
-  margin-left: 0px;
 }
 </style>

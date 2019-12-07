@@ -7,7 +7,8 @@
           this.currpage * this.pagesize
         )
       "
-      style="width: 100%; min-height:70vh;"
+      style="width: 100%;"
+      :height="tableHeight"
       :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
       :default-sort="{ prop: 'para_id', order: 'ascending' }"
       border
@@ -68,6 +69,8 @@ export default {
   name: "tableTop",
   data() {
     return {
+      tableHeight: window.innerHeight - 180,
+      screenHeight: window.innerHeight,
       tableData: [],
       pagesize: 10,
       currpage: 1,
@@ -76,19 +79,27 @@ export default {
   },
   created() {
     this.getData();
+    window.onresize = () => {
+      return (() => {
+        window.screenHeight = window.innerHeight;
+        this.screenHeight = window.screenHeight;
+      })();
+    };
+  },
+  watch: {
+    screenHeight(val) {
+      this.screenHeight = val;
+      this.tableHeight = this.screenHeight - 180;
+    }
   },
   methods: {
     getData() {
-      // this.axios.defaults.headers = {
-      //   "Content-type": "application/x-www-form-urlencoded"
-      // };
       this.axios
         .post(
           "http://139.9.126.19:8081/jdqd/action/JDQD/biz/eventcurd/queryTableTeventalls"
         )
         .then(res => {
           console.log(res.data.data);
-          // this.length = res.data.data.count;
           this.tableData = [...res.data.data];
           this.length = this.tableData.length;
         })
@@ -110,9 +121,6 @@ export default {
       })
         .then(() => {
           const id = data.solr_event_id;
-          this.axios.defaults.headers = {
-            "Content-type": "application/x-www-form-urlencoded"
-          };
           this.axios
             .post(
               "http://139.9.126.19:8081/jdqd/action/JDQD/biz/eventcurd/deleteTableTeventall",

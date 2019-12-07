@@ -17,7 +17,11 @@
         <el-table-column label="序号" type="index" />
         <el-table-column prop="model_name" label="模型名称"> </el-table-column>
         <el-table-column prop="days" label="预测天数"> </el-table-column>
-        <el-table-column prop="dates" label="创建日期" show-overflow-tooltip>
+        <el-table-column
+          prop="create_date"
+          label="创建日期"
+          show-overflow-tooltip
+        >
         </el-table-column>
       </el-table>
       <div class="btns">
@@ -74,32 +78,6 @@
         </el-row>
       </el-form>
     </div>
-    <!-- <h4 class="handletitle"
-        id="title">预测结果</h4>
-    <el-row id="table">
-      <el-col :span="18"
-              :offset="2">
-        <el-table :data="tableData2"
-                  border
-                  :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
-                  style="width: 100%">
-          <el-table-column type="index"
-                           align="center"
-                           label="序号"
-                           width="70">
-          </el-table-column>
-          <el-table-column prop="data"
-                           label="预计日期"
-                           align="center"
-                           width="200">
-          </el-table-column>
-          <el-table-column prop="address"
-                           label="事件表名"
-                           align="center">
-          </el-table-column>
-        </el-table>
-      </el-col> -->
-    <!-- </el-row> -->
   </div>
 </template>
 
@@ -115,7 +93,8 @@ export default {
       newDay: "",
       ruleForm: {
         name: "",
-        day: ""
+        day: "",
+        remark: ""
       },
       rules: {
         name: [{ required: true, message: "请输入模型名称", trigger: "blur" }],
@@ -123,23 +102,7 @@ export default {
       },
       dialogTableVisible: false,
       tableData: [],
-      tableData2: [
-        {
-          index: "1",
-          address: "20230",
-          data: "2017-08-28"
-        },
-        {
-          index: "2",
-          address: "20189、20198",
-          data: "2017-08-28"
-        },
-        {
-          index: "3",
-          address: "20189、20198、20189、20198",
-          data: "2017-08-28"
-        }
-      ]
+      tableData2: []
     };
   },
   mounted() {
@@ -150,34 +113,33 @@ export default {
       this.dialogTableVisible = true;
     },
     forecastBtn() {
-      this.loadingbut = true;
-      this.loadingtext = "预测中";
-      let arr = this.currentRow;
-      this.axios.defaults.headers = {
-        "Content-type": "application/x-www-form-urlencoded"
-      };
-      this.axios
-        .post(
-          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/eventpredict/addEventPredictInfo",
-          qs.stringify({
-            t_event_model_model_id: arr.model_id, //任务id
-            model_name: arr.model_name, //任务名称
-            task_remark: "预测", //预测事件说明
-            epoch: arr.days, //预测天数,
-            days: "7",
-            tables_name: "data_xlshuju_1,data_xlshuju_2"
-            // create_data:      //创建事件
-            // status:           //状态
-            // t_event_model_model_id     //模型id
-          })
-        )
-        .then(res => {
-          console.log(res.data.data);
-          this.$router.go(-1);
-        })
-        .catch(err => {
-          console.log(err);
+      console.log(this.currentRow);
+      if (this.currentRow.days < this.ruleForm.day) {
+        this.$message({
+          showClose: true,
+          message: "预测天数不能大于模型预测天数",
+          type: "error"
         });
+      } else {
+        this.axios
+          .post(
+            "http://139.9.126.19:8081/jdqd/action/JDQD/biz/eventpredict/addEventPredictInfo",
+            qs.stringify({
+              t_event_model_model_id: this.currentRow.model_id, //任务id
+              model_name: this.currentRow.model_name, //任务名称
+              task_remark: this.ruleForm.remark, //预测事件说明
+              epoch: this.currentRow.days, //预测天数,
+              tables_name: this.currentRow.tables_name
+            })
+          )
+          .then(res => {
+            console.log(res.data.data);
+            this.$router.go(-1);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     },
     save() {
       console.log(this.currentRow);

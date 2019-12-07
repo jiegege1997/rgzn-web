@@ -1,13 +1,14 @@
 <template>
   <div class="app-container">
-    <el-col :span="6" style="margin-top: 20px;margin-bottom:20px;">
+    <el-col :span="6">
       <el-button @click="handleCreate()" type="primary">
         创建模型
       </el-button>
     </el-col>
     <el-table
-      :data="tableData.slice((currpage - 1) * pagesize, currpage * pagesize)"
-      style=" width: 100%; min-height:70vh;"
+      :data="tableData"
+      style=" width: 100%; margin-top:60px"
+      :height="tableHeight"
       :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
       :default-sort="{ prop: 'para_id', order: 'ascending' }"
       border
@@ -63,24 +64,13 @@
 </template>
 
 <script>
-// import { getList } from '@/api/table'
 import qs from "qs";
 
 export default {
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: "success",
-        draft: "gray",
-        deleted: "danger"
-      };
-      return statusMap[status];
-    }
-  },
   data() {
     return {
-      // list: null,
-      // listLoading: true
+      tableHeight: window.innerHeight - 180,
+      screenHeight: window.innerHeight,
       tableData: [],
       dialogFormVisible: false,
       search: "",
@@ -93,6 +83,18 @@ export default {
   },
   created() {
     this.getData();
+    window.onresize = () => {
+      return (() => {
+        window.screenHeight = window.innerHeight;
+        this.screenHeight = window.screenHeight;
+      })();
+    };
+  },
+  watch: {
+    screenHeight(val) {
+      this.screenHeight = val;
+      this.tableHeight = this.screenHeight - 180;
+    }
   },
   methods: {
     //根据模型编号获取模型训练的信息
@@ -102,7 +104,6 @@ export default {
         name: "nestdetail",
         query: {
           id: item.model_id
-          // type: this.type
         }
       });
     },
@@ -117,13 +118,14 @@ export default {
         .post(
           "http://139.9.126.19:8081/jdqd/action/JDQD/biz/modeltrain/getModelTrainInfo",
           qs.stringify({
-            currPage: 1,
-            pageSize: 10
+            currPage: this.currpage,
+            pageSize: this.pagesize
           })
         )
         .then(res => {
           console.log(res.data.data);
           this.tableData = [...res.data.data.data];
+          this.tableData.length = res.data.data.totalSize;
         })
         .catch(err => {
           console.log(err);
@@ -131,9 +133,11 @@ export default {
     },
     handleCurrentChange(cpage) {
       this.currpage = cpage;
+      this.getData();
     },
     handleSizeChange(psize) {
       this.pagesize = psize;
+      this.getData();
     },
     handleDelete(data) {
       console.log(data);

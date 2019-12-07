@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <!-- 搜索框 -->
-    <el-col :span="6" style="margin-top: 20px;margin-bottom:20px;">
+    <el-col :span="6" style="margin-top:10px">
       <el-input
         v-model="findData"
         placeholder="请输入表单标题"
@@ -16,10 +16,7 @@
       </el-input>
     </el-col>
     <!-- 按钮组 -->
-    <el-col
-      :span="6"
-      style="margin-top: 20px;margin-bottom:20px; margin-left:20px;"
-    >
+    <el-col :span="6" style="margin-left:20px;margin-top:10px">
       <!-- <el-button size="mini" @click="find1" :class="type == 1 ? 'active' : ''">
         方式一
       </el-button>
@@ -33,7 +30,8 @@
     <!-- 表格 -->
     <el-table
       :data="tableData"
-      style=" width: 100%; min-height:70vh;"
+      style=" width: 100%;margin-top:60px"
+      :height="tableHeight"
       :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
       :default-sort="{ prop: 'para_id', order: 'ascending' }"
       border
@@ -90,17 +88,19 @@
 import qs from "qs";
 
 export default {
-  beforeRouteEnter(to, from, next) {
-    if (from.name != "details" && from.name != "suanfa") {
-      {
-        to.meta.ifDoFresh = true;
-      }
-    }
-    console.log(from);
-    next();
-  },
+  // beforeRouteEnter (to, from, next) {
+  //   if (from.name != "details" && from.name != "suanfa") {
+  //     {
+  //       to.meta.ifDoFresh = true;
+  //     }
+  //   }
+  //   console.log(from);
+  //   next();
+  // },
   data() {
     return {
+      tableHeight: window.innerHeight - 180,
+      screenHeight: window.innerHeight,
       tableData: [],
       dialogFormVisible: false,
       search: "",
@@ -114,21 +114,33 @@ export default {
       length: 10
     };
   },
-  created() {
-    this.find();
-  },
-  activated() {
-    if (this.$route.meta.ifDoFresh) {
-      this.$route.meta.ifDoFresh = false;
-      // this.$router.go(0);
-      this.$route.meta.keepAlive = false;
-      this.$nextTick(function() {
-        this.$route.meta.keepAlive = true;
-      });
-      this.find();
-    } else {
+  watch: {
+    screenHeight(val) {
+      this.screenHeight = val;
+      this.tableHeight = this.screenHeight - 180;
     }
   },
+  created() {
+    this.find();
+    window.onresize = () => {
+      return (() => {
+        window.screenHeight = window.innerHeight;
+        this.screenHeight = window.screenHeight;
+      })();
+    };
+  },
+  // activated() {
+  //   if (this.$route.meta.ifDoFresh) {
+  //     this.$route.meta.ifDoFresh = false;
+  //     // this.$router.go(0);
+  //     this.$route.meta.keepAlive = false;
+  //     this.$nextTick(function() {
+  //       this.$route.meta.keepAlive = true;
+  //     });
+  //     this.find();
+  //   } else {
+  //   }
+  // },
   computed: {},
   methods: {
     //数据备份
@@ -138,7 +150,14 @@ export default {
           "http://139.9.126.19:8081/jdqd/action/JDQD/biz/eventcurd/generateInsertSqlDemo"
         )
         .then(res => {
-          console.log(res);
+          // console.log(res);
+          this.$message({
+            showClose: true,
+            message:
+              "数据备份成功,存放在/hyren/python/app/qingdao/forecast/insertSql.txt中",
+            type: "success",
+            duration: 0
+          });
         })
         .catch(err => {
           console.log(err);
@@ -189,7 +208,7 @@ export default {
           })
         )
         .then(res => {
-          console.log(res.data.data);
+          // console.log(res.data.data);
           this.length = res.data.data.count;
           this.tableData = [...res.data.data.articleList];
         })

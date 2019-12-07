@@ -42,9 +42,9 @@ export const constantRoutes = [
         component: () => import("@/views/table/index"),
         meta: {
           title: "事件提取",
-          icon: "table",
-          keepAlive: true,
-          ifDoFresh: false
+          icon: "table"
+          // keepAlive: true,
+          // ifDoFresh: false
         }
       }
     ]

@@ -74,7 +74,7 @@ export default {
 
   methods: {
     textClick(index, item) {
-      console.log(item.article_id);
+      // console.log(item.article_id);
       // console.log(this.$route.query.id)
       const id = item.article_id;
       let type = this.$route.query.type;
@@ -87,20 +87,20 @@ export default {
           })
         )
         .then(res => {
-          console.log(res.data.data);
+          // console.log(res.data.data);
           const data = res.data.data;
           this.title = data.title;
           this.resultsList[0].name = data.content;
           this.tableData = data.eventList.slice(0, 5);
-          console.log(this.tableData);
+          // console.log(this.tableData);
         })
         .catch(err => {
           this.$message.error(error);
         });
     },
     handleClick(index, item) {
-      console.log(this.$route.query.type);
-      console.log(index);
+      // console.log(this.$route.query.type);
+      // console.log(index);
       this.isActive = index;
       let id = this.$route.query.id;
       let type = this.$route.query.type;
@@ -114,12 +114,12 @@ export default {
           })
         )
         .then(res => {
-          console.log(res.data.data);
+          // console.log(res.data.data);
           const data = res.data.data;
           this.resultsList[0].name = data.content;
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     },
     changeColor(resultsList) {

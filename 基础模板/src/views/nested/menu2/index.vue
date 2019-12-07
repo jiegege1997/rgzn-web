@@ -5,10 +5,8 @@
         :data="tableData2"
         border
         :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
-        style=" width: 100%; height:70vh;"
+        style=" width:100%;"
       >
-        <!-- <el-table-column type="index" align="center" label="序号" width="70"> -->
-        <!-- </el-table-column> -->
         <el-table-column
           prop="data"
           label="预计日期"
@@ -26,16 +24,16 @@
         >
       </span>
     </el-dialog>
-    <el-col :span="6" style="margin-bottom:20px;">
+    <el-col :span="6">
       <el-button type="primary" @click="created()">
         新建事件预测
       </el-button>
     </el-col>
     <el-table
-      :data="tableData.slice((currpage - 1) * pagesize, currpage * pagesize)"
-      style="width: 100%"
+      :data="tableData"
+      style="width: 100%;margin-top:60px;"
+      :height="tableHeight"
       :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
-      height="500px"
       :default-sort="{ prop: 'para_id', order: 'ascending' }"
       border
     >
@@ -96,12 +94,26 @@ export default {
       tableData2: [],
       tableData: [],
       pagesize: 10,
+      tableHeight: window.innerHeight - 180,
+      screenHeight: window.innerHeight,
       currpage: 1,
       dialogVisible: false
     };
   },
   mounted() {
     this.getData();
+    window.onresize = () => {
+      return (() => {
+        window.screenHeight = window.innerHeight;
+        this.screenHeight = window.screenHeight;
+      })();
+    };
+  },
+  watch: {
+    screenHeight(val) {
+      this.screenHeight = val;
+      this.tableHeight = this.screenHeight - 180;
+    }
   },
   methods: {
     //获取模型信息接口
@@ -128,22 +140,25 @@ export default {
     },
     handleCurrentChange(cpage) {
       this.currpage = cpage;
+      this.getData();
     },
     handleSizeChange(psize) {
       this.pagesize = psize;
+      this.getData();
     },
     getData() {
       this.axios
         .post(
           "http://139.9.126.19:8081/jdqd/action/JDQD/biz/eventpredict/getEventPredictInfo",
           qs.stringify({
-            currPage: 1,
-            pageSize: 10
+            currPage: this.currpage,
+            pageSize: this.pagesize
           })
         )
         .then(res => {
           console.log(res.data.data);
           this.tableData = [...res.data.data.data];
+          this.tableData.length = res.data.data.totalSize;
         })
         .catch(err => {
           console.log(err);
@@ -151,7 +166,7 @@ export default {
     },
     handleEdit(item) {
       if (item.status == "1 ") {
-        this.$confirm("该模型正在训练中,无法查看", "提示", {
+        this.$confirm("该模型正在训练中,无法查看结果", "提示", {
           type: "warning"
         });
       } else {

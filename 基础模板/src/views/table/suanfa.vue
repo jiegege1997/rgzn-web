@@ -29,7 +29,7 @@
               :class="isActive == index ? 'active' : ''"
             >
               <td class="td-left">{{ item.event }}</td>
-              <td class="td-right">{{ Number(item.score).toFixed(3) }}</td>
+              <!-- <td class="td-right">{{ Number(item.score).toFixed(3) }}</td> -->
             </tr>
           </table>
 
