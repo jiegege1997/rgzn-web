@@ -80,7 +80,7 @@ export default {
       let type = this.$route.query.type;
       this.axios
         .post(
-          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleDetail",
+          "/jdqd/action/JDQD/biz/event/getArticleDetail",
           qs.stringify({
             type: type,
             articleId: id
@@ -106,7 +106,7 @@ export default {
       let type = this.$route.query.type;
       this.axios
         .post(
-          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleHighLight",
+          "/jdqd/action/JDQD/biz/event/getArticleHighLight",
           qs.stringify({
             eventId: item.solr_event_id,
             articleId: id,
@@ -149,7 +149,7 @@ export default {
       let type = this.$route.query.type;
       this.axios
         .post(
-          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getArticleDetail",
+          "/jdqd/action/JDQD/biz/event/getArticleDetail",
           qs.stringify({
             type: type,
             articleId: id
@@ -174,7 +174,7 @@ export default {
       let type = this.$route.query.type;
       this.axios
         .post(
-          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/event/getSimilarArticleTitle",
+          "/jdqd/action/JDQD/biz/event/getSimilarArticleTitle",
           qs.stringify({
             articleId: id
           })

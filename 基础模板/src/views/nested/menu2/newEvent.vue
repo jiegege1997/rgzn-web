@@ -123,7 +123,7 @@ export default {
       } else {
         this.axios
           .post(
-            "http://139.9.126.19:8081/jdqd/action/JDQD/biz/eventpredict/addEventPredictInfo",
+            "/jdqd/action/JDQD/biz/eventpredict/addEventPredictInfo",
             qs.stringify({
               t_event_model_model_id: this.currentRow.model_id, //任务id
               model_name: this.currentRow.model_name, //任务名称
@@ -151,7 +151,7 @@ export default {
     getData() {
       this.axios
         .post(
-          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/modeltrain/getModelTrainInfo",
+          "/jdqd/action/JDQD/biz/modeltrain/getModelTrainInfo",
           qs.stringify({
             currPage: 1,
             pageSize: 1000

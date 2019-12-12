@@ -23,6 +23,21 @@
           >确 定</el-button
         >
       </span>
+      <!-- <el-calendar>
+        <template slot="dateCell" slot-scope="{ date, data }">
+          <p :class="data.isSelected ? 'is-selected' : ''">
+            {{data.day.split("-").slice(1).join("-")}}
+            <br />
+            {{data.day.split("-").slice(1).join("-") === "12-11"? tableData2[0].arr: ""}}
+            {{data.day.split("-").slice(1).join("-") === "12-12"? tableData2[1].arr: ""}}
+            {{data.day.split("-").slice(1).join("-") === "12-13"? tableData2[2].arr: ""}}
+            {{data.day.split("-").slice(1).join("-") === "12-14"? tableData2[3].arr: ""}}
+            {{data.day.split("-").slice(1).join("-") === "12-15"? tableData2[4].arr: ""}}
+            {{data.day.split("-").slice(1).join("-") === "12-16"? tableData2[5].arr: ""}}
+            {{data.day.split("-").slice(1).join("-") === "12-17"? tableData2[6].arr: ""}}
+          </p>
+        </template>
+      </el-calendar> -->
     </el-dialog>
     <el-col :span="6">
       <el-button type="primary" @click="created()">
@@ -120,7 +135,7 @@ export default {
     handleGet() {
       this.axios
         .post(
-          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/eventpredict/getEventPredictInfoById",
+          "/jdqd/action/JDQD/biz/eventpredict/getEventPredictInfoById",
           qs.stringify({
             modelId: item.model_id
           })
@@ -149,7 +164,7 @@ export default {
     getData() {
       this.axios
         .post(
-          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/eventpredict/getEventPredictInfo",
+          "/jdqd/action/JDQD/biz/eventpredict/getEventPredictInfo",
           qs.stringify({
             currPage: this.currpage,
             pageSize: this.pagesize
@@ -172,13 +187,13 @@ export default {
       } else {
         this.axios
           .post(
-            "http://139.9.126.19:8081/jdqd/action/JDQD/biz/eventpredict/getEventPredictResultById",
+            "/jdqd/action/JDQD/biz/eventpredict/getEventPredictResultById",
             qs.stringify({
               modelId: item.model_id
             })
           )
           .then(res => {
-            // console.log(res.data.data);
+            console.log(res.data.data);
             let data = res.data.data.task_result_content;
             let data1 = data.replace(/'/g, '"');
             let data2 = JSON.parse(data1);
@@ -192,6 +207,7 @@ export default {
             }
             // console.log(arr);
             this.tableData2 = [...arr];
+            // console.log(this.tableData2);
             this.dialogVisible = true;
           })
           .catch(err => {

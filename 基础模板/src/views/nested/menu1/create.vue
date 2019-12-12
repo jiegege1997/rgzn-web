@@ -157,14 +157,9 @@ export default {
     onSubmit() {
       this.loadingbut = true;
       this.loadingtext = "创建中";
-      // this.$message({
-      //   showClose: true,
-      //   message: "创建时间较久,请耐心等待",
-      //   type: "warning"
-      // });
       this.axios
         .post(
-          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/modeltrain/addModelInfo",
+          "/jdqd/action/JDQD/biz/modeltrain/addModelInfo",
           qs.stringify({
             tables_name: this.form.tables_name,
             model_name: this.form.model_name,

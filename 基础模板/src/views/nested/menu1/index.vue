@@ -114,9 +114,10 @@ export default {
     },
     // 查看所有数据
     getData() {
+      // const baseurl = ""
       this.axios
         .post(
-          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/modeltrain/getModelTrainInfo",
+          "/jdqd/action/JDQD/biz/modeltrain/getModelTrainInfo",
           qs.stringify({
             currPage: this.currpage,
             pageSize: this.pagesize
@@ -150,7 +151,7 @@ export default {
           const id = data.model_id;
           this.axios
             .post(
-              "http://139.9.126.19:8081/jdqd/action/JDQD/biz/modeltrain/deleteModelInfoById",
+              "/jdqd/action/JDQD/biz/modeltrain/deleteModelInfoById",
               qs.stringify({
                 modelId: id
               })

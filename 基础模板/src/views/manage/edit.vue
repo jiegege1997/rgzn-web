@@ -3,52 +3,41 @@
     <div class="left">
       <h4 class="handletitle">事件详情</h4>
       <div style="margin-top:30px">
-        <el-form ref="form"
-                 :model="form"
-                 :label-position="labelPosition">
+        <el-form ref="form" :model="form" :label-position="labelPosition">
           <h4 class="handletitle"></h4>
           <div style="margin-top:30px">
             <el-form-item label="主语:">
               <el-col :span="5">
-                <el-input v-model="form.zy"
-                          disabled></el-input>
+                <el-input v-model="form.zy" disabled></el-input>
               </el-col>
-              <el-col :span="15"
-                      :offset="2">
+              <el-col :span="15" :offset="2">
                 <el-form-item label="主语同义词:">
                   <el-col :span="20">
-                    <el-input v-model="form.Zys"
-                              disabled></el-input>
+                    <el-input v-model="form.Zys" disabled></el-input>
                   </el-col>
                 </el-form-item>
               </el-col>
             </el-form-item>
             <el-form-item label="谓语:">
               <el-col :span="5">
-                <el-input v-model="form.wy"
-                          disabled></el-input>
+                <el-input v-model="form.wy" disabled></el-input>
               </el-col>
-              <el-col :span="15"
-                      :offset="2">
+              <el-col :span="15" :offset="2">
                 <el-form-item label="谓语同义词:">
                   <el-col :span="20">
-                    <el-input v-model="form.Wys"
-                              disabled></el-input>
+                    <el-input v-model="form.Wys" disabled></el-input>
                   </el-col>
                 </el-form-item>
               </el-col>
             </el-form-item>
             <el-form-item label="宾语:">
               <el-col :span="5">
-                <el-input v-model="form.by"
-                          disabled></el-input>
+                <el-input v-model="form.by" disabled></el-input>
               </el-col>
-              <el-col :span="15"
-                      :offset="2">
+              <el-col :span="15" :offset="2">
                 <el-form-item label="宾语同义词:">
                   <el-col :span="20">
-                    <el-input v-model="form.Bys"
-                              disabled></el-input>
+                    <el-input v-model="form.Bys" disabled></el-input>
                   </el-col>
                 </el-form-item>
               </el-col>
@@ -58,14 +47,10 @@
       </div>
     </div>
     <div class="btns">
-      <el-button type="success"
-                 @click="onSubmit"
-                 size="small">
+      <el-button type="success" @click="onSubmit" size="small">
         确定
       </el-button>
-      <el-button @click="cancel"
-                 class="btns-cancel"
-                 size="small">
+      <el-button @click="cancel" class="btns-cancel" size="small">
         取消
       </el-button>
     </div>
@@ -75,10 +60,10 @@
 <script>
 import qs from "qs";
 export default {
-  created () {
+  created() {
     this.getData();
   },
-  data () {
+  data() {
     return {
       labelPosition: "left",
       form: {
@@ -103,18 +88,15 @@ export default {
     };
   },
   methods: {
-    onSubmit () {
-      this.$router.go(-1)
+    onSubmit() {
+      this.$router.go(-1);
     },
-    getData () {
+    getData() {
       console.log(this.$route.query.id);
       const id = this.$route.query.id;
-      this.axios.defaults.headers = {
-        "Content-type": "application/x-www-form-urlencoded"
-      };
       this.axios
         .post(
-          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/eventcurd/queryTableTeventall",
+          "/jdqd/action/JDQD/biz/eventcurd/queryTableTeventall",
           qs.stringify({
             solrEventId: id
           })
@@ -133,7 +115,7 @@ export default {
           console.log(err);
         });
     },
-    cancel () {
+    cancel() {
       this.$router.go(-1);
     }
   }

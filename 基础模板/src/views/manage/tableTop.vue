@@ -95,9 +95,7 @@ export default {
   methods: {
     getData() {
       this.axios
-        .post(
-          "http://139.9.126.19:8081/jdqd/action/JDQD/biz/eventcurd/queryTableTeventalls"
-        )
+        .post("/jdqd/action/JDQD/biz/eventcurd/queryTableTeventalls")
         .then(res => {
           console.log(res.data.data);
           this.tableData = [...res.data.data];
@@ -123,7 +121,7 @@ export default {
           const id = data.solr_event_id;
           this.axios
             .post(
-              "http://139.9.126.19:8081/jdqd/action/JDQD/biz/eventcurd/deleteTableTeventall",
+              "/jdqd/action/JDQD/biz/eventcurd/deleteTableTeventall",
               qs.stringify({
                 solrEventId: id
               })
