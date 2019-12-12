@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-dialog title="预测结果" :visible.sync="dialogVisible" width="60%">
-      <el-table
+      <!-- <el-table
         :data="tableData2"
         border
         :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
@@ -16,28 +16,37 @@
         </el-table-column>
         <el-table-column prop="arr" label="事件表名" align="center">
         </el-table-column>
-      </el-table>
+      </el-table> -->
       <span slot="footer" class="dialog-footer">
         <!-- <el-button @click="dialogVisible = false" size="mini">取 消</el-button> -->
         <el-button type="primary" @click="dialogVisible = false" size="mini"
           >确 定</el-button
         >
       </span>
-      <!-- <el-calendar>
+      <el-calendar>
         <template slot="dateCell" slot-scope="{ date, data }">
           <p :class="data.isSelected ? 'is-selected' : ''">
-            {{data.day.split("-").slice(1).join("-")}}
+            {{
+              data.day
+                .split("-")
+                .slice(1)
+                .join("-")
+            }}
+            <!-- {{ data.day===this.arr[0]?tableData2[0].arr:"" }} -->
             <br />
-            {{data.day.split("-").slice(1).join("-") === "12-11"? tableData2[0].arr: ""}}
-            {{data.day.split("-").slice(1).join("-") === "12-12"? tableData2[1].arr: ""}}
-            {{data.day.split("-").slice(1).join("-") === "12-13"? tableData2[2].arr: ""}}
-            {{data.day.split("-").slice(1).join("-") === "12-14"? tableData2[3].arr: ""}}
-            {{data.day.split("-").slice(1).join("-") === "12-15"? tableData2[4].arr: ""}}
-            {{data.day.split("-").slice(1).join("-") === "12-16"? tableData2[5].arr: ""}}
-            {{data.day.split("-").slice(1).join("-") === "12-17"? tableData2[6].arr: ""}}
           </p>
+          <div v-for="i in 7" :key="i">
+            {{ data.day === dataarr[i - 1] ? eventarr[i - 1] : "" }}
+          </div>
+          <!-- {{ data.day === dataarr[0] ? eventarr[0] : "" }}
+            {{ data.day === dataarr[1] ? eventarr[1] : "" }}
+            {{ data.day === dataarr[2] ? eventarr[2] : "" }}
+            {{ data.day === dataarr[3] ? eventarr[3] : "" }}
+            {{ data.day === dataarr[4] ? eventarr[4] : "" }}
+            {{ data.day === dataarr[5] ? eventarr[5] : "" }}
+            {{ data.day === dataarr[6] ? eventarr[6] : "" }} -->
         </template>
-      </el-calendar> -->
+      </el-calendar>
     </el-dialog>
     <el-col :span="6">
       <el-button type="primary" @click="created()">
@@ -81,8 +90,8 @@
       </el-table-column>
       <el-table-column label="操作" width="160%" text-align="center">
         <template slot-scope="{ row }">
-          <el-button size="mini" type="primary" @click="handleEdit(row)"
-            >详情
+          <el-button size="mini" type="primary" @click="handleEdit(row)">
+            详情
           </el-button>
         </template>
       </el-table-column>
@@ -108,6 +117,8 @@ export default {
     return {
       tableData2: [],
       tableData: [],
+      dataarr: [],
+      eventarr: [],
       pagesize: 10,
       tableHeight: window.innerHeight - 180,
       screenHeight: window.innerHeight,
@@ -193,21 +204,30 @@ export default {
             })
           )
           .then(res => {
-            console.log(res.data.data);
-            let data = res.data.data.task_result_content;
-            let data1 = data.replace(/'/g, '"');
-            let data2 = JSON.parse(data1);
-            let arr = [];
-            for (var i in data2) {
-              let obj = {};
-              obj.data = i;
-              let str = JSON.stringify(data2[i]);
-              obj.arr = str.substring(1, str.length - 1);
-              arr.push(obj);
+            console.log(res.data.data.date_task_result_content);
+            let obj = res.data.data.date_task_result_content;
+            let dataArr = [];
+            let eventArr = [];
+            for (var i in obj) {
+              dataArr.push(i);
+              eventArr.push(obj[i]);
             }
-            // console.log(arr);
-            this.tableData2 = [...arr];
-            // console.log(this.tableData2);
+            this.dataarr = dataArr;
+            this.eventarr = eventArr;
+            console.log(typeof eventArr[0]);
+            //原来处理方法
+            // let data = res.data.data.task_result_content;
+            // let data1 = data.replace(/'/g, '"');
+            // let data2 = JSON.parse(data1);
+            // let arr = [];
+            // for (var i in data2) {
+            //   let obj = {};
+            //   obj.data = i;
+            //   let str = JSON.stringify(data2[i]);
+            //   obj.arr = str.substring(1, str.length - 1);
+            //   arr.push(obj);
+            // }
+            // this.tableData2 = [...arr];
             this.dialogVisible = true;
           })
           .catch(err => {

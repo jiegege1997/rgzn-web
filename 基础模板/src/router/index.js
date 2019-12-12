@@ -42,8 +42,8 @@ export const constantRoutes = [
         component: () => import("@/views/table/index"),
         meta: {
           title: "事件提取",
-          icon: "table"
-          // keepAlive: true,
+          icon: "table",
+          keepAlive: true
           // ifDoFresh: false
         }
       }
@@ -74,6 +74,21 @@ export const constantRoutes = [
         path: "suanfa",
         name: "suanfa",
         component: () => import("@/views/table/suanfa"),
+        meta: { title: "详情" }
+      }
+    ]
+  },
+  //单个suanfa
+  {
+    path: "/singlesuanfa",
+    component: Layout,
+    hidden: true,
+    redirect: "/example/table",
+    children: [
+      {
+        path: "singlesuanfa",
+        name: "singlesuanfa",
+        component: () => import("@/views/table/singlesuanfa"),
         meta: { title: "详情" }
       }
     ]

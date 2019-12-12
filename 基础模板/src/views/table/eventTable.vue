@@ -127,7 +127,9 @@ export default {
       currpage: 1,
       value: "success",
       type: this.$store.state.table.type,
-      length: 10
+      length: 10,
+      title: "",
+      id: ""
     };
   },
   watch: {
@@ -149,11 +151,13 @@ export default {
   methods: {
     handleEdit2(item) {
       console.log(item);
+      this.title = item.title;
+      this.id = item.event_id;
       this.axios
         .post(
           "/jdqd/action/JDQD/biz/event/getEventRelateArticleMess",
           qs.stringify({
-            solr_event_id: item.solr_event_id
+            solr_event_id: item.event_id
           })
         )
         .then(res => {
@@ -165,11 +169,17 @@ export default {
           console.log(err);
         });
     },
+    // 查看详情
     handleEdit(item) {
+      console.log(this.title);
+      console.log(this.id);
+      this.dialogVisible = false;
       this.$router.push({
-        name: "suanfa",
+        name: "singlesuanfa",
         query: {
-          id: item.article_id
+          id: item.article_id,
+          solr_event_id: this.id,
+          title: this.title
         }
       });
     },

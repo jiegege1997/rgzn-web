@@ -99,8 +99,6 @@ export default {
         });
     },
     handleClick(index, item) {
-      // console.log(this.$route.query.type);
-      // console.log(index);
       this.isActive = index;
       let id = this.$route.query.id;
       let type = this.$route.query.type;
