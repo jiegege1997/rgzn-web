@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-dialog title="模型列表" :visible.sync="dialogTableVisible">
+    <el-dialog title="模型列表" :visible.sync="dialogTableVisible" width="60%">
       <el-table
         ref="multipleTable"
         :data="tableData"
@@ -17,6 +17,10 @@
         <el-table-column label="序号" type="index" />
         <el-table-column prop="model_name" label="模型名称"> </el-table-column>
         <el-table-column prop="days" label="预测天数"> </el-table-column>
+        <!-- <el-table-column prop="days"
+                         label="误报率"> </el-table-column>
+        <el-table-column prop="days"
+                         label="召回率"> </el-table-column> -->
         <el-table-column
           prop="create_date"
           label="创建日期"

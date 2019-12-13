@@ -35,16 +35,10 @@
             <!-- {{ data.day===this.arr[0]?tableData2[0].arr:"" }} -->
             <br />
           </p>
-          <div v-for="i in 7" :key="i">
+          <div v-for="i in dataarr.length" :key="i" style="color:red">
             {{ data.day === dataarr[i - 1] ? eventarr[i - 1] : "" }}
+            <!-- {{dataarr.length}} -->
           </div>
-          <!-- {{ data.day === dataarr[0] ? eventarr[0] : "" }}
-            {{ data.day === dataarr[1] ? eventarr[1] : "" }}
-            {{ data.day === dataarr[2] ? eventarr[2] : "" }}
-            {{ data.day === dataarr[3] ? eventarr[3] : "" }}
-            {{ data.day === dataarr[4] ? eventarr[4] : "" }}
-            {{ data.day === dataarr[5] ? eventarr[5] : "" }}
-            {{ data.day === dataarr[6] ? eventarr[6] : "" }} -->
         </template>
       </el-calendar>
     </el-dialog>
@@ -81,7 +75,7 @@
         <template slot-scope="{ row }">
           <span>{{
             row.status == "1 "
-              ? "训练中"
+              ? "预测中"
               : row.status == "2 "
               ? "已完成"
               : "已失败"
@@ -204,21 +198,29 @@ export default {
             })
           )
           .then(res => {
-            console.log(res.data.data.date_task_result_content);
-            let obj = res.data.data.date_task_result_content;
+            console.log(res.data.data);
+            let data = res.data.data.task_result_content;
+            let data1 = data.replace(/'/g, '"');
+            let data2 = JSON.parse(data1);
+            let obj = data2;
             let dataArr = [];
             let eventArr = [];
             for (var i in obj) {
               dataArr.push(i);
-              eventArr.push(obj[i]);
+              eventArr.push(
+                JSON.stringify(obj[i]).substring(
+                  1,
+                  JSON.stringify(obj[i]).length - 1
+                )
+              );
             }
             this.dataarr = dataArr;
             this.eventarr = eventArr;
-            console.log(typeof eventArr[0]);
+            // console.log(typeof JSON.stringify(eventArr[0]));
+            // let str = JSON.stringify(eventArr[0]);
+            // console.log(str.substring(1, str.length - 1));
+            // console.log(typeof eventArr[0]);
             //原来处理方法
-            // let data = res.data.data.task_result_content;
-            // let data1 = data.replace(/'/g, '"');
-            // let data2 = JSON.parse(data1);
             // let arr = [];
             // for (var i in data2) {
             //   let obj = {};
@@ -227,6 +229,7 @@ export default {
             //   obj.arr = str.substring(1, str.length - 1);
             //   arr.push(obj);
             // }
+            // console.log(arr)
             // this.tableData2 = [...arr];
             this.dialogVisible = true;
           })

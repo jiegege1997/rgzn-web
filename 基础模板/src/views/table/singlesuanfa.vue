@@ -2,11 +2,14 @@
   <div class="app-container">
     <el-button size="small" @click="back" type="primary">返回</el-button>
     <div class="header">{{ title }}</div>
+    <div class="headertwo">
+      文章来源:{{ source }}&nbsp;&nbsp;&nbsp;&nbsp; 文章日期:{{ articleData }}
+    </div>
     <el-row :gutter="20">
       <el-col :span="16"> </el-col>
     </el-row>
     <el-row :gutter="40">
-      <el-col :span="14" offset="1">
+      <el-col :span="14" :offset="1">
         <!-- 文章内容 -->
         <div
           v-for="(item, index) in resultsList"
@@ -17,7 +20,7 @@
           {{ item.name }}
         </div>
       </el-col>
-      <el-col :span="8" offset="1">
+      <el-col :span="8" :offset="1">
         <div class="right">
           <div class="title">相关事件</div>
           <table>
@@ -53,7 +56,12 @@ export default {
     return {
       keyWords: "",
       results: [],
+      source: "",
+      articleData: "",
       tableData: [],
+      keywordsdetailzy: [],
+      keywordsdetailwy: [],
+      keywordsdetailby: [],
       textData: [],
       isActive: -1,
       resultsList: [{ name: "" }],
@@ -64,11 +72,6 @@ export default {
   },
   created() {
     this.find();
-
-    console.log(this.$route.query.title);
-    console.log(this.$route.query.id);
-    console.log(this.$route.query.solr_event_id);
-    // this.findtext();
   },
   methods: {
     textClick(index, item) {
@@ -100,27 +103,21 @@ export default {
     // 高亮
     handleClick(index, item) {
       // this.isActive = index;
-      console.log(item);
+      // console.log(item);
       let id = this.$route.query.id;
-      // let type = this.$route.query.type;
       this.axios
         .post(
           "/jdqd/action/JDQD/biz/event/getArticleHighLight",
           qs.stringify({
-            // eventId: item.algorithm_event_id,
             eventId: this.$route.query.solr_event_id,
             articleId: id
-            // type: type
           })
         )
         .then(res => {
-          // console.log(res.data.data)
           const data = res.data.data;
-          // console.log(data.keywords)
-          this.keywordsdetail = data.keywords.split(",");
-          console.log(this.keywordsdetail);
-          let arr = this.keywordsdetail;
-          console.log(arr);
+          this.keywordsdetailzy = data.keywordszy.split(",");
+          this.keywordsdetailwy = data.keywordswy.split(",");
+          this.keywordsdetailby = data.keywordsby.split(",");
           this.changeColor(this.resultsList);
         })
         .catch(err => {
@@ -129,17 +126,47 @@ export default {
     },
     changeColor(resultsList) {
       this.resultsList[0].name = this.data1.content;
-      this.keywordsdetail.map((item, index) => {
+      this.keywordsdetailzy.map((item, index) => {
+        let keyWords = item;
+        resultsList.map((item, index) => {
+          if (keyWords && keyWords.length > 0) {
+            // 匹配关键字正则
+            let replaceReg = new RegExp(keyWords, "g");
+            // 高亮替换v-html值
+            let replaceString =
+              '<span class="search-text">' + keyWords + "</span>";
+            resultsList[index].name = item.name.replace(
+              replaceReg,
+              replaceString
+            );
+          }
+        });
+      });
+      this.keywordsdetailwy.map((item, index) => {
+        let keyWords2 = item;
+        resultsList.map((item, index) => {
+          if (keyWords2 && keyWords2 > 0) {
+            // 匹配关键字正则
+            let replaceReg = new RegExp(keyWords2, "g");
+            // 高亮替换v-html值
+            let replaceString =
+              '<span class="search-text1">' + keyWords2 + "</span>";
+            resultsList[index].name = item.name.replace(
+              replaceReg,
+              replaceString
+            );
+          }
+        });
+      });
+      this.keywordsdetailby.map((item, index) => {
         this.keyWords = item;
         resultsList.map((item, index) => {
-          // console.log('item', item)
-          console.log(item);
           if (this.keyWords && this.keyWords.length > 0) {
             // 匹配关键字正则
             let replaceReg = new RegExp(this.keyWords, "g");
             // 高亮替换v-html值
             let replaceString =
-              '<span class="search-text">' + this.keyWords + "</span>";
+              '<span class="search-text2">' + this.keyWords + "</span>";
             resultsList[index].name = item.name.replace(
               replaceReg,
               replaceString
@@ -169,6 +196,8 @@ export default {
           console.log(res.data.data);
           const data = res.data.data;
           this.title = data.title;
+          this.source = data.source;
+          this.articleData = data.create_date;
           this.data1 = data;
           this.resultsList[0].name = data.content;
           this.handleClick();
@@ -233,6 +262,13 @@ export default {
   border-left: 1px solid #e1e1e1;
   height: 550px;
 }
+.headertwo {
+  font-size: 15px;
+  text-align: center;
+  width: 60vw;
+  margin: 10px auto;
+  /* border: 1px solid red; */
+}
 .content-left {
   text-indent: 2em;
   letter-spacing: 1px;
@@ -256,5 +292,11 @@ export default {
 }
 .search-text {
   color: red;
+}
+.search-text1 {
+  color: blue;
+}
+.search-text2 {
+  color: slateblue;
 }
 </style>
