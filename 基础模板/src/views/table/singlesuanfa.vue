@@ -85,7 +85,8 @@ export default {
           "/jdqd/action/JDQD/biz/event/getArticleDetail",
           qs.stringify({
             // type: type,
-            articleId: id
+            articleId: id,
+            type:this.$route.query.type
           })
         )
         .then(res => {
@@ -189,7 +190,8 @@ export default {
         .post(
           "/jdqd/action/JDQD/biz/event/getArticleDetail",
           qs.stringify({
-            articleId: id
+            articleId: id,
+            type:this.$route.query.type
           })
         )
         .then(res => {

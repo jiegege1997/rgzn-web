@@ -117,7 +117,8 @@ export default {
       this.$router.push({
         name: "suanfa",
         query: {
-          id: item.article_id
+          id: item.article_id,
+          type:1
         }
       });
     },

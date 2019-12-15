@@ -179,7 +179,8 @@ export default {
         query: {
           id: item.article_id,
           solr_event_id: this.id,
-          title: this.title
+          title: this.title,
+          type:2
         }
       });
     },

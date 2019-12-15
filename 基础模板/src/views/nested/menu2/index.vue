@@ -25,19 +25,23 @@
       </span>
       <el-calendar>
         <template slot="dateCell" slot-scope="{ date, data }">
-          <p :class="data.isSelected ? 'is-selected' : ''">
-            {{
-              data.day
-                .split("-")
-                .slice(1)
-                .join("-")
-            }}
-            <!-- {{ data.day===this.arr[0]?tableData2[0].arr:"" }} -->
-            <br />
-          </p>
-          <div v-for="i in dataarr.length" :key="i" style="color:red">
-            {{ data.day === dataarr[i - 1] ? eventarr[i - 1] : "" }}
-            <!-- {{dataarr.length}} -->
+          <div v-for="i in dataarr.length" :key="-i">
+            <div>
+              {{
+                data.day === dataarr[i - 1]
+                  ? data.day
+                      .split("-")
+                      .slice(1)
+                      .join("-")
+                  : ""
+              }}
+            </div>
+            <div style="color:blue">
+              {{ data.day === dataarr[i - 1] ? detailarr[i - 1] : "" }}
+            </div>
+            <div style="color:red">
+              {{ data.day === dataarr[i - 1] ? eventarr[i - 1] : "" }}
+            </div>
           </div>
         </template>
       </el-calendar>
@@ -109,10 +113,13 @@ import qs from "qs";
 export default {
   data() {
     return {
+      //定时器
+      timer: null,
       tableData2: [],
       tableData: [],
       dataarr: [],
       eventarr: [],
+      detailarr: [],
       pagesize: 10,
       tableHeight: window.innerHeight - 180,
       screenHeight: window.innerHeight,
@@ -120,14 +127,23 @@ export default {
       dialogVisible: false
     };
   },
-  mounted() {
+  created() {
     this.getData();
+  },
+  mounted() {
+    this.timer = setInterval(this.getData, 10000);
     window.onresize = () => {
       return (() => {
         window.screenHeight = window.innerHeight;
         this.screenHeight = window.screenHeight;
       })();
     };
+  },
+  // 页面销毁时候
+  destroyed() {
+    console.log("destroyed");
+    clearInterval(this.timer);
+    this.timer = null;
   },
   watch: {
     screenHeight(val) {
@@ -201,36 +217,22 @@ export default {
             console.log(res.data.data);
             let data = res.data.data.task_result_content;
             let data1 = data.replace(/'/g, '"');
+            console.log(data1);
             let data2 = JSON.parse(data1);
+            console.log(data2);
             let obj = data2;
             let dataArr = [];
             let eventArr = [];
+            let detailArr = [];
             for (var i in obj) {
               dataArr.push(i);
-              eventArr.push(
-                JSON.stringify(obj[i]).substring(
-                  1,
-                  JSON.stringify(obj[i]).length - 1
-                )
-              );
+              eventArr.push(obj[i].split("|")[0]);
+              detailArr.push(obj[i].split("|")[1]);
             }
             this.dataarr = dataArr;
             this.eventarr = eventArr;
-            // console.log(typeof JSON.stringify(eventArr[0]));
-            // let str = JSON.stringify(eventArr[0]);
-            // console.log(str.substring(1, str.length - 1));
-            // console.log(typeof eventArr[0]);
-            //原来处理方法
-            // let arr = [];
-            // for (var i in data2) {
-            //   let obj = {};
-            //   obj.data = i;
-            //   let str = JSON.stringify(data2[i]);
-            //   obj.arr = str.substring(1, str.length - 1);
-            //   arr.push(obj);
-            // }
-            // console.log(arr)
-            // this.tableData2 = [...arr];
+            this.detailarr = detailArr;
+            console.log(this.detailarr);
             this.dialogVisible = true;
           })
           .catch(err => {
