@@ -118,7 +118,7 @@ export default {
         name: "suanfa",
         query: {
           id: item.article_id,
-          type:1
+          type: 1
         }
       });
     },
@@ -130,14 +130,17 @@ export default {
           "/jdqd/action/JDQD/biz/event/getArticleList",
           qs.stringify({
             title: this.findData,
-            // type: type,
             currPage: this.currpage,
             pageSize: this.pagesize
           })
         )
         .then(res => {
-          // console.log(res.data.data);
+          // console.log(res.data.data.articleList);
           this.length = res.data.data.count;
+          res.data.data.articleList.forEach((item, index) => {
+            item.event = item.event.slice(0, 3);
+          });
+          // console.log(res.data.data.articleList);
           this.tableData = [...res.data.data.articleList];
         })
         .catch(err => {
