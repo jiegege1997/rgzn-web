@@ -180,7 +180,7 @@ export default {
           id: item.article_id,
           solr_event_id: this.id,
           title: this.title,
-          type:2
+          type: 2
         }
       });
     },
@@ -196,10 +196,8 @@ export default {
           })
         )
         .then(res => {
-          // console.log(res.data.data);
           this.length = Number(res.data.data.count);
           this.tableData = [...JSON.parse(res.data.data.data)];
-          // console.log(typeof res.data.data.data);
         })
         .catch(err => {
           console.log(err);
@@ -222,8 +220,6 @@ export default {
       }
     },
     handleFind() {
-      console.log(this.findData);
-      console.log(typeof this.findData);
       this.axios
         .post(
           "/jdqd/action/JDQD/biz/event/getEventArticleByDate",
@@ -234,10 +230,8 @@ export default {
           })
         )
         .then(res => {
-          // console.log(res.data.data);
           this.length = Number(res.data.data.count);
           this.tableData = [...JSON.parse(res.data.data.data)];
-          // console.log(typeof res.data.data.data);
         })
         .catch(err => {
           console.log(err);

@@ -71,22 +71,21 @@ export default {
     };
   },
   created() {
-    this.find();
+    // this.find();
+    this.demo();
   },
   methods: {
     textClick(index, item) {
       this.isActive = -1;
       console.log(item.id);
-      // console.log(this.$route.query.id)
       const id = item.article_id;
-      // let type = this.$route.query.type;
       this.axios
         .post(
           "/jdqd/action/JDQD/biz/event/getArticleDetail",
           qs.stringify({
             // type: type,
             articleId: id,
-            type:this.$route.query.type
+            type: this.$route.query.type
           })
         )
         .then(res => {
@@ -103,28 +102,29 @@ export default {
     },
     // 高亮
     handleClick(index, item) {
-      // this.isActive = index;
-      // console.log(item);
       let id = this.$route.query.id;
-      this.axios
-        .post(
-          "/jdqd/action/JDQD/biz/event/getArticleHighLight",
-          qs.stringify({
-            eventId: this.$route.query.solr_event_id,
-            articleId: id
+      return new Promise((resolve, reject) => {
+        this.axios
+          .post(
+            "/jdqd/action/JDQD/biz/event/getArticleHighLight",
+            qs.stringify({
+              eventId: this.$route.query.solr_event_id,
+              articleId: id
+            })
+          )
+          .then(res => {
+            const data = res.data.data;
+            this.keywordsdetailzy = data.keywordszy.split(",");
+            this.keywordsdetailwy = data.keywordswy.split(",");
+            this.keywordsdetailby = data.keywordsby.split(",");
+            resolve(data);
           })
-        )
-        .then(res => {
-          const data = res.data.data;
-          this.keywordsdetailzy = data.keywordszy.split(",");
-          this.keywordsdetailwy = data.keywordswy.split(",");
-          this.keywordsdetailby = data.keywordsby.split(",");
-          this.changeColor(this.resultsList);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+          .catch(err => {
+            console.log(err);
+          });
+      });
     },
+    //对关键词进行变色
     changeColor(resultsList) {
       this.resultsList[0].name = this.data1.content;
       this.keywordsdetailzy.map((item, index) => {
@@ -185,29 +185,36 @@ export default {
     find() {
       console.log(this.$route.query.id);
       const id = this.$route.query.id;
-      // let type = this.$route.query.type;
-      this.axios
-        .post(
-          "/jdqd/action/JDQD/biz/event/getArticleDetail",
-          qs.stringify({
-            articleId: id,
-            type:this.$route.query.type
+      return new Promise((resolve, reject) => {
+        this.axios
+          .post(
+            "/jdqd/action/JDQD/biz/event/getArticleDetail",
+            qs.stringify({
+              articleId: id,
+              type: this.$route.query.type
+            })
+          )
+          .then(res => {
+            console.log(res.data.data);
+            const data = res.data.data;
+            this.title = data.title;
+            this.source = data.source;
+            this.articleData = data.create_date;
+            this.data1 = data;
+            resolve(res.data.data.content);
           })
-        )
-        .then(res => {
-          console.log(res.data.data);
-          const data = res.data.data;
-          this.title = data.title;
-          this.source = data.source;
-          this.articleData = data.create_date;
-          this.data1 = data;
-          this.resultsList[0].name = data.content;
-          this.handleClick();
-          // this.tableData = data.eventList.slice(0, 5);
-        })
-        .catch(err => {
-          this.$message.error(error);
-        });
+          .catch(err => {
+            this.$message.error(error);
+          });
+      });
+    },
+    async demo() {
+      var result = await this.find(); // 页面渲染方法 生成右边列表
+      // console.log(result);
+      this.resultsList[0].name = result;
+      var result1 = await this.handleClick(); //点击列表方法获取 关键词
+      // console.log(result1);
+      this.changeColor(this.resultsList); //对关键词进行变色处理
     },
     findtext() {
       console.log(this.$route.query.id);
