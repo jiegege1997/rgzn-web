@@ -50,7 +50,11 @@ export default {
     };
   },
   watch: {},
-  created() {},
+  created() {
+    var arr = [33, 44, 55, 66];
+    this.showBtn = arr;
+    console.log(this.showBtn);
+  },
   computed: {},
   methods: {
     handleFind() {}

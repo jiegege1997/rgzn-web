@@ -13,6 +13,7 @@ import "@/utils/axios";
 import "@/icons"; // icon
 import "@/permission"; // permission control
 import { mockXHR } from "../mock";
+
 if (process.env.NODE_ENV === "production") {
   mockXHR();
 }

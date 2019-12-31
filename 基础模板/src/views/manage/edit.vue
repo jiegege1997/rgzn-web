@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="left">
       <h4 class="handletitle">事件详情</h4>
-      <div style="margin-top:30px">
+      <div style="margin-top:30px" class="labelALL">
         <el-form ref="form" :model="form" :label-position="labelPosition">
           <h4 class="handletitle"></h4>
           <div style="margin-top:30px">

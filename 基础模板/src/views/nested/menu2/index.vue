@@ -1,50 +1,35 @@
 <template>
   <div class="app-container">
     <el-dialog title="预测结果" :visible.sync="dialogVisible" width="60%">
-      <!-- <el-table
-        :data="tableData2"
-        border
-        :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
-        style=" width:100%;"
-      >
-        <el-table-column
-          prop="data"
-          label="预计日期"
-          align="center"
-          width="200"
-        >
-        </el-table-column>
-        <el-table-column prop="arr" label="事件表名" align="center">
-        </el-table-column>
-      </el-table> -->
       <span slot="footer" class="dialog-footer">
-        <!-- <el-button @click="dialogVisible = false" size="mini">取 消</el-button> -->
         <el-button type="primary" @click="dialogVisible = false" size="mini"
           >确 定</el-button
         >
       </span>
-      <el-calendar>
-        <template slot="dateCell" slot-scope="{ date, data }">
-          <div v-for="i in dataarr.length" :key="-i">
-            <div>
-              {{
-                data.day === dataarr[i - 1]
-                  ? data.day
-                      .split("-")
-                      .slice(1)
-                      .join("-")
-                  : ""
-              }}
+      <div class="dayText">
+        <!-- <timeline /> -->
+        <chartline></chartline>
+        <!-- <el-calendar>
+          <template slot="dateCell"
+                    slot-scope="{ date, data }">
+            {{
+              data.day
+                .split("-")
+                .slice(1)
+                .join("-")
+            }}
+            <div v-for="i in dataarr.length"
+                 :key="-i">
+              <div style="color:blue">
+                {{ data.day === dataarr[i - 1] ? detailarr[i - 1] : "" }}
+              </div>
+              <div style="color:red">
+                {{ data.day === dataarr[i - 1] ? eventarr[i - 1] : "" }}
+              </div>
             </div>
-            <div style="color:blue">
-              {{ data.day === dataarr[i - 1] ? detailarr[i - 1] : "" }}
-            </div>
-            <div style="color:red">
-              {{ data.day === dataarr[i - 1] ? eventarr[i - 1] : "" }}
-            </div>
-          </div>
-        </template>
-      </el-calendar>
+          </template>
+        </el-calendar> -->
+      </div>
     </el-dialog>
     <el-col :span="6">
       <el-button type="primary" @click="created()">
@@ -109,8 +94,14 @@
 
 <script>
 import qs from "qs";
+import timeline from "@/views/nested/menu2/timeline";
+import chartline from "@/views/nested/menu2/chartline";
 
 export default {
+  components: {
+    // timeline,
+    chartline
+  },
   data() {
     return {
       //定时器
@@ -182,6 +173,7 @@ export default {
       this.pagesize = psize;
       this.getData();
     },
+    //得到数据方法
     getData() {
       this.axios
         .post(
@@ -200,6 +192,7 @@ export default {
           console.log(err);
         });
     },
+    //查看详情方法
     handleEdit(item) {
       if (item.status == "1 ") {
         this.$confirm("该模型正在训练中,无法查看结果", "提示", {
@@ -243,3 +236,13 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+// /deep/ .dayText {
+//   .el-calendar-table {
+//     thead {
+//       background-color: red;
+//     }
+//   }
+// }
+</style>

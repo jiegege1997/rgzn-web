@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="left">
       <h4 class="handletitle">新增事件</h4>
-      <div style="margin-top:30px">
+      <div style="margin-top:30px" class="labelAll">
         <el-form ref="form" :model="form" :label-position="labelPosition">
           <h4 class="handletitle"></h4>
           <div style="margin-top:30px">
@@ -105,7 +105,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .left {
   width: 95%;
   position: relative;
@@ -136,9 +136,6 @@ export default {
 .btns-cancel {
   float: right;
 }
-.el-icon-question {
-  color: red;
-}
 .handletitle {
   margin-top: 0;
   margin-bottom: 20px;
@@ -148,4 +145,7 @@ export default {
   font-weight: 400;
   font-size: 16;
 }
+/* .labelAll .el-form-item__label {
+  color: red !important;
+} */
 </style>

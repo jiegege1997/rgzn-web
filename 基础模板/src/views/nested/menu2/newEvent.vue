@@ -1,67 +1,61 @@
 <template>
   <div class="app-container">
-    <el-dialog title="模型列表"
-               :visible.sync="dialogTableVisible"
-               width="60%">
-      <el-table ref="multipleTable"
-                :data="tableData"
-                tooltip-effect="dark"
-                style="width: 100%"
-                @row-click="showRow"
-                @current-change="handleCurrentChange">
+    <el-dialog
+      title="模型列表"
+      :visible.sync="dialogTableVisible"
+      width="70%"
+      style="overflow:hidden"
+    >
+      <el-table
+        ref="multipleTable"
+        :data="tableData"
+        tooltip-effect="dark"
+        style="width: 100%"
+        @row-click="showRow"
+        @current-change="handleCurrentChange"
+      >
         <el-table-column width="50">
           <template slot-scope="scope">
-            <el-radio v-model="radio"
-                      :label="scope.$index">&nbsp;</el-radio>
+            <el-radio v-model="radio" :label="scope.$index">&nbsp;</el-radio>
           </template>
         </el-table-column>
-        <el-table-column label="序号"
-                         type="index" />
-        <el-table-column prop="model_name"
-                         label="模型名称"> </el-table-column>
-        <el-table-column prop="days"
-                         label="预测天数"> </el-table-column>
-        <!-- <el-table-column prop="days"
-                         label="误报率"> </el-table-column>
-        <el-table-column prop="days"
-                         label="召回率"> </el-table-column> -->
-        <el-table-column prop="create_date"
-                         label="创建日期"
-                         show-overflow-tooltip>
+        <el-table-column label="序号" type="index" />
+        <el-table-column prop="model_name" label="模型名称"> </el-table-column>
+        <el-table-column prop="days" label="预测天数"> </el-table-column>
+        <el-table-column
+          prop="create_date"
+          label="创建日期"
+          show-overflow-tooltip
+        >
         </el-table-column>
       </el-table>
       <div class="btns">
-        <el-button @click="save()"
-                   type="success">确定</el-button>
         <el-button @click="cancel()">取消</el-button>
+        <el-button @click="save()" type="success">确定</el-button>
       </div>
     </el-dialog>
     <h4 class="handletitle">选择模型</h4>
     <div style="margin-top:60px;">
-      <el-form :model="ruleForm"
-               :rules="rules"
-               ref="ruleForm"
-               label-width="100px"
-               class="demo-form-inline">
+      <el-form
+        :model="ruleForm"
+        :rules="rules"
+        ref="ruleForm"
+        label-width="100px"
+        class="demo-form-inline"
+      >
         <el-row>
           <el-col :span="6">
-            <el-form-item label="模型名称"
-                          prop="name">
-              <el-input v-model="ruleForm.name"
-                        :disabled="true"></el-input>
+            <el-form-item label="模型名称" prop="name">
+              <el-input v-model="ruleForm.name" :disabled="true"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="6"
-                  :offset="2">
-            <el-form-item label="预测天数"
-                          prop="day">
+          <el-col :span="6" :offset="2">
+            <el-form-item label="预测天数" prop="day">
               <el-input v-model="ruleForm.day"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="6"
-                  :offset="2">
-            <el-form-item label="预测说明"
-                          prop="remark">
+          <el-col :span="6" :offset="2">
+            <el-form-item label="预测说明" prop="remark">
               <el-input v-model="ruleForm.remark"></el-input>
             </el-form-item>
           </el-col>
@@ -69,38 +63,44 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="数据开始时间">
-              <el-date-picker v-model="ruleForm.sample_start_date"
-                              type="date"
-                              placeholder="日期"
-                              value-format="yyyy-MM-dd">
+              <el-date-picker
+                v-model="ruleForm.sample_start_date"
+                type="date"
+                placeholder="日期"
+                value-format="yyyy-MM-dd"
+              >
               </el-date-picker>
             </el-form-item>
           </el-col>
-          <el-col :span="6"
-                  :offset="2">
+          <el-col :span="6" :offset="2">
             <el-form-item label="数据结束时间">
-              <el-date-picker v-model="ruleForm.sample_end_date"
-                              type="date"
-                              placeholder="日期"
-                              value-format="yyyy-MM-dd">
+              <el-date-picker
+                v-model="ruleForm.sample_end_date"
+                type="date"
+                placeholder="日期"
+                value-format="yyyy-MM-dd"
+              >
               </el-date-picker>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="5"
-                  :offset="6">
-            <el-button type="primary"
-                       @click="chooseBtn()"
-                       style="margin-top:20px;margin-left:25px">
+          <el-col :span="5" :offset="6">
+            <el-button
+              type="primary"
+              @click="chooseBtn()"
+              style="margin-top:20px;margin-left:25px"
+            >
               选择模型
             </el-button>
           </el-col>
           <el-col :span="6">
-            <el-button type="warning"
-                       @click="forecastBtn()"
-                       :loading="loadingbut"
-                       style="margin-top:20px;margin-left:25px">
+            <el-button
+              type="warning"
+              @click="forecastBtn()"
+              :loading="loadingbut"
+              style="margin-top:20px;margin-left:25px"
+            >
               事件预测
             </el-button>
           </el-col>
@@ -113,7 +113,7 @@
 <script>
 import qs from "qs";
 export default {
-  data () {
+  data() {
     return {
       loadingbut: false,
       loadingtext: "事件预测",
@@ -136,20 +136,20 @@ export default {
       tableData2: []
     };
   },
-  mounted () {
+  mounted() {
     this.getData();
   },
   methods: {
-    chooseBtn () {
+    chooseBtn() {
       this.dialogTableVisible = true;
     },
-    forecastBtn () {
+    forecastBtn() {
       // console.log(this.currentRow);
       // console.log(this.ruleForm.sample_start_date);
       // console.log(this.ruleForm.sample_end_date);
       var date1 = new Date(this.ruleForm.sample_start_date);
       var date2 = new Date(this.ruleForm.sample_end_date);
-      console.log(date1)
+      console.log(date1);
       if (this.currentRow.days < this.ruleForm.day) {
         this.$message({
           showClose: true,
@@ -185,14 +185,14 @@ export default {
           });
       }
     },
-    save () {
+    save() {
       console.log(this.currentRow);
       this.dialogTableVisible = false;
       this.ruleForm.name = this.currentRow.model_name;
       this.ruleForm.day = this.currentRow.days;
       this.newDay = this.currentRow.day;
     },
-    getData () {
+    getData() {
       this.axios
         .post(
           "/jdqd/action/JDQD/biz/modeltrain/getModelTrainInfo",
@@ -212,16 +212,16 @@ export default {
           console.log(err);
         });
     },
-    cancel () {
+    cancel() {
       this.dialogTableVisible = false;
     },
-    showRow (row) {
+    showRow(row) {
       this.radio = this.tableData.indexOf(row);
     },
-    getCurrentRow (val) {
+    getCurrentRow(val) {
       this.newDay = "";
     },
-    handleCurrentChange (currentRow, oldCurrentRow) {
+    handleCurrentChange(currentRow, oldCurrentRow) {
       console.log(currentRow);
       this.currentRow = currentRow;
     }
@@ -229,9 +229,20 @@ export default {
 };
 </script>
 <style scoped>
+/* .btns-father {
+  overflow: hidden;
+} */
 .btns {
-  margin-left: 520px;
-  margin-top: 15px;
+  text-align: right;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+.btns :after {
+  content: ".";
+  height: 0;
+  clear: both;
+  display: block;
+  visibility: hidden;
 }
 .handletitle {
   margin-top: 0;

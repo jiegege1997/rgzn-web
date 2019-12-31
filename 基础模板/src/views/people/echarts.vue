@@ -2,72 +2,57 @@
   <div>
     <div class="max">
       <div style="margin-top:-40px;font-size:16px;">2019&nbsp;G7会议</div>
-      <div
-        class="min"
-        style="margin-top:70px;margin-left:120px"
-        @click="modalShow"
-      >
+      <div class="min"
+           style="margin-top:70px;margin-left:120px"
+           @click="modalShow">
         <h3 style="margin-top:35px">特朗普</h3>
       </div>
-      <div
-        class="min"
-        style="margin-top:70px;margin-left:250px"
-        @click="modalShow"
-      >
+      <div class="min"
+           style="margin-top:70px;margin-left:250px"
+           @click="modalShow">
         <h3 style="margin-top:35px">孔特</h3>
       </div>
-      <div
-        class="min"
-        style="margin-top:200px;margin-left:50px;background-color:rgb(73,144,226);color:white"
-        @click="modalShow"
-      >
+      <div class="min"
+           style="margin-top:200px;margin-left:50px;background-color:rgb(73,144,226);color:white"
+           @click="modalShow">
         <h3 style="margin-top:35px">特鲁多</h3>
       </div>
-      <div
-        class="min"
-        style="margin-top:200px;margin-left:350px"
-        @click="modalShow"
-      >
+      <div class="min"
+           style="margin-top:200px;margin-left:350px"
+           @click="modalShow">
         <h3 style="margin-top:35px">安培</h3>
       </div>
-      <div
-        class="min"
-        style="margin-top:200px;margin-left:200px "
-        @click="modalShow"
-      >
+      <div class="min"
+           style="margin-top:200px;margin-left:200px "
+           @click="modalShow">
         <h3 style="margin-top:35px">马克龙</h3>
       </div>
-      <div
-        class="min"
-        style="margin-top:350px;margin-left:120px;background-color:rgb(73,144,226);color:white"
-        @click="modalShow"
-      >
+      <div class="min"
+           style="margin-top:350px;margin-left:120px;background-color:rgb(73,144,226);color:white"
+           @click="modalShow">
         <h3 style="margin-top:35px">约翰逊</h3>
       </div>
-      <div
-        class="min"
-        style="margin-top:350px;margin-left:250px;"
-        @click="modalShow"
-      >
+      <div class="min"
+           style="margin-top:350px;margin-left:250px;"
+           @click="modalShow">
         <h3 style="margin-top:35px">默克尔</h3>
       </div>
     </div>
-    <el-dialog
-      title="详细信息"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose"
-    >
-      <el-table
-        :data="tableData"
-        style="width: 100%"
-        border
-        :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
-      >
-        <el-table-column prop="date" label="属性名"> </el-table-column>
-        <el-table-column prop="name" label="属性值"> </el-table-column>
+    <el-dialog title="详细信息"
+               :visible.sync="dialogVisible"
+               width="30%"
+               :before-close="handleClose">
+      <el-table :data="tableData"
+                style="width: 100%"
+                border
+                :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
+        <el-table-column prop="date"
+                         label="属性名"> </el-table-column>
+        <el-table-column prop="name"
+                         label="属性值"> </el-table-column>
       </el-table>
-      <span slot="footer" class="dialog-footer">
+      <span slot="footer"
+            class="dialog-footer">
         <!-- <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false"
           >确 定</el-button
@@ -80,7 +65,7 @@
 <script>
 export default {
   name: "echarts",
-  data() {
+  data () {
     return {
       dialogVisible: false,
       tableData: [
@@ -93,7 +78,7 @@ export default {
     };
   },
   methods: {
-    modalShow() {
+    modalShow () {
       this.dialogVisible = true;
     }
   }
@@ -116,7 +101,6 @@ export default {
   border-radius: 50%;
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
-
   text-align: center;
   color: rgb(0, 0, 1);
 }
