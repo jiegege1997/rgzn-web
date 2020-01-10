@@ -1,6 +1,6 @@
 <template>
   <div>
-    <VeLine :data="chartData" />
+    <VeLine :data="chartData" :extend="chartExtend" />
   </div>
 </template>
 
@@ -60,6 +60,11 @@ export default {
             第三天: 0.5
           }
         ]
+      },
+      chartExtend: {
+        series: {
+          smooth: false
+        }
       }
     };
   }

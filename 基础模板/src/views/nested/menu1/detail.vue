@@ -5,140 +5,132 @@
     </el-button>
     <div class="left">
       <h4 class="handletitle">构建数据源</h4>
-      <div style="margin-top:30px">
+      <div style="margin-top:20px">
         <el-form ref="form" :model="form" :label-position="labelPosition">
-          <el-form-item label="数据表名">
+          <el-form-item label="数据表名:">
             <el-col :span="20">
-              <el-input v-model="form.tables_name"></el-input>
+              <!-- <el-input v-model="form.tables_name"></el-input> -->
+              {{ this.form.tables_name }}
             </el-col>
-
-            <el-tooltip
-              class="item"
-              effect="dark"
-              content="多个表名 用逗号分隔"
-              placement="bottom-end"
-              style="margin-left:20px;"
-            >
-              <i class="el-icon-question"></i>
-            </el-tooltip>
           </el-form-item>
-          <!-- <el-form-item label="同一天的事件列表">
+          <h4 class="handletitle">模型基础信息</h4>
+          <div style="margin-top:20px">
             <el-row>
-              <el-col :span="11">
-                <el-checkbox-group v-model="form.type">
-                  <el-checkbox label="21297"
-                               name="type"></el-checkbox>
-                  <el-checkbox label="21682"
-                               name="type"></el-checkbox>
-                  <el-checkbox label="21253"
-                               name="type"></el-checkbox>
-                  <el-checkbox label="21319"
-                               name="type"></el-checkbox>
-                  <el-checkbox label="21451"
-                               name="type"></el-checkbox>
-                  <el-checkbox label="21132"
-                               name="type"></el-checkbox>
-                </el-checkbox-group>
+              <el-col :span="8">
+                <el-form-item label="模型名称:">
+                  {{ this.form.model_name }}
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="训练数据集时间:">
+                  {{ this.traintime }}
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item label="模型评估数据集时间:">
+                  {{ this.modeltime }}
+                </el-form-item>
               </el-col>
             </el-row>
-          </el-form-item> -->
-          <h4 class="handletitle">模型基础信息</h4>
-          <div style="margin-top:30px">
-            <el-form-item label="模型名称:">
-              <el-col :span="9" style="margin-left:12px;">
-                <el-input v-model="form.model_name"></el-input>
-              </el-col>
-            </el-form-item>
-            <el-form-item label="降维维度:">
-              <el-col :span="4" style="margin-left:13px;">
-                <el-input
-                  v-model="form.dr_min"
-                  placeholder="最小维度"
-                ></el-input>
-              </el-col>
-              <el-col class="line" :span="1">-</el-col>
-              <el-col :span="4">
-                <el-input
-                  v-model="form.dr_max"
-                  placeholder="最大维度"
-                ></el-input>
-              </el-col>
-              <el-col :span="12" style="margin-left:56px;">
-                <el-form-item label="滞后时间:">
-                  <el-col :span="8">
-                    <el-input
-                      v-model="form.delay_min_day"
-                      placeholder="最小天数"
-                    ></el-input>
-                  </el-col>
-                  <el-col class="line" :span="2">-</el-col>
-                  <el-col :span="8">
-                    <el-input
-                      v-model="form.delay_max_day"
-                      placeholder="最大天数"
-                    ></el-input>
-                  </el-col>
-                </el-form-item>
-              </el-col>
-            </el-form-item>
-            <el-form-item label="神经元个数:">
-              <el-col :span="9">
-                <el-input v-model="form.neure_num"></el-input>
-              </el-col>
-              <el-col :span="12" style="margin-left:25px;">
-                <el-form-item label="网络数据个数:">
-                  <el-col :span="18">
-                    <el-input v-model="form.train_batch_no"></el-input>
-                  </el-col>
-                </el-form-item>
-              </el-col>
-            </el-form-item>
-            <el-form-item label="预测天数:">
-              <el-col :span="9" style="margin-left:13px">
-                <el-input v-model="form.days"></el-input>
-              </el-col>
-              <el-col :span="12" style="margin-left:56px">
-                <el-form-item label="训练次数:" class="ruzhu-mess">
-                  <el-col :span="18">
-                    <el-input v-model="form.epoch"></el-input>
-                  </el-col>
-                </el-form-item>
-              </el-col>
-            </el-form-item>
+            <!--<el-form-item label="降维维度:">
+                {{ this.form.dr_min }} - {{ this.form.dr_max }}
+              </el-form-item>
+              <el-form-item label="滞后时间:">
+                {{ this.form.delay_min_day }} - {{ this.form.delay_max_day }}
+              </el-form-item>
+              <el-form-item label="神经元个数:">
+                {{ this.form.neure_num }}
+              </el-form-item>
+              <el-form-item label="网络数据个数:">
+                {{ this.form.train_batch_no }}
+              </el-form-item>
+              <el-form-item label="预测天数:">
+                {{ this.form.days }}
+              </el-form-item>
+              <el-form-item label="训练次数:" class="ruzhu-mess">
+                {{ this.form.epoch }}
+              </el-form-item> -->
+            <el-table
+              :data="tableData"
+              style="width: 100%;"
+              :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
+              :default-sort="{ prop: 'para_id', order: 'ascending' }"
+              border
+            >
+              <!-- <el-table-column label="模型名称">{{
+                this.form.model_name
+              }}</el-table-column> -->
+              <el-table-column label="降维维度">
+                <span>{{ this.form.dr_min }} - {{ this.form.dr_max }}</span>
+              </el-table-column>
+              <el-table-column label="滞后时间">
+                {{ this.form.delay_min_day }} - {{ this.form.delay_max_day }}
+              </el-table-column>
+              <el-table-column label="神经元个数">
+                {{ this.form.neure_num }}
+              </el-table-column>
+              <el-table-column label="网络数据个数">
+                {{ this.form.train_batch_no }}
+              </el-table-column>
+              <el-table-column label="预测天数">
+                {{ this.form.days }}
+              </el-table-column>
+              <el-table-column label="训练次数">
+                {{ this.form.epoch }}
+              </el-table-column>
+              <!-- <el-table-column label="训练数据集时间">
+                {{ 33 }}
+              </el-table-column> -->
+              <!-- <el-table-column label="模型评估数据集时间" width="150">
+                {{ 12 }}
+              </el-table-column> -->
+            </el-table>
           </div>
+          <h4 class="handletitle" style="margin-top:20px">训练事件明细</h4>
+          <traintable />
+          <h4 class="handletitle" style="margin-top:20px">
+            模型评价
+            <span style="float:right">
+              选择事件:
+              <el-select
+                v-model="listvalue"
+                placeholder="请选择"
+                size="mini"
+                style="width:90px;"
+              >
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </span>
+          </h4>
+          <modeltable />
         </el-form>
       </div>
-    </div>
-    <div class="btns">
-      <!-- <el-button
-        type="success"
-        @click="onSubmit"
-        size="small"
-        :loading="loadingbut"
-      >
-        {{ loadingtext }}
-      </el-button> -->
-      <!-- <el-button
-        @click="cancel"
-        class="btns-cancel"
-        size="small"
-        type="primary"
-      >
-        返回
-      </el-button> -->
     </div>
   </div>
 </template>
 
 <script>
 import qs from "qs";
+import traintable from "@/views/nested/menu1/components/traintable";
+import modeltable from "@/views/nested/menu1/components/modeltable";
 
 export default {
+  components: {
+    traintable,
+    modeltable
+  },
   data() {
     return {
       loadingbut: false,
       loadingtext: "立即创建",
       labelPosition: "left",
+      tableData: [],
       form: {
         name: "",
         delivery: false,
@@ -153,8 +145,15 @@ export default {
         neure_num: "", //神经元个数
         train_batch_no: "", //网络数据个数
         days: "", //预测天数
-        epoch: "" //训练次数
-      }
+        epoch: "" //训练次数,
+      },
+      traintime: "2020-01-01 ~ 2020-01-09",
+      modeltime: "2020-01-01 ~ 2020-01-08",
+      options: [
+        { value: "1", label: "事件一" },
+        { value: "2", label: "事件二" }
+      ],
+      listvalue: ""
     };
   },
   created() {
@@ -173,6 +172,7 @@ export default {
         .then(res => {
           console.log(res.data.data);
           this.form = res.data.data;
+          this.tableData.push(res.data.data);
         })
         .catch(err => {
           console.log(err);
@@ -258,5 +258,8 @@ export default {
   font-weight: 400;
   font-size: 16;
   font-family: Microsoft YaHei;
+}
+.main {
+  display: flex;
 }
 </style>

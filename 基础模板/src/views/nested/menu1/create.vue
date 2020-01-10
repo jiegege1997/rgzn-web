@@ -3,18 +3,18 @@
     <div class="left">
       <h4 class="handletitle">构建数据源</h4>
       <div style="margin-top:30px">
-        <el-form ref="form" :model="form" :label-position="labelPosition">
+        <el-form ref="form"
+                 :model="form"
+                 :label-position="labelPosition">
           <el-form-item label="数据表名">
             <el-col :span="20">
               <el-input v-model="form.tables_name"></el-input>
             </el-col>
-            <el-tooltip
-              class="item"
-              effect="dark"
-              content="多个表名 用逗号分隔"
-              placement="bottom-end"
-              style="margin-left:20px;"
-            >
+            <el-tooltip class="item"
+                        effect="dark"
+                        content="多个表名 用逗号分隔"
+                        placement="bottom-end"
+                        style="margin-left:20px;">
               <i class="el-icon-question"></i>
             </el-tooltip>
           </el-form-item>
@@ -34,7 +34,8 @@
           </el-form-item> -->
           <el-form-item label="事件类别">
             <el-row>
-              <el-col :span="11" style="margin-left:20px">
+              <el-col :span="11"
+                      style="margin-left:20px">
                 <el-radio-group v-model="form.event_type">
                   <el-radio label="2">按大类生成</el-radio>
                   <el-radio label="1">按小类生成</el-radio>
@@ -45,38 +46,59 @@
           <h4 class="handletitle">模型基础信息</h4>
           <div style="margin-top:30px">
             <el-form-item label="模型名称:">
-              <el-col :span="9" style="margin-left:12px;">
+              <el-col :span="9"
+                      style="margin-left:12px;">
                 <el-input v-model="form.model_name"></el-input>
+              </el-col>
+              <el-col :span="12"
+                      style="margin-left:56px;">
+                <el-form-item label="滞后时间:">
+                  <el-col :span="8">
+                    <el-input v-model="form.delay_min_day"
+                              placeholder="最小天数"></el-input>
+                  </el-col>
+                  <el-col class="line"
+                          :span="2">-</el-col>
+                  <el-col :span="8">
+                    <el-input v-model="form.delay_max_day"
+                              placeholder="最大天数"></el-input>
+                  </el-col>
+                </el-form-item>
               </el-col>
             </el-form-item>
             <el-form-item label="降维维度:">
-              <el-col :span="4" style="margin-left:13px;">
-                <el-input
-                  v-model="form.dr_min"
-                  placeholder="最小维度"
-                ></el-input>
+              <el-col :span="4"
+                      style="margin-left:13px;">
+                <el-input v-model="form.dr_min"
+                          placeholder="最小维度"></el-input>
               </el-col>
-              <el-col class="line" :span="1">-</el-col>
+              <el-col class="line"
+                      :span="1">-</el-col>
               <el-col :span="4">
-                <el-input
-                  v-model="form.dr_max"
-                  placeholder="最大维度"
-                ></el-input>
+                <el-input v-model="form.dr_max"
+                          placeholder="最大维度"></el-input>
               </el-col>
-              <el-col :span="12" style="margin-left:56px;">
+              <!-- <el-col :span="12"
+                      style="margin-left:56px;">
                 <el-form-item label="滞后时间:">
                   <el-col :span="8">
-                    <el-input
-                      v-model="form.delay_min_day"
-                      placeholder="最小天数"
-                    ></el-input>
+                    <el-input v-model="form.delay_min_day"
+                              placeholder="最小天数"></el-input>
                   </el-col>
-                  <el-col class="line" :span="2">-</el-col>
+                  <el-col class="line"
+                          :span="2">-</el-col>
                   <el-col :span="8">
-                    <el-input
-                      v-model="form.delay_max_day"
-                      placeholder="最大天数"
-                    ></el-input>
+                    <el-input v-model="form.delay_max_day"
+                              placeholder="最大天数"></el-input>
+                  </el-col>
+                </el-form-item>
+              </el-col> -->
+              <el-col :span="12"
+                      style="margin-left:65px;">
+                <el-form-item label="步长:">
+                  <el-col :span="18"
+                          style="margin-left:20px;">
+                    <el-input v-model="form.delay_min_day"></el-input>
                   </el-col>
                 </el-form-item>
               </el-col>
@@ -85,7 +107,8 @@
               <el-col :span="9">
                 <el-input v-model="form.neure_num"></el-input>
               </el-col>
-              <el-col :span="12" style="margin-left:25px;">
+              <el-col :span="12"
+                      style="margin-left:25px;">
                 <el-form-item label="网络数据个数:">
                   <el-col :span="18">
                     <el-input v-model="form.train_batch_no"></el-input>
@@ -94,13 +117,30 @@
               </el-col>
             </el-form-item>
             <el-form-item label="预测天数:">
-              <el-col :span="9" style="margin-left:13px">
+              <el-col :span="9"
+                      style="margin-left:13px">
                 <el-input v-model="form.days"></el-input>
               </el-col>
-              <el-col :span="12" style="margin-left:56px">
-                <el-form-item label="训练次数:" class="ruzhu-mess">
+              <el-col :span="12"
+                      style="margin-left:56px">
+                <el-form-item label="训练次数:"
+                              class="ruzhu-mess">
                   <el-col :span="18">
                     <el-input v-model="form.epoch"></el-input>
+                  </el-col>
+                </el-form-item>
+              </el-col>
+            </el-form-item>
+            <el-form-item label="训练数据集时间:">
+              <!-- {{ this.traintime }} -->
+              <el-col :span="8">
+                <el-input v-model="form.traintime"></el-input>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="模型评估数据集时间:"
+                              style="margin-left:25px;">
+                  <el-col :span="18">
+                    <el-input v-model="form.modeltime"></el-input>
                   </el-col>
                 </el-form-item>
               </el-col>
@@ -110,15 +150,15 @@
       </div>
     </div>
     <div class="btns">
-      <el-button
-        type="success"
-        @click="onSubmit"
-        size="small"
-        :loading="loadingbut"
-      >
+      <el-button type="success"
+                 @click="onSubmit"
+                 size="small"
+                 :loading="loadingbut">
         {{ loadingtext }}
       </el-button>
-      <el-button @click="cancel" class="btns-cancel" size="small">
+      <el-button @click="cancel"
+                 class="btns-cancel"
+                 size="small">
         取消
       </el-button>
     </div>
@@ -129,7 +169,7 @@
 import qs from "qs";
 
 export default {
-  data() {
+  data () {
     return {
       loadingbut: false,
       loadingtext: "立即创建",
@@ -149,12 +189,14 @@ export default {
         neure_num: "", //神经元个数
         train_batch_no: "", //网络数据个数
         days: "", //预测天数
-        epoch: "" //训练次数
+        epoch: "", //训练次数
+        traintime: "",
+        modeltime: ""
       }
     };
   },
   methods: {
-    onSubmit() {
+    onSubmit () {
       this.loadingbut = true;
       this.loadingtext = "创建中";
       this.axios
@@ -182,7 +224,7 @@ export default {
           console.log(err);
         });
     },
-    cancel() {
+    cancel () {
       this.$router.go(-1);
     }
   }
