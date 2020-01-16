@@ -119,17 +119,31 @@
                 <el-form-item label="模型评估日期:">
                   <!-- <el-input v-model="form.modeltime"></el-input> -->
                   <el-col :span="11">
-                    <el-input
+                    <!-- <el-input
                       v-model="form.evaluation_start_date"
                       placeholder="开始日期"
-                    ></el-input>
+                    ></el-input> -->
+                    <el-date-picker
+                      v-model="form.evaluation_start_date"
+                      type="date"
+                      placeholder="开始日期"
+                      value-format="yyyy-MM-dd"
+                    >
+                    </el-date-picker>
                   </el-col>
                   <el-col class="line" :span="2">-</el-col>
                   <el-col :span="11">
-                    <el-input
+                    <!-- <el-input
                       v-model="form.evaluation_end_date"
                       placeholder="结束日期"
-                    ></el-input>
+                    ></el-input> -->
+                    <el-date-picker
+                      v-model="form.evaluation_end_date"
+                      type="date"
+                      placeholder="结束日期"
+                      value-format="yyyy-MM-dd"
+                    >
+                    </el-date-picker>
                   </el-col>
                 </el-form-item>
               </el-col>
@@ -137,17 +151,31 @@
                 <el-form-item label="训练日期:">
                   <!-- <el-input v-model="form.traintime"></el-input> -->
                   <el-col :span="11">
-                    <el-input
+                    <!-- <el-input
                       v-model="form.tran_start_date"
                       placeholder="开始日期"
-                    ></el-input>
+                    ></el-input> -->
+                    <el-date-picker
+                      v-model="form.tran_start_date"
+                      type="date"
+                      placeholder="开始日期"
+                      value-format="yyyy-MM-dd"
+                    >
+                    </el-date-picker>
                   </el-col>
                   <el-col class="line" :span="2">-</el-col>
                   <el-col :span="11">
-                    <el-input
+                    <!-- <el-input
                       v-model="form.tran_end_date"
                       placeholder="结束日期"
-                    ></el-input>
+                    ></el-input> -->
+                    <el-date-picker
+                      v-model="form.tran_end_date"
+                      type="date"
+                      placeholder="结束日期"
+                      value-format="yyyy-MM-dd"
+                    >
+                    </el-date-picker>
                   </el-col>
                 </el-form-item>
               </el-col>
@@ -234,7 +262,7 @@ export default {
         )
         .then(res => {
           console.log(res.data.data);
-          // this.$router.go(-1);
+          this.$router.go(-1);
         })
         .catch(err => {
           console.log(err);

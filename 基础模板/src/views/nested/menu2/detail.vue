@@ -56,7 +56,8 @@ export default {
         }
       },
       start_date: {},
-      end_date: {}
+      end_date: {},
+      dataArr: []
     };
   },
   mounted() {
@@ -72,7 +73,8 @@ export default {
         name: "modelDetail",
         query: {
           forecastDate: this.start_date,
-          taskId: this.$route.query.taskId
+          taskId: this.$route.query.taskId,
+          dataArr: JSON.stringify(this.dataArr)
         }
       });
     },
@@ -91,6 +93,7 @@ export default {
           let testdata = res.data.data;
           this.start_date = testdata.start_date;
           this.end_date = testdata.end_date;
+          this.dataArr = testdata.forecastDateList;
           this.chartdata.columns = ["事件"];
           testdata.forecastDateList.forEach(item => {
             this.chartdata.columns.push(item.forecast_date);

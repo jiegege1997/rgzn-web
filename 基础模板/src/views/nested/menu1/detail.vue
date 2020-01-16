@@ -41,6 +41,9 @@
               :default-sort="{ prop: 'para_id', order: 'ascending' }"
               border
             >
+              <el-table-column label="步长">
+                <span>{{ this.form.size }} </span>
+              </el-table-column>
               <el-table-column label="降维维度">
                 <span>{{ this.form.dr_min }} - {{ this.form.dr_max }}</span>
               </el-table-column>

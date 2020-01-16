@@ -9,6 +9,7 @@
       <el-table
         ref="multipleTable"
         :data="tableData"
+        height="400px"
         tooltip-effect="dark"
         style="width: 100%"
         @row-click="showRow"
@@ -60,7 +61,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
+        <!-- <el-row>
           <el-col :span="6">
             <el-form-item label="数据开始时间">
               <el-date-picker
@@ -83,7 +84,7 @@
               </el-date-picker>
             </el-form-item>
           </el-col>
-        </el-row>
+        </el-row> -->
         <el-row>
           <el-col :span="5" :offset="6">
             <el-button
@@ -168,9 +169,9 @@ export default {
               model_name: this.currentRow.model_name, //任务名称
               task_remark: this.ruleForm.remark, //预测事件说明
               epoch: this.currentRow.days, //预测天数,
-              tables_name: this.currentRow.tables_name,
-              sample_start_date: this.ruleForm.sample_start_date,
-              sample_end_date: this.ruleForm.sample_end_date
+              tables_name: this.currentRow.tables_name
+              // sample_start_date: this.ruleForm.sample_start_date,
+              // sample_end_date: this.ruleForm.sample_end_date
             })
           )
           .then(res => {
@@ -226,12 +227,10 @@ export default {
 };
 </script>
 <style scoped>
-/* .btns-father {
-  overflow: hidden;
-} */
 .btns {
   text-align: right;
   margin-right: 10px;
+  /* border: 1px solid red; */
   margin-top: 10px;
 }
 .btns :after {

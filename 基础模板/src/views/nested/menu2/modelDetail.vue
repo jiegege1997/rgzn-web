@@ -10,13 +10,31 @@
           class="item"
           effect="dark"
           content="点击模型名称可查看历史"
-          placement="bottom-end"
+          placement="right"
           style="margin-left:20px;"
         >
           <i class="el-icon-question"></i>
         </el-tooltip>
+        <span style="float:right;margin-right:40px;">
+          选择时间:
+          <el-select
+            v-model="listvalue"
+            placeholder="请选择"
+            size="mini"
+            style="width:120px;"
+            @change="selectevent"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </span>
       </h4>
-      <modelTable :modeltable="modeltable" />
+      <modelTable :modeltable="modeltable" :listdata="listvalue" />
     </div>
   </div>
 </template>
@@ -32,12 +50,15 @@ export default {
   },
   data() {
     return {
-      modeltable: []
+      modeltable: [],
+      options: [],
+      listvalue: this.$route.query.forecastDate
     };
   },
-  created() {
+  mounted() {
     // console.log(this.$route.query.forecastDate);
-    // console.log(this.$route.query.taskId);
+    console.log(JSON.parse(this.$route.query.dataArr));
+    this.changeData();
     this.getData();
   },
   methods: {
@@ -55,7 +76,61 @@ export default {
         )
         .then(res => {
           console.log(res.data.data);
-          this.modeltable = res.data.data;
+          let testdata = res.data.data;
+          let resultArr = [];
+          testdata.forEach(item => {
+            let obj = {};
+            obj.event = item.event;
+            item.model.forEach(item => {
+              obj[item.model_name] = item.probability;
+              obj[item.model_name + "id"] = item.detail_id;
+            });
+            resultArr.push(obj);
+          });
+          console.log(resultArr);
+          this.modeltable = resultArr;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    changeData() {
+      let testdata = JSON.parse(this.$route.query.dataArr);
+      for (let i = 0; i < testdata.length; i++) {
+        let obj = {};
+        obj.value = testdata[i].forecast_date;
+        obj.label = testdata[i].forecast_date;
+        this.options.push(obj);
+        // this.options[i].value = testdata[i].forecast_date;
+        // this.options[i].label = testdata[i].forecast_date;
+      }
+      console.log(this.options);
+    },
+    selectevent() {
+      console.log(this.listvalue);
+      this.axios
+        .post(
+          "/jdqd/action/JDQD/biz/eventpredict/getEventPredictByForecastDate",
+          qs.stringify({
+            forecastDate: this.listvalue,
+            taskId: this.$route.query.taskId
+          })
+        )
+        .then(res => {
+          console.log(res.data.data);
+          let testdata = res.data.data;
+          let resultArr = [];
+          testdata.forEach(item => {
+            let obj = {};
+            obj.event = item.event;
+            item.model.forEach(item => {
+              obj[item.model_name] = item.probability;
+              obj[item.model_name + "id"] = item.detail_id;
+            });
+            resultArr.push(obj);
+          });
+          console.log(resultArr);
+          this.modeltable = resultArr;
         })
         .catch(err => {
           console.log(err);

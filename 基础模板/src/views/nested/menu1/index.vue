@@ -36,23 +36,28 @@
         </template>
       </el-table-column>
       <el-table-column label="操作" width="240%" text-align="center">
-        <template slot-scope="{ row, $index }">
+        <template slot-scope="{ row }">
           <el-button
-            v-if="!showBtn[$index]"
             size="mini"
             type="primary"
             @click="handleEdit(row)"
+            v-if="row.status == '2 '"
             >详情
           </el-button>
-          <el-button
+          <!-- <el-button
             size="mini"
             type="warning"
             @click="handleReturn(row)"
             v-if="row.status == '2 '"
           >
             重跑
-          </el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(row)">
+          </el-button> -->
+          <el-button
+            size="mini"
+            type="danger"
+            @click="handleDelete(row)"
+            v-if="row.status != '2 '"
+          >
             删除
           </el-button>
         </template>
