@@ -23,33 +23,17 @@
               </el-col>
               <el-col :span="8">
                 <el-form-item label="训练数据集时间:">
-                  {{ this.traintime }}
+                  {{ this.form.tran_start_date }} ~
+                  {{ this.form.tran_end_date }}
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="模型评估数据集时间:">
-                  {{ this.modeltime }}
+                  {{ this.form.evaluation_start_date }} ~
+                  {{ this.form.evaluation_end_date }}
                 </el-form-item>
               </el-col>
             </el-row>
-            <!--<el-form-item label="降维维度:">
-                {{ this.form.dr_min }} - {{ this.form.dr_max }}
-              </el-form-item>
-              <el-form-item label="滞后时间:">
-                {{ this.form.delay_min_day }} - {{ this.form.delay_max_day }}
-              </el-form-item>
-              <el-form-item label="神经元个数:">
-                {{ this.form.neure_num }}
-              </el-form-item>
-              <el-form-item label="网络数据个数:">
-                {{ this.form.train_batch_no }}
-              </el-form-item>
-              <el-form-item label="预测天数:">
-                {{ this.form.days }}
-              </el-form-item>
-              <el-form-item label="训练次数:" class="ruzhu-mess">
-                {{ this.form.epoch }}
-              </el-form-item> -->
             <el-table
               :data="tableData"
               style="width: 100%;"
@@ -57,9 +41,6 @@
               :default-sort="{ prop: 'para_id', order: 'ascending' }"
               border
             >
-              <!-- <el-table-column label="模型名称">{{
-                this.form.model_name
-              }}</el-table-column> -->
               <el-table-column label="降维维度">
                 <span>{{ this.form.dr_min }} - {{ this.form.dr_max }}</span>
               </el-table-column>
@@ -78,18 +59,16 @@
               <el-table-column label="训练次数">
                 {{ this.form.epoch }}
               </el-table-column>
-              <!-- <el-table-column label="训练数据集时间">
-                {{ 33 }}
-              </el-table-column> -->
-              <!-- <el-table-column label="模型评估数据集时间" width="150">
-                {{ 12 }}
-              </el-table-column> -->
             </el-table>
           </div>
           <h4 class="handletitle" style="margin-top:20px">训练事件明细</h4>
-          <traintable />
+          <traintable :eventInfo="eventInfo" />
           <h4 class="handletitle" style="margin-top:20px">
-            模型评价
+            模型综合评价
+          </h4>
+          <modeldetail :modelTotInfo="modelTotInfo" />
+          <h4 class="handletitle" style="margin-top:20px">
+            模型明细
             <span style="float:right">
               选择事件:
               <el-select
@@ -97,6 +76,7 @@
                 placeholder="请选择"
                 size="mini"
                 style="width:90px;"
+                @change="selectevent"
               >
                 <el-option
                   v-for="item in options"
@@ -108,7 +88,7 @@
               </el-select>
             </span>
           </h4>
-          <modeltable />
+          <modeltable :eventDetail="eventDetail" />
         </el-form>
       </div>
     </div>
@@ -119,11 +99,13 @@
 import qs from "qs";
 import traintable from "@/views/nested/menu1/components/traintable";
 import modeltable from "@/views/nested/menu1/components/modeltable";
+import modeldetail from "@/views/nested/menu1/components/modeldetail";
 
 export default {
   components: {
     traintable,
-    modeltable
+    modeltable,
+    modeldetail
   },
   data() {
     return {
@@ -153,7 +135,10 @@ export default {
         { value: "1", label: "事件一" },
         { value: "2", label: "事件二" }
       ],
-      listvalue: ""
+      listvalue: "",
+      modelTotInfo: [], //模型综合评价
+      eventInfo: [], //训练事件明细
+      eventDetail: [] //训练事件明细
     };
   },
   created() {
@@ -171,8 +156,36 @@ export default {
         )
         .then(res => {
           console.log(res.data.data);
-          this.form = res.data.data;
+          this.form = res.data.data.modelInfo;
+          this.modelTotInfo = res.data.data.modelTotInfo; //模型综合评价
+          this.eventInfo = res.data.data.eventInfo; //训练事件明细
           this.tableData.push(res.data.data);
+          var option = res.data.data.eventList;
+          for (let i = 0; i < option.length; i++) {
+            this.options[i].value = option[i].event_name;
+            this.options[i].label = option[i].event_name;
+          }
+          // this.options = res.data.data.eventlist; //选择事件下拉框
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    //选择事件
+    selectevent() {
+      console.log(this.listvalue);
+      let modelId = this.$route.query.id;
+      this.axios
+        .post(
+          "/jdqd/action/JDQD/biz/modeltrain/getModelDteailByEvent",
+          qs.stringify({
+            modelId: modelId,
+            eventName: this.listvalue
+          })
+        )
+        .then(res => {
+          console.log(res.data.data);
+          this.eventDetail = res.data.data;
         })
         .catch(err => {
           console.log(err);

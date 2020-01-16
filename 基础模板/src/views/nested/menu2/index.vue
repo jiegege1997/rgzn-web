@@ -8,18 +8,16 @@
       </span>
       <div class="dayText">
         <!-- <timeline /> -->
-        <chartline></chartline>
+        <chartline />
         <!-- <el-calendar>
-          <template slot="dateCell"
-                    slot-scope="{ date, data }">
+          <template slot="dateCell" slot-scope="{ date, data }">
             {{
               data.day
                 .split("-")
                 .slice(1)
                 .join("-")
             }}
-            <div v-for="i in dataarr.length"
-                 :key="-i">
+            <div v-for="i in dataarr.length" :key="-i">
               <div style="color:blue">
                 {{ data.day === dataarr[i - 1] ? detailarr[i - 1] : "" }}
               </div>
@@ -94,8 +92,8 @@
 
 <script>
 import qs from "qs";
-import timeline from "@/views/nested/menu2/timeline";
-import chartline from "@/views/nested/menu2/chartline";
+import timeline from "@/views/nested/menu2/components/timeline";
+import chartline from "@/views/nested/menu2/components/chartline";
 
 export default {
   components: {
@@ -199,34 +197,41 @@ export default {
           type: "warning"
         });
       } else {
+        this.$router.push({
+          name: "deTail",
+          query: {
+            taskId: 1
+          }
+        });
         this.axios
           .post(
-            "/jdqd/action/JDQD/biz/eventpredict/getEventPredictResultById",
+            "/jdqd/action/JDQD/biz/eventpredict/getEventPredictResultByTask",
             qs.stringify({
-              modelId: item.model_id
+              // taskId: item.model_id
+              taskId: 1
             })
           )
           .then(res => {
             console.log(res.data.data);
-            let data = res.data.data.task_result_content;
-            let data1 = data.replace(/'/g, '"');
-            console.log(data1);
-            let data2 = JSON.parse(data1);
-            console.log(data2);
-            let obj = data2;
-            let dataArr = [];
-            let eventArr = [];
-            let detailArr = [];
-            for (var i in obj) {
-              dataArr.push(i);
-              eventArr.push(obj[i].split("|")[0]);
-              detailArr.push(obj[i].split("|")[1]);
-            }
-            this.dataarr = dataArr;
-            this.eventarr = eventArr;
-            this.detailarr = detailArr;
-            console.log(this.detailarr);
-            this.dialogVisible = true;
+            // let data = res.data.data.task_result_content;
+            // let data1 = data.replace(/'/g, '"');
+            // console.log(data1);
+            // let data2 = JSON.parse(data1);
+            // console.log(data2);
+            // let obj = data2;
+            // let dataArr = [];
+            // let eventArr = [];
+            // let detailArr = [];
+            // for (var i in obj) {
+            //   dataArr.push(i);
+            //   eventArr.push(obj[i].split("|")[0]);
+            //   detailArr.push(obj[i].split("|")[1]);
+            // }
+            // this.dataarr = dataArr;
+            // this.eventarr = eventArr;
+            // this.detailarr = detailArr;
+            // console.log(this.detailarr);
+            // this.dialogVisible = true;
           })
           .catch(err => {
             console.log(err);

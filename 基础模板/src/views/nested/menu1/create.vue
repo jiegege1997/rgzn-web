@@ -7,7 +7,7 @@
           ref="form"
           :model="form"
           :label-position="labelPosition"
-          style="margin-left:80px;"
+          style="margin-left:60px;"
         >
           <el-form-item label="数据表名:">
             <el-col :span="20">
@@ -39,7 +39,7 @@
           <el-form
             ref="form"
             :model="form"
-            label-width="150px"
+            label-width="130px"
             :label-position="labelPosition"
           >
             <el-row>
@@ -69,7 +69,7 @@
             <el-row>
               <el-col :span="12">
                 <el-form-item label="步长:">
-                  <el-input v-model="form.delay_min_day"></el-input>
+                  <el-input v-model="form.size"></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
@@ -116,13 +116,39 @@
             </el-row>
             <el-row>
               <el-col :span="12">
-                <el-form-item label="模型评估数据集时间:">
-                  <el-input v-model="form.modeltime"></el-input>
+                <el-form-item label="模型评估日期:">
+                  <!-- <el-input v-model="form.modeltime"></el-input> -->
+                  <el-col :span="11">
+                    <el-input
+                      v-model="form.evaluation_start_date"
+                      placeholder="开始日期"
+                    ></el-input>
+                  </el-col>
+                  <el-col class="line" :span="2">-</el-col>
+                  <el-col :span="11">
+                    <el-input
+                      v-model="form.evaluation_end_date"
+                      placeholder="结束日期"
+                    ></el-input>
+                  </el-col>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="训练数据集时间:">
-                  <el-input v-model="form.traintime"></el-input>
+                <el-form-item label="训练日期:">
+                  <!-- <el-input v-model="form.traintime"></el-input> -->
+                  <el-col :span="11">
+                    <el-input
+                      v-model="form.tran_start_date"
+                      placeholder="开始日期"
+                    ></el-input>
+                  </el-col>
+                  <el-col class="line" :span="2">-</el-col>
+                  <el-col :span="11">
+                    <el-input
+                      v-model="form.tran_end_date"
+                      placeholder="结束日期"
+                    ></el-input>
+                  </el-col>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -172,15 +198,18 @@ export default {
         train_batch_no: "", //网络数据个数
         days: "", //预测天数
         epoch: "", //训练次数
+        size: "", //步长
         traintime: "",
-        modeltime: ""
+        modeltime: "",
+        tran_start_date: "", //训练开始日期
+        tran_end_date: "" //训练结束日期
       }
     };
   },
   methods: {
     onSubmit() {
-      this.loadingbut = true;
-      this.loadingtext = "创建中";
+      // this.loadingbut = true;
+      // this.loadingtext = "创建中";
       this.axios
         .post(
           "/jdqd/action/JDQD/biz/modeltrain/addModelInfo",
@@ -195,12 +224,17 @@ export default {
             train_batch_no: this.form.train_batch_no,
             epoch: this.form.epoch,
             days: this.form.days,
-            event_type: this.form.event_type
+            event_type: this.form.event_type,
+            size: this.form.size,
+            tran_start_date: this.form.tran_start_date,
+            tran_end_date: this.form.tran_end_date,
+            evaluation_start_date: this.form.evaluation_start_date,
+            evaluation_end_date: this.form.evaluation_end_date
           })
         )
         .then(res => {
           console.log(res.data.data);
-          this.$router.go(-1);
+          // this.$router.go(-1);
         })
         .catch(err => {
           console.log(err);

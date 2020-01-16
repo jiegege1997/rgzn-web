@@ -144,9 +144,6 @@ export default {
       this.dialogTableVisible = true;
     },
     forecastBtn() {
-      // console.log(this.currentRow);
-      // console.log(this.ruleForm.sample_start_date);
-      // console.log(this.ruleForm.sample_end_date);
       var date1 = new Date(this.ruleForm.sample_start_date);
       var date2 = new Date(this.ruleForm.sample_end_date);
       console.log(date1);

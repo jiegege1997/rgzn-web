@@ -35,7 +35,7 @@
           }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="160%" text-align="center">
+      <el-table-column label="操作" width="240%" text-align="center">
         <template slot-scope="{ row, $index }">
           <el-button
             v-if="!showBtn[$index]"
@@ -43,6 +43,14 @@
             type="primary"
             @click="handleEdit(row)"
             >详情
+          </el-button>
+          <el-button
+            size="mini"
+            type="warning"
+            @click="handleReturn(row)"
+            v-if="row.status == '2 '"
+          >
+            重跑
           </el-button>
           <el-button size="mini" type="danger" @click="handleDelete(row)">
             删除
@@ -107,10 +115,47 @@ export default {
         }
       });
     },
+    //创建
     handleCreate() {
       this.$router.push({
         name: "creates"
       });
+    },
+    //重跑
+    handleReturn(data) {
+      console.log(data);
+      this.$confirm("此操作将重跑模型, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          const id = data.model_id;
+          // this.axios
+          //   .post(
+          //     "/jdqd/action/JDQD/biz/modeltrain/deleteModelInfoById",
+          //     qs.stringify({
+          //       modelId: id
+          //     })
+          //   )
+          //   .then(res => {
+          //     console.log(res);
+          //     this.$message({
+          //       type: "success",
+          //       message: "重跑成功!"
+          //     });
+          //     this.getData();
+          //   })
+          //   .catch(err => {
+          //     console.log(err);
+          //   });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消重跑"
+          });
+        });
     },
     // 查看所有数据
     getData() {
@@ -124,7 +169,7 @@ export default {
           })
         )
         .then(res => {
-          console.log(res.data.data);
+          console.log(typeof res.data.data.data[0].status);
           this.tableData = [...res.data.data.data];
           this.tableData.length = res.data.data.totalSize;
         })

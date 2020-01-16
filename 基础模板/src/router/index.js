@@ -173,6 +173,21 @@ export const constantRoutes = [
         path: "newEvent",
         name: "NewEvent",
         component: () => import("@/views/nested/menu2/newEvent")
+      },
+      {
+        path: "deTail",
+        name: "deTail",
+        component: () => import("@/views/nested/menu2/detail")
+      },
+      {
+        path: "modelDetail",
+        name: "modelDetail",
+        component: () => import("@/views/nested/menu2/modelDetail")
+      },
+      {
+        path: "historyDetail",
+        name: "historyDetail",
+        component: () => import("@/views/nested/menu2/historyDetail")
       }
     ]
   },
