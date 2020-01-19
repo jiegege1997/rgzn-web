@@ -1,40 +1,37 @@
 <template>
   <div class="app-container">
-    <el-button @click="cancel" size="small" type="primary">
+    <el-button @click="cancel"
+               size="small"
+               type="primary">
       返回
     </el-button>
     <div class="left">
       <h4 class="handletitle">
         模型详情
-        <el-tooltip
-          class="item"
-          effect="dark"
-          content="点击模型名称可查看历史"
-          placement="right"
-          style="margin-left:20px;"
-        >
+        <el-tooltip class="item"
+                    effect="dark"
+                    content="点击模型名称可查看历史"
+                    placement="right"
+                    style="margin-left:20px;">
           <i class="el-icon-question"></i>
         </el-tooltip>
         <span style="float:right;margin-right:40px;">
           选择时间:
-          <el-select
-            v-model="listvalue"
-            placeholder="请选择"
-            size="mini"
-            style="width:120px;"
-            @change="selectevent"
-          >
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
+          <el-select v-model="listvalue"
+                     placeholder="请选择"
+                     size="mini"
+                     style="width:120px;"
+                     @change="selectevent">
+            <el-option v-for="item in options"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
             </el-option>
           </el-select>
         </span>
       </h4>
-      <modelTable :modeltable="modeltable" :listdata="listvalue" />
+      <modelTable :modeltable="modeltable"
+                  :listdata="listvalue" />
     </div>
   </div>
 </template>
@@ -48,24 +45,24 @@ export default {
   components: {
     modelTable
   },
-  data() {
+  data () {
     return {
       modeltable: [],
       options: [],
       listvalue: this.$route.query.forecastDate
     };
   },
-  mounted() {
+  mounted () {
     // console.log(this.$route.query.forecastDate);
     console.log(JSON.parse(this.$route.query.dataArr));
     this.changeData();
     this.getData();
   },
   methods: {
-    cancel() {
+    cancel () {
       this.$router.go(-1);
     },
-    getData() {
+    getData () {
       this.axios
         .post(
           "/jdqd/action/JDQD/biz/eventpredict/getEventPredictByForecastDate",
@@ -87,14 +84,14 @@ export default {
             });
             resultArr.push(obj);
           });
-          console.log(resultArr);
+          console.log(resultArr, 'resultArr');
           this.modeltable = resultArr;
         })
         .catch(err => {
           console.log(err);
         });
     },
-    changeData() {
+    changeData () {
       let testdata = JSON.parse(this.$route.query.dataArr);
       for (let i = 0; i < testdata.length; i++) {
         let obj = {};
@@ -106,7 +103,7 @@ export default {
       }
       console.log(this.options);
     },
-    selectevent() {
+    selectevent () {
       console.log(this.listvalue);
       this.axios
         .post(

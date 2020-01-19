@@ -1,8 +1,9 @@
 <template>
   <div>
-    <headerTop @increase="handleChange" style="margin-left:10px;" />
-    <tableTop1 v-if="value == '1'" />
-    <tableTop2 v-if="value == '2'" />
+    <headerTop @increase="handleChange"
+               style="margin-left:10px;" />
+    <tableTop1 v-if="value == '2'" />
+    <tableTop2 v-if="value == '1'" />
     <contentLeft v-if="value == '3'" />
     <echarts v-if="value == '3'" />
   </div>
@@ -23,19 +24,19 @@ export default {
     contentLeft,
     echarts
   },
-  data() {
+  data () {
     return {
       value: "1"
     };
   },
 
   methods: {
-    handleChange: function(value) {
+    handleChange: function (value) {
       console.log(value);
       this.value = value;
     }
   },
-  mounted() {}
+  mounted () { }
 };
 </script>
 

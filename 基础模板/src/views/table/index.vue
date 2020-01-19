@@ -1,19 +1,17 @@
 <template>
   <div>
-    <el-col :span="6" :offset="4" style="margin-top:30px;float:right">
+    <el-col :span="6"
+            :offset="4"
+            style="margin-top:30px;float:right">
       展现列表:
-      <el-select
-        v-model="listvalue"
-        placeholder="请选择"
-        size="mini"
-        style="width:90px;"
-      >
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
+      <el-select v-model="listvalue"
+                 placeholder="请选择"
+                 size="mini"
+                 style="width:90px;">
+        <el-option v-for="item in options"
+                   :key="item.value"
+                   :label="item.label"
+                   :value="item.value">
         </el-option>
       </el-select>
     </el-col>
@@ -32,14 +30,14 @@ export default {
     articleTable,
     eventTable
   },
-  data() {
+  data () {
     return {
       dialogFormVisible: false,
       search: "",
       findData: "",
       findEvent: "",
       showEdit: [], // 显示编辑框
-      showBtn: [],
+
       type: this.$store.state.table.type,
       length: 10,
       listvalue: "1",
@@ -50,14 +48,11 @@ export default {
     };
   },
   watch: {},
-  created() {
-    var arr = [33, 44, 55, 66];
-    this.showBtn = arr;
-    console.log(this.showBtn);
+  created () {
   },
   computed: {},
   methods: {
-    handleFind() {}
+    handleFind () { }
   }
 };
 </script>

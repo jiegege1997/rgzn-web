@@ -1,6 +1,8 @@
 <template>
   <div class="app-container">
-    <el-button @click="cancel" size="small" type="primary">
+    <el-button @click="cancel"
+               size="small"
+               type="primary">
       返回
     </el-button>
     <div class="left">
@@ -14,14 +16,14 @@
       <div style="margin-top:20px">
         <div class="detailchart">
           <!-- <chartline :chartdata="chartdata" /> -->
-          <VeLine
-            :data="chartdata"
-            :extend="chartExtend"
-            :settings="chartSettings"
-          />
+          <VeLine :data="chartdata"
+                  :extend="chartExtend"
+                  :settings="chartSettings" />
         </div>
         <div class="detailbutton">
-          <el-button size="small" type="primary" @click="handleClick">
+          <el-button size="small"
+                     type="primary"
+                     @click="handleClick">
             查看详情
           </el-button>
         </div>
@@ -40,7 +42,7 @@ export default {
     // chartline
     VeLine
   },
-  data() {
+  data () {
     this.chartSettings = {
       xAxisType: "category"
     };
@@ -60,15 +62,15 @@ export default {
       dataArr: []
     };
   },
-  mounted() {
+  mounted () {
     this.getData();
   },
   methods: {
-    cancel() {
+    cancel () {
       this.$router.go(-1);
     },
     //查看详情
-    handleClick() {
+    handleClick () {
       this.$router.push({
         name: "modelDetail",
         query: {
@@ -78,14 +80,14 @@ export default {
         }
       });
     },
-    getData() {
+    getData () {
       console.log(this.$route.query.taskId);
       this.axios
         .post(
           "/jdqd/action/JDQD/biz/eventpredict/getEventPredictResultByTask",
           qs.stringify({
             // taskId: item.model_id
-            taskId: 1
+            taskId: this.$route.query.taskId
           })
         )
         .then(res => {

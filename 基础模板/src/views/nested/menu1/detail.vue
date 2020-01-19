@@ -1,12 +1,16 @@
 <template>
   <div class="app-container">
-    <el-button @click="cancel" size="small" type="primary">
+    <el-button @click="cancel"
+               size="small"
+               type="primary">
       返回
     </el-button>
     <div class="left">
       <h4 class="handletitle">构建数据源</h4>
       <div style="margin-top:20px">
-        <el-form ref="form" :model="form" :label-position="labelPosition">
+        <el-form ref="form"
+                 :model="form"
+                 :label-position="labelPosition">
           <el-form-item label="数据表名:">
             <el-col :span="20">
               <!-- <el-input v-model="form.tables_name"></el-input> -->
@@ -34,13 +38,11 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-table
-              :data="tableData"
-              style="width: 100%;"
-              :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
-              :default-sort="{ prop: 'para_id', order: 'ascending' }"
-              border
-            >
+            <el-table :data="tableData"
+                      style="width: 100%;"
+                      :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
+                      :default-sort="{ prop: 'para_id', order: 'ascending' }"
+                      border>
               <el-table-column label="步长">
                 <span>{{ this.form.size }} </span>
               </el-table-column>
@@ -64,29 +66,28 @@
               </el-table-column>
             </el-table>
           </div>
-          <h4 class="handletitle" style="margin-top:20px">训练事件明细</h4>
+          <h4 class="handletitle"
+              style="margin-top:20px">训练事件明细</h4>
           <traintable :eventInfo="eventInfo" />
-          <h4 class="handletitle" style="margin-top:20px">
+          <h4 class="handletitle"
+              style="margin-top:20px">
             模型综合评价
           </h4>
           <modeldetail :modelTotInfo="modelTotInfo" />
-          <h4 class="handletitle" style="margin-top:20px">
+          <h4 class="handletitle"
+              style="margin-top:20px">
             模型明细
             <span style="float:right">
               选择事件:
-              <el-select
-                v-model="listvalue"
-                placeholder="请选择"
-                size="mini"
-                style="width:90px;"
-                @change="selectevent"
-              >
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
+              <el-select v-model="listvalue"
+                         placeholder="请选择"
+                         size="mini"
+                         style="width:90px;"
+                         @change="selectevent">
+                <el-option v-for="item in options"
+                           :key="item.value"
+                           :label="item.label"
+                           :value="item.value">
                 </el-option>
               </el-select>
             </span>
@@ -110,7 +111,7 @@ export default {
     modeltable,
     modeldetail
   },
-  data() {
+  data () {
     return {
       loadingbut: false,
       loadingtext: "立即创建",
@@ -135,8 +136,6 @@ export default {
       traintime: "2020-01-01 ~ 2020-01-09",
       modeltime: "2020-01-01 ~ 2020-01-08",
       options: [
-        { value: "1", label: "事件一" },
-        { value: "2", label: "事件二" }
       ],
       listvalue: "",
       modelTotInfo: [], //模型综合评价
@@ -144,11 +143,11 @@ export default {
       eventDetail: [] //训练事件明细
     };
   },
-  created() {
+  created () {
     this.findData();
   },
   methods: {
-    findData() {
+    findData () {
       let modelId = this.$route.query.id;
       this.axios
         .post(
@@ -164,10 +163,16 @@ export default {
           this.eventInfo = res.data.data.eventInfo; //训练事件明细
           this.tableData.push(res.data.data);
           var option = res.data.data.eventList;
+          console.log(option, 'option')
           for (let i = 0; i < option.length; i++) {
-            this.options[i].value = option[i].event_name;
-            this.options[i].label = option[i].event_name;
+            var obj = {}
+            obj.value = option[i].event_name
+            obj.label = option[i].event_name
+            // this.options[i].value = option[i].event_name;
+            // this.options[i].label = option[i].event_name;
+            this.options.push(obj)
           }
+          console.log(this.options)
           // this.options = res.data.data.eventlist; //选择事件下拉框
         })
         .catch(err => {
@@ -175,7 +180,7 @@ export default {
         });
     },
     //选择事件
-    selectevent() {
+    selectevent () {
       console.log(this.listvalue);
       let modelId = this.$route.query.id;
       this.axios
@@ -194,7 +199,7 @@ export default {
           console.log(err);
         });
     },
-    onSubmit() {
+    onSubmit () {
       this.axios
         .post(
           "/jdqd/action/JDQD/biz/modeltrain/addModelInfo",
@@ -219,7 +224,7 @@ export default {
           console.log(err);
         });
     },
-    cancel() {
+    cancel () {
       this.$router.go(-1);
     }
   }
